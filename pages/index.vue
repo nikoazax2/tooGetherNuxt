@@ -269,11 +269,13 @@
         src="@/assets/avecperso.gif"
       />
     </div>
+    <lefooter></lefooter>
   </div>
 </template>
 
 <script>
 import degouline from "@/components/degoulinerouge";
+import footer from "@/components/footer";
 import { mapGetters } from "vuex";
 import fileEmoji from "../assets/emoji.json";
 
@@ -324,7 +326,8 @@ export default {
     };
   },
   components: {
-    degouline: degouline
+    degouline: degouline,
+    lefooter: lefooter
   },
   methods: {
     formatDate(ladateheure) {

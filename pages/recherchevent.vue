@@ -103,30 +103,30 @@
           </p> -->
         </div>
         <div @click="gotodetail(item)" id="caseact" class="caselieux">
-          <div>
-            <vl-map
-              :load-tiles-while-animating="true"
-              :load-tiles-while-interacting="true"
-              data-projection="EPSG:4326"
-              style="height: 100px"
-              >{{ item.coord }}
-              <vl-view
-                :zoom="13"
-                :center="item.coordlieux"
-                :rotation.sync="rotation"
-              ></vl-view>
-
-              <vl-layer-tile id="osm">
-                <vl-source-osm></vl-source-osm>
-              </vl-layer-tile>
-              <vl-overlay :position="item.coordlieux">
-                <template slot-scope="scope">
-                  <img class="marker" src="@/assets/markermap.png" />
-                </template>
-              </vl-overlay>
-            </vl-map>
+          <div class="lacarte">
+            <MglMap
+              :zoom="13"
+              :center="item.coordlieux"
+              :accessToken="accessToken"
+              :mapStyle.sync="mapStyle"
+            >
+              <MglMarker
+                :coordinates="[item.coordlieux[0], item.coordlieux[1]]"
+              >
+                <div
+                  @click="clickeventmap(event)"
+                  slot="marker"
+                  class=" marker"
+                >
+                  <code
+                    class="emojiMap"
+                    v-html="'<p>&\#x1F' + item.emoji + ';</p>'"
+                  ></code>
+                </div>
+              </MglMarker>
+            </MglMap>
           </div>
-          <div class="titreLieux">{{ item.lieux }}</div>
+          <!-- <div class="titreLieux">{{ item.lieux }}</div> -->
         </div>
         <div @click="gotodetail(item)" id="caseact" class="caseparticipants">
           <p class="titredelevent">PARTICIPANTS</p>
@@ -184,11 +184,19 @@
 
 <script>
 import degouline from "@/components/degoulinerouge";
+import Mapbox from "mapbox-gl";
+import { MglMap, MglMarker } from "vue-mapbox";
+import "mapbox-gl/dist/mapbox-gl.css";
+
 export default {
   name: "App",
   created: function() {},
   data: function() {
     return {
+      accessToken:
+        "pk.eyJ1Ijoibmlrb2F6YXgyIiwiYSI6ImNrdjZodng1ODA0cHIycHF1NDkzejRrbDgifQ.jBzUp1BXIVGbZWrQXrtbKQ", // your access token. Needed if you using Mapbox maps
+      mapStyle: "mapbox://styles/mapbox/streets-v11", // your map style
+
       chargement: false,
 
       rotation: 0,
@@ -233,7 +241,9 @@ export default {
     };
   },
   components: {
-    degouline: degouline
+    degouline: degouline,
+    MglMap,
+    MglMarker
   },
   methods: {
     gotoCreationEvenet() {
@@ -504,6 +514,9 @@ export default {
     box-shadow: 0px 0px 16px -3px rgba(0, 0, 0, 0.25);
     .caselieux {
       border-radius: 15px !important;
+      .emojiMap {
+        font-size: 20px;
+      }
     }
     .ol-zoom,
     .ol-attribution {
@@ -592,7 +605,20 @@ export default {
     margin-top: 25%;
     overflow-y: scroll;
   }
-
+  .lacarte {
+    width: 100px;
+    height: 120px;
+    position: absolute;
+    margin-top: 1%;
+    .mapboxgl-canvas {
+      height: 120px !important;
+      width: 100px !important;
+    }
+    .mapboxgl-map {
+      height: 120px !important;
+      border-radius: 15px;
+    }
+  }
   .avatar {
     width: 30px;
   }
@@ -617,6 +643,7 @@ export default {
     height: 4vh;
     display: flex;
     justify-content: center;
+    align-items: center;
   }
   .avatar {
     width: 30px;

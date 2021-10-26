@@ -1,43 +1,35 @@
 <template>
   <div id="app" class="vuemap" data-app>
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
+    <head>
+      <link rel="preconnect" href="https://fonts.gstatic.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap"
+        rel="stylesheet"
+      />
+    </head>
     <!-- ------------------------------------------HEADER-------------------------------------------- -->
     <div class="lacarte" v-if="!chargement">
-      <vl-map
-        :load-tiles-while-animating="true"
-        :load-tiles-while-interacting="true"
-        data-projection="EPSG:4326"
-        style="height: 100vh;width:100vw;"
+      <MglMap
+        :zoom="zoom"
+        :center="coordinates"
+        :accessToken="accessToken"
+        :mapStyle.sync="mapStyle"
       >
-        <vl-view
-          :zoom="5.4"
-          :center="[2.353526, 48.856493]"
-          :rotation="0"
-        ></vl-view>
-
-        <vl-layer-tile id="osm">
-          <vl-source-osm></vl-source-osm>
-        </vl-layer-tile>
-
-        <vl-overlay
+        <MglMarker
           v-for="event in listeEvents"
           :key="event.id"
-          :position="[event.coordlieux[0], event.coordlieux[1]]"
+          :coordinates="[event.coordlieux[0], event.coordlieux[1]]"
         >
-          <template slot-scope="scope">
-            <img
-              @click="clickeventmap(event)"
-              class="marker"
-              src="@/assets/markermap.png"
-            />
-          </template>
-        </vl-overlay>
-      </vl-map>
+          <div @click="clickeventmap(event)" slot="marker" class=" marker">
+            <code
+              :class="{ jump: activity && activity.id == event.id }"
+              class="emojiMap"
+              v-html="'<p>&\#x1F' + event.emoji + ';</p>'"
+            ></code>
+          </div>
+        </MglMarker>
+      </MglMap>
     </div>
     <degouline v-if="true" id="degoulineInscription"></degouline>
     <div class="conteneurplanet">
@@ -48,12 +40,6 @@
       />
     </div>
 
-    <v-card class="titrecard" to="/">
-      <v-card-title>T o o G e t h e r</v-card-title>
-      <v-card-text
-        >Faites des rencontres en faisant ce que vous aimez</v-card-text
-      >
-    </v-card>
     <div class="containerdivtitrecreationevent">
       <v-btn
         to="/"
@@ -99,35 +85,17 @@
 
     <div class="conteneurevent" v-if="activity">
       <div @click="gotodetail(activity)" id="caseact" class="casenomdate">
+        <code
+          class="emojidelevent jump"
+          v-html="'<p >&\#x1F' + activity.emoji + ';</p>'"
+        >
+        </code>
         <p class="titredelevent">{{ activity.name.toUpperCase() }}</p>
         <p class="titredelevent dateheure">
           {{ formatDate(activity.date) }}
         </p>
       </div>
       <div @click="gotodetail(activity)" id="caseact" class="caselieux">
-        <div>
-          <vl-map
-            :load-tiles-while-animating="true"
-            :load-tiles-while-interacting="true"
-            data-projection="EPSG:4326"
-            style="height: 100px"
-            >{{ activity.coord }}
-            <vl-view
-              :zoom="13"
-              :center="activity.coordlieux"
-              :rotation="0"
-            ></vl-view>
-
-            <vl-layer-tile id="osm">
-              <vl-source-osm></vl-source-osm>
-            </vl-layer-tile>
-            <vl-overlay :position="activity.coordlieux">
-              <template slot-scope="scope">
-                <img class="marker" src="@/assets/markermap.png" />
-              </template>
-            </vl-overlay>
-          </vl-map>
-        </div>
         <div class="titreLieux">{{ activity.lieux }}</div>
       </div>
       <div @click="gotodetail(activity)" id="caseact" class="caseparticipants">
@@ -158,8 +126,10 @@
 <script>
 import degouline from "@/components/degoulinerouge";
 import Places from "vue-places";
-// import firebase from "firebase";
-// const db = firebase.firestore();
+import Mapbox from "mapbox-gl";
+import { MglMap, MglMarker } from "vue-mapbox";
+import "mapbox-gl/dist/mapbox-gl.css";
+
 const API_URL = "http://dev-tgt.local:3001/api";
 export default {
   name: "App",
@@ -168,6 +138,11 @@ export default {
   },
   data: function() {
     return {
+      zoom: 4,
+      coordinates: [2.353526, 48.856493],
+      accessToken:
+        "pk.eyJ1Ijoibmlrb2F6YXgyIiwiYSI6ImNrdjZodng1ODA0cHIycHF1NDkzejRrbDgifQ.jBzUp1BXIVGbZWrQXrtbKQ", // your access token. Needed if you using Mapbox maps
+      mapStyle: "mapbox://styles/mapbox/streets-v11", // your map style
       errors: [],
       chargement: false,
       listeEvents: [],
@@ -177,7 +152,9 @@ export default {
   },
   components: {
     degouline: degouline,
-    places: Places
+    places: Places,
+    MglMap,
+    MglMarker
   },
 
   methods: {
@@ -202,6 +179,16 @@ export default {
 
       var coord = JSON.parse(this.activity.coordlieux);
       this.activity.coordlieux = [coord.lng, coord.lat];
+      this.coordinates = [coord.lng, coord.lat];
+      this.zoomAnimation();
+    },
+    zoomAnimation() {
+      setTimeout(() => {
+        if (this.zoom < 15) {
+          this.zoom = this.zoom + 1;
+        }
+        this.zoomAnimation();
+      }, 10);
     },
     async getActivity() {
       this.chargement = true;
@@ -240,14 +227,15 @@ export default {
 .vuemap {
   overflow: hidden;
   .marker {
-    width: 30px;
-    transform: translate(-50%, -90%);
+    .emojiMap {
+      font-size: 30px;
+    }
   }
   body {
     overflow: hidden;
   }
   #degoulineInscription > svg {
-    margin-top: -25vw;
+    margin-top: -55vw;
     width: 100%;
     height: auto;
   }
@@ -262,7 +250,7 @@ export default {
     width: 100%;
   }
   .planetquitourneinscription {
-    margin-top: -10% !important;
+    margin-top: -20% !important;
     height: 20%;
     left: 35%;
     width: 33vw;
@@ -303,6 +291,49 @@ export default {
     font-size: 18px;
     font-weight: 600 !important;
     color: #e92626;
+  }
+  .jump {
+    display: inline-block;
+    animation-duration: 1.5s;
+    animation-name: jump;
+    animation-iteration-count: infinite;
+  }
+  .lacarte {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    .mapboxgl-canvas {
+      height: 100vh !important;
+      width: 100vw !important;
+    }
+    .mapboxgl-map {
+      height: 100vh !important;
+    }
+  }
+  @keyframes jump {
+    0%,
+    100% {
+      transform: scale(1.1, 1) translateY(0);
+    }
+
+    5% {
+      transform: scale(1, 1) translateY(-0.4em);
+    }
+
+    15% {
+      transform: scale(1.1, 0.9) translateY(-0.5em);
+    }
+
+    25% {
+      transform: scale(1, 1) translateY(-0.4em);
+    }
+
+    30% {
+      transform: scale(1, 1) translateY(0);
+    }
+  }
+  .emojidelevent {
+    font-size: 30px;
   }
   .rowcreerevenet {
     padding-left: 15px;
@@ -381,7 +412,12 @@ export default {
     color: #e92626;
   }
   .lacarte {
+    width: 100vw;
+    height: 100vh;
     position: absolute;
+    .mapboxgl-canvas {
+      height: 100vh;
+    }
   }
   .ol-attribution {
     display: none;

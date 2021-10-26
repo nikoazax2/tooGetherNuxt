@@ -121,27 +121,23 @@
               </v-row>
             </v-list-item>
           </v-card-actions>
-          <vl-map
-            :load-tiles-while-animating="true"
-            :load-tiles-while-interacting="true"
-            data-projection="EPSG:4326"
-            style="height: 100px"
-            >{{ activity.coord }}
-            <vl-view
-              :zoom="15"
-              :center="activity.coordlieux"
-              :rotation.sync="rotation"
-            ></vl-view>
-
-            <vl-layer-tile id="osm">
-              <vl-source-osm></vl-source-osm>
-            </vl-layer-tile>
-            <vl-overlay :position="activity.coordlieux">
-              <template slot-scope="scope">
-                <img class="marker" src="@/assets/markermap.png" />
-              </template>
-            </vl-overlay>
-          </vl-map>
+          <MglMap
+            :zoom="10"
+            :center="activity.coordlieux"
+            :accessToken="accessToken"
+            :mapStyle.sync="mapStyle"
+          >
+            <MglMarker
+              :coordinates="[activity.coordlieux[0], activity.coordlieux[1]]"
+            >
+              <div @click="clickeventmap(event)" slot="marker" class=" marker">
+                <code
+                  class="emojiMap"
+                  v-html="'<p>&\#x1F' + activity.emoji + ';</p>'"
+                ></code>
+              </div>
+            </MglMarker>
+          </MglMap>
           <div class="adresse">{{ activity.lieux }}</div>
           <v-card-actions>
             <div class="participantsliste" v-if="activity.users.length > 0">
@@ -198,6 +194,9 @@
 
 <script>
 import degouline from "@/components/degoulinerouge";
+import Mapbox from "mapbox-gl";
+import { MglMap, MglMarker } from "vue-mapbox";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 const API_URL = "http://dev-tgt.local:3001/api";
 export default {
@@ -207,6 +206,10 @@ export default {
   },
   data: function() {
     return {
+      accessToken:
+        "pk.eyJ1Ijoibmlrb2F6YXgyIiwiYSI6ImNrdjZodng1ODA0cHIycHF1NDkzejRrbDgifQ.jBzUp1BXIVGbZWrQXrtbKQ", // your access token. Needed if you using Mapbox maps
+      mapStyle: "mapbox://styles/mapbox/streets-v11", // your map style
+
       rotation: 0,
       geolocPosition: undefined,
       activity: null,
@@ -215,7 +218,9 @@ export default {
     };
   },
   components: {
-    degouline: degouline
+    degouline: degouline,
+    MglMap,
+    MglMarker
   },
   methods: {
     formatDate(ladate) {
@@ -508,6 +513,20 @@ html {
     30% {
       transform: scale(1, 1) translateY(0);
     }
+  }
+  .mgl-map-wrapper {
+    height: 120px;
+    width: 100%;
+  }
+  .mapboxgl-canvas {
+    height: 120px !important;
+    width: 100%;
+  }
+  .mapboxgl-map {
+    //border-radius: 15px;
+  }
+  .emojiMap {
+    font-size: 20px;
   }
 }
 </style>
