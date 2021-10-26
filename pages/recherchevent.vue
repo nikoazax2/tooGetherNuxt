@@ -88,7 +88,7 @@
       <div v-for="item in listeEvents" :key="item.id" class="conteneurevent">
         <div @click="gotodetail(item)" id="caseact" class="casenomdate">
           <code
-            class="emojidelevent"
+            class="emojidelevent jump"
             v-html="'<p >&\#x1F' + item.emoji + ';</p>'"
           >
           </code>
@@ -539,6 +539,35 @@ export default {
   }
   .red {
     color: #e92626;
+  }
+  .jump {
+    display: inline-block;
+    animation-duration: 1.5s;
+    animation-name: jump;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes jump {
+    0%,
+    100% {
+      transform: scale(1.1, 1) translateY(0);
+    }
+
+    5% {
+      transform: scale(1, 1) translateY(-0.4em);
+    }
+
+    15% {
+      transform: scale(1.1, 0.9) translateY(-0.5em);
+    }
+
+    25% {
+      transform: scale(1, 1) translateY(-0.4em);
+    }
+
+    30% {
+      transform: scale(1, 1) translateY(0);
+    }
   }
   #caseact {
     padding: 1%;

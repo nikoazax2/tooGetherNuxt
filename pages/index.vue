@@ -119,11 +119,11 @@
           <div class="popupnotif">
             <div
               class="event"
-              v-for="activity in listeEventsUser"
+              v-for="(activity, index) in listeEventsUser"
               :key="activity.id"
             >
               <code
-                class="emojiNotif"
+                class="emojiNotif jump"
                 v-html="'<p>&\#x1F' + activity.emoji + ';</p>'"
               >
               </code>
@@ -142,7 +142,9 @@
         v-if="$auth.user"
         class="btnhead btnnotif"
       >
-        <div class="nbnotif">{{ this.listeEventsUser.length }}</div>
+        <div class="nbnotif">
+          <div>{{ this.listeEventsUser.length }}</div>
+        </div>
         <v-icon large>
           mdi-bell
         </v-icon>
@@ -744,11 +746,45 @@ export default {
       width: 23px;
       height: 23px;
       text-align: center;
-      background-color: #a91d1c;
+      background-color: #e92626;
+      border: solid white 2px;
       color: white;
       border-radius: 100px;
       z-index: 20;
       margin-left: 15px;
+
+      div {
+        margin-top: -2px !important;
+      }
+    }
+  }
+  .jump {
+    display: inline-block;
+    animation-duration: 1.5s;
+    animation-name: jump;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes jump {
+    0%,
+    100% {
+      transform: scale(1.1, 1) translateY(0);
+    }
+
+    5% {
+      transform: scale(1, 1) translateY(-0.4em);
+    }
+
+    15% {
+      transform: scale(1.1, 0.9) translateY(-0.5em);
+    }
+
+    25% {
+      transform: scale(1, 1) translateY(-0.4em);
+    }
+
+    30% {
+      transform: scale(1, 1) translateY(0);
     }
   }
   .popupnotifcontainercontainer {
@@ -787,7 +823,7 @@ export default {
           }
           .date {
             font-weight: bold;
-            color: #eb2424;
+            color: #e92626;
             font-size: 12px;
             white-space: nowrap;
           }

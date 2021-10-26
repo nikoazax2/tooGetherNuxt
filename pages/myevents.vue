@@ -38,7 +38,7 @@
             >
               <div @click="gotodetail(item)" id="caseact" class="casenomdate">
                 <code
-                  class="emojidelevent"
+                  class="emojidelevent jump"
                   v-html="'<p >&\#x1F' + item.emoji + ';</p>'"
                 >
                 </code>
@@ -109,6 +109,11 @@
               class="conteneurevent"
             >
               <div @click="gotodetail(item)" id="caseact" class="casenomdate">
+                <code
+                  class="emojidelevent jump"
+                  v-html="'<p >&\#x1F' + item.emoji + ';</p>'"
+                >
+                </code>
                 <p class="titredelevent">{{ item.name.toUpperCase() }}</p>
                 <p class="titredelevent dateheure">
                   {{ formatDate(item.date) }}
@@ -435,12 +440,42 @@ export default {
       font-size: 30px;
     }
   }
+  .jump {
+    display: inline-block;
+    animation-duration: 1.5s;
+    animation-name: jump;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes jump {
+    0%,
+    100% {
+      transform: scale(1.1, 1) translateY(0);
+    }
+
+    5% {
+      transform: scale(1, 1) translateY(-0.4em);
+    }
+
+    15% {
+      transform: scale(1.1, 0.9) translateY(-0.5em);
+    }
+
+    25% {
+      transform: scale(1, 1) translateY(-0.4em);
+    }
+
+    30% {
+      transform: scale(1, 1) translateY(0);
+    }
+  }
   .casenomdate {
     padding-top: 3% !important;
   }
   .titredelevent {
     font-weight: 700;
     font-size: 12px;
+    height: 25px;
   }
   .datedelevent {
     color: #e92626;

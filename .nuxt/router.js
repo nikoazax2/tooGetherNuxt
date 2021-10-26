@@ -10,6 +10,7 @@ const _10cbf11e = () => interopDefault(import('..\\pages\\event-detail.vue' /* w
 const _6f3d5a34 = () => interopDefault(import('..\\pages\\events.vue' /* webpackChunkName: "pages/events" */))
 const _2a62072c = () => interopDefault(import('..\\pages\\login.vue' /* webpackChunkName: "pages/login" */))
 const _69e5fa5f = () => interopDefault(import('..\\pages\\map.vue' /* webpackChunkName: "pages/map" */))
+const _54388de1 = () => interopDefault(import('..\\pages\\mapbackup.vue' /* webpackChunkName: "pages/mapbackup" */))
 const _2c2f2052 = () => interopDefault(import('..\\pages\\myevents.vue' /* webpackChunkName: "pages/myevents" */))
 const _f64b431a = () => interopDefault(import('..\\pages\\recherchevent.vue' /* webpackChunkName: "pages/recherchevent" */))
 const _381c9ba0 = () => interopDefault(import('..\\pages\\register.vue' /* webpackChunkName: "pages/register" */))
@@ -50,6 +51,10 @@ export const routerOptions = {
     path: "/map",
     component: _69e5fa5f,
     name: "map"
+  }, {
+    path: "/mapbackup",
+    component: _54388de1,
+    name: "mapbackup"
   }, {
     path: "/myevents",
     component: _2c2f2052,
