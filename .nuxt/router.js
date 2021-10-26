@@ -9,6 +9,7 @@ const _60710cda = () => interopDefault(import('..\\pages\\editevent.vue' /* webp
 const _10cbf11e = () => interopDefault(import('..\\pages\\event-detail.vue' /* webpackChunkName: "pages/event-detail" */))
 const _6f3d5a34 = () => interopDefault(import('..\\pages\\events.vue' /* webpackChunkName: "pages/events" */))
 const _2a62072c = () => interopDefault(import('..\\pages\\login.vue' /* webpackChunkName: "pages/login" */))
+const _69e5fa5f = () => interopDefault(import('..\\pages\\map.vue' /* webpackChunkName: "pages/map" */))
 const _2c2f2052 = () => interopDefault(import('..\\pages\\myevents.vue' /* webpackChunkName: "pages/myevents" */))
 const _f64b431a = () => interopDefault(import('..\\pages\\recherchevent.vue' /* webpackChunkName: "pages/recherchevent" */))
 const _381c9ba0 = () => interopDefault(import('..\\pages\\register.vue' /* webpackChunkName: "pages/register" */))
@@ -45,6 +46,10 @@ export const routerOptions = {
     path: "/login",
     component: _2a62072c,
     name: "login"
+  }, {
+    path: "/map",
+    component: _69e5fa5f,
+    name: "map"
   }, {
     path: "/myevents",
     component: _2c2f2052,

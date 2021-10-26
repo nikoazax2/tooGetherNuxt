@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="vuelogin">
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
@@ -147,172 +147,174 @@ export default {
   position: relative;
   height: 100vh;
 }
-body {
-  overflow: hidden;
-}
-#degoulinelogin > svg {
-  width: 100%;
-  height: auto;
-}
-#degoulinelogin {
-  z-index: -1;
-  margin-top: -10% !important;
-  width: 101%;
-  position: absolute;
-}
-.title {
-  z-index: 1;
-}
-.planetquitourne {
-  margin-top: 5%;
-  margin-left: -20%;
-  height: 20%;
-}
+.vuelogin {
+  body {
+    overflow: hidden;
+  }
+  #degoulinelogin > svg {
+    width: 100%;
+    height: auto;
+  }
+  #degoulinelogin {
+    z-index: -1;
+    margin-top: -10% !important;
+    width: 101%;
+    position: absolute;
+  }
+  .title {
+    z-index: 1;
+  }
+  .planetquitourne {
+    margin-top: 5%;
+    margin-left: -20%;
+    height: 20%;
+  }
 
-.titrecard {
-  margin-top: 10%;
-  background-color: transparent !important;
-  box-shadow: unset !important;
-  text-align: center;
-
-  .v-card__title {
-    font-weight: 700;
-    justify-content: center;
-    color: white;
-    padding-bottom: 0 !important;
-    font-size: 25px;
-  }
-  .v-card__text {
-    font-family: "Noto Sans", sans-serif;
-    opacity: 0.7;
-    color: white !important;
-    font-size: 12px;
-  }
-}
-.comboActivite {
-  .v-input__control {
-    height: 80% !important;
-  }
-  .v-input__control > .v-input__slot {
-    border-radius: 20px;
+  .titrecard {
+    margin-top: 10%;
+    background-color: transparent !important;
     box-shadow: unset !important;
-    height: 30px !important;
-    min-height: 20px !important;
-    width: 50% !important;
-    .v-select__slot > .v-input__append-inner {
-      visibility: hidden;
+    text-align: center;
+
+    .v-card__title {
+      font-weight: 700;
+      justify-content: center;
+      color: white;
+      padding-bottom: 0 !important;
+      font-size: 25px;
     }
-    .v-select__slot > label {
-      font-size: 8px !important;
-      position: unset !important;
-      width: 100%;
+    .v-card__text {
+      font-family: "Noto Sans", sans-serif;
+      opacity: 0.7;
+      color: white !important;
+      font-size: 12px;
     }
-    .v-select__slot > .v-select__selections > input {
-      font-size: 8px;
+  }
+  .comboActivite {
+    .v-input__control {
+      height: 80% !important;
     }
-    .v-select__slot > .v-select__selections > span {
-      background-color: white;
-      span {
+    .v-input__control > .v-input__slot {
+      border-radius: 20px;
+      box-shadow: unset !important;
+      height: 30px !important;
+      min-height: 20px !important;
+      width: 50% !important;
+      .v-select__slot > .v-input__append-inner {
+        visibility: hidden;
+      }
+      .v-select__slot > label {
+        font-size: 8px !important;
+        position: unset !important;
+        width: 100%;
+      }
+      .v-select__slot > .v-select__selections > input {
         font-size: 8px;
+      }
+      .v-select__slot > .v-select__selections > span {
+        background-color: white;
+        span {
+          font-size: 8px;
+        }
       }
     }
   }
-}
-.containerEtapes {
-  width: 100%;
-  margin-top: 30%;
-  position: absolute;
-  div > div > .text {
-    color: #616a79;
-    font-size: 10px;
-    opacity: 1;
+  .containerEtapes {
+    width: 100%;
+    margin-top: 30%;
     position: absolute;
-    margin-top: -50px;
-    margin-left: 35px;
-  }
-  .premièreligne {
-    width: 100%;
-    display: inline-flex;
-    justify-content: center;
-    div > .num {
-      color: #ff0000;
-      opacity: 0.23;
+    div > div > .text {
+      color: #616a79;
+      font-size: 10px;
+      opacity: 1;
+      position: absolute;
+      margin-top: -50px;
+      margin-left: 35px;
+    }
+    .premièreligne {
+      width: 100%;
+      display: inline-flex;
+      justify-content: center;
+      div > .num {
+        color: #ff0000;
+        opacity: 0.23;
+        padding: 20px;
+        font-size: 50px;
+        font-weight: bolder;
+      }
+      .deuxieme,
+      .troisieme {
+        margin-right: 15%;
+      }
+    }
+    .deuxièmeligne {
       padding: 20px;
-      font-size: 50px;
-      font-weight: bolder;
-    }
-    .deuxieme,
-    .troisieme {
-      margin-right: 15%;
-    }
-  }
-  .deuxièmeligne {
-    padding: 20px;
-    width: 100%;
-    display: inline-flex;
-    justify-content: space-around;
-    div > .num {
-      color: #ff0000;
-      opacity: 0.23;
-      padding: 20px;
-      font-size: 50px;
-      font-weight: bolder;
-    }
-    .premier,
-    .quatrieme {
-      margin-right: 30%;
-      margin-left: 15%;
+      width: 100%;
+      display: inline-flex;
+      justify-content: space-around;
+      div > .num {
+        color: #ff0000;
+        opacity: 0.23;
+        padding: 20px;
+        font-size: 50px;
+        font-weight: bolder;
+      }
+      .premier,
+      .quatrieme {
+        margin-right: 30%;
+        margin-left: 15%;
+      }
     }
   }
-}
-.planetpersonacceuil {
-  margin-top: 50%;
-  margin-left: 10% !important;
-  width: 90%;
-  margin-left: auto;
-}
-.planettournecontainer {
-  height: 100%;
-}
-.blocchiffretexteetapes {
-  display: block;
-}
-.rowlogin {
-  padding-left: 15px;
-  padding-top: 0px;
-  border-radius: 20px;
-  margin: 20px;
-  height: 40px;
-  box-shadow: 0px 0px 16px -3px rgb(0 0 0 / 25%);
-  div > input {
-    width: 97%;
+  .planetpersonacceuil {
+    margin-top: 50%;
+    margin-left: 10% !important;
+    width: 90%;
+    margin-left: auto;
   }
-}
-.btnlogin {
-  text-align: center;
-  padding-top: 10px;
-  border-radius: 20px;
-  margin: 20px;
-  height: 40px;
-  background-color: #e92626;
-  color: white;
-  box-shadow: 0px 0px 10px -3px rgb(233 38 38 / 50%);
-  font-weight: 700;
-}
-.btnlogin.creercompte {
-  background-color: white;
-  color: #e92626;
-}
-.formulaireconnexion {
-  margin-bottom: 50px;
-  margin-top: 35%;
-}
-.mdpforget {
-  text-align: center;
-  font-size: 12px;
-  color: #e92626;
-}
-.grey {
-  color: grey;
+  .planettournecontainer {
+    height: 100%;
+  }
+  .blocchiffretexteetapes {
+    display: block;
+  }
+  .rowlogin {
+    padding-left: 15px;
+    padding-top: 0px;
+    border-radius: 20px;
+    margin: 20px;
+    height: 40px;
+    box-shadow: 0px 0px 16px -3px rgb(0 0 0 / 25%);
+    div > input {
+      width: 97%;
+    }
+  }
+  .btnlogin {
+    text-align: center;
+    padding-top: 10px;
+    border-radius: 20px;
+    margin: 20px;
+    height: 40px;
+    background-color: #e92626;
+    color: white;
+    box-shadow: 0px 0px 10px -3px rgb(233 38 38 / 50%);
+    font-weight: 700;
+  }
+  .btnlogin.creercompte {
+    background-color: white;
+    color: #e92626;
+  }
+  .formulaireconnexion {
+    margin-bottom: 50px;
+    margin-top: 35%;
+  }
+  .mdpforget {
+    text-align: center;
+    font-size: 12px;
+    color: #e92626;
+  }
+  .grey {
+    color: grey;
+  }
 }
 </style>

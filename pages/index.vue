@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="vueIndex" @click="menunotif = false">
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
@@ -13,23 +13,12 @@
           v-model="group"
           active-class="deep-purple--text text--accent-4"
         >
-          <!--   <v-list-item>
-            <v-list-item-title>Alertes</v-list-item-title>
-          </v-list-item> -->
-
           <v-list-item>
             <v-list-item-title @click="tomyevents"
               >Mes evenements</v-list-item-title
             >
           </v-list-item>
 
-          <!--   <v-list-item>
-            <v-list-item-title>Mes amis</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-title>Paramètres</v-list-item-title>
-          </v-list-item> -->
           <v-list-item v-if="$auth.user">
             <v-list-item-title @click.prevent="signOut"
               >Déconnexion</v-list-item-title
@@ -123,6 +112,45 @@
             </svg>
           </v-btn>
         </v-btn>
+      </div>
+      <div @click.stop v-if="menunotif" class="popupnotifcontainercontainer">
+        <div class="popupnotifcontainer">
+          <div class="titre">Notifications</div>
+          <div class="popupnotif">
+            <div
+              class="event"
+              v-for="activity in listeEventsUser"
+              :key="activity.id"
+            >
+              <code
+                class="emojiNotif"
+                v-html="'<p>&\#x1F' + activity.emoji + ';</p>'"
+              >
+              </code>
+              <div class="contenuNotif">
+                <div class="nom">{{ activity.name }}</div>
+                <div class="lieux">{{ activity.lieux }}</div>
+                <div class="date">{{ formatDate(activity.date) }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        @click="menunotif = !menunotif"
+        @click.stop
+        v-if="$auth.user"
+        class="btnhead btnnotif"
+      >
+        <div class="nbnotif">{{ this.listeEventsUser.length }}</div>
+        <v-icon large>
+          mdi-bell
+        </v-icon>
+      </div>
+      <div @click="gotomap()" class="btnhead btncarte">
+        <v-icon large>
+          mdi-map
+        </v-icon>
       </div>
     </div>
     <img
@@ -245,6 +273,8 @@
 <script>
 import degouline from "@/components/degoulinerouge";
 import { mapGetters } from "vuex";
+import fileEmoji from "../assets/emoji.json";
+
 export default {
   name: "App",
   computed: {},
@@ -259,9 +289,12 @@ export default {
       day,
       month
     );
+    this.getEventUser();
+    this.getEmojis();
   },
   data: function() {
     return {
+      menunotif: false,
       form: {
         name: "",
         lieux: "",
@@ -284,13 +317,64 @@ export default {
         nom: "Aller au cinéma",
         lieux: "à Grenoble",
         date: "03/08/2021"
-      }
+      },
+      listeEventsUser: []
     };
   },
   components: {
     degouline: degouline
   },
   methods: {
+    formatDate(ladateheure) {
+      var heure = ladateheure.split(",")[1];
+      var ladate = ladateheure.split(",")[0];
+      var date = new Date(ladate);
+      var month = date.getMonth() + 1;
+      return (
+        "le " +
+        date.getDate() +
+        "/" +
+        month +
+        "/" +
+        date.getFullYear() +
+        " à " +
+        heure
+      );
+    },
+    getEmojis() {
+      console.log(fileEmoji.Activities);
+    },
+    async getEventUser() {
+      this.chargement = true;
+      if (this.$auth.user) {
+        let eventuser = await this.$axios.get(
+          "/activities/" + this.$auth.user.id + "/activityOfUser"
+        );
+
+        this.listeEventsUser = eventuser.data;
+
+        this.listeEventsUser.forEach(element => {
+          var coord = JSON.parse(element.coordlieux);
+          element.coordlieux = [coord.lng, coord.lat];
+        });
+        console.log(this.listeEventsUser);
+        this.setNotifs();
+      }
+      this.chargement = false;
+    },
+    setNotifs() {
+      var dateNow = new Date();
+
+      this.listeEventsUser.forEach(activity => {
+        var Actdate = activity.date.replace(",", " ");
+        Actdate = new Date(Actdate);
+      });
+
+      var dateEvent;
+    },
+    gotomap() {
+      this.$router.push("/map");
+    },
     gotorecherche() {
       var laQuery = {};
       if (this.form.name) {
@@ -380,269 +464,336 @@ export default {
 * {
   font-family: "Noto Sans", sans-serif;
 }
-#app {
-  position: relative;
-  height: 100vh;
-}
-body {
-  overflow: hidden;
-}
-#degouline > svg {
-  width: 100%;
-  height: auto;
-}
-#degouline {
-  width: 101%;
-  position: absolute;
-}
-.title {
-  z-index: 1;
-}
-.planetquitourne {
-  margin-top: 5%;
-  margin-left: -20%;
-  height: 20%;
-}
+.vueIndex {
+  #app {
+    position: relative;
+    height: 100vh;
+  }
+  body {
+    overflow: hidden;
+  }
+  #degouline > svg {
+    width: 100%;
+    height: auto;
+  }
+  #degouline {
+    width: 101%;
+    position: absolute;
+  }
+  .title {
+    z-index: 1;
+  }
+  .planetquitourne {
+    margin-top: 5%;
+    margin-left: -20%;
+    height: 20%;
+  }
 
-.titrecard {
-  margin-top: 10%;
-  background-color: transparent !important;
-  box-shadow: unset !important;
-  text-align: center;
-
-  .v-card__title {
-    font-weight: 700;
-    justify-content: center;
-    color: white;
-    padding-bottom: 0 !important;
-    font-size: 25px;
-  }
-  .v-card__text {
-    font-family: "Noto Sans", sans-serif;
-    opacity: 0.7;
-    color: white !important;
-    font-size: 12px;
-  }
-}
-.barrederecherchecontainer {
-  margin-bottom: 2vh;
-  margin-top: 7vh;
-  position: absolute;
-  width: 100%;
-}
-.barrederecherche {
-  display: flex;
-  justify-content: space-between;
-  border-radius: 20px;
-  margin: auto;
-  background-color: white;
-  width: 90%;
-  height: 30px;
-  box-shadow: 0px 0px 16px -3px rgba(0, 0, 0, 0.25);
-  div {
-    margin-top: 1%;
-  }
-}
-.comboActivite {
-  .v-input__control {
-    height: 80% !important;
-  }
-  .v-input__control > .v-input__slot {
-    border-radius: 20px;
+  .titrecard {
+    margin-top: 10%;
+    background-color: transparent !important;
     box-shadow: unset !important;
-    height: 30px !important;
-    min-height: 20px !important;
-    width: 50% !important;
-    .v-select__slot > .v-input__append-inner {
-      visibility: hidden;
+    text-align: center;
+
+    .v-card__title {
+      font-weight: 700;
+      justify-content: center;
+      color: white;
+      padding-bottom: 0 !important;
+      font-size: 25px;
     }
-    .v-select__slot > label {
-      font-size: 8px !important;
-      position: unset !important;
-      width: 100%;
+    .v-card__text {
+      font-family: "Noto Sans", sans-serif;
+      opacity: 0.7;
+      color: white !important;
+      font-size: 12px;
     }
-    .v-select__slot > .v-select__selections > input {
-      font-size: 8px;
+  }
+  .barrederecherchecontainer {
+    margin-bottom: 2vh;
+    margin-top: 7vh;
+    position: absolute;
+    width: 100%;
+  }
+  .barrederecherche {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 20px;
+    margin: auto;
+    background-color: white;
+    width: 90%;
+    height: 30px;
+    box-shadow: 0px 0px 16px -3px rgba(0, 0, 0, 0.25);
+    div {
+      margin-top: 1%;
     }
-    .v-select__slot > .v-select__selections > span {
-      background-color: white;
-      span {
+  }
+  .comboActivite {
+    .v-input__control {
+      height: 80% !important;
+    }
+    .v-input__control > .v-input__slot {
+      border-radius: 20px;
+      box-shadow: unset !important;
+      height: 30px !important;
+      min-height: 20px !important;
+      width: 50% !important;
+      .v-select__slot > .v-input__append-inner {
+        visibility: hidden;
+      }
+      .v-select__slot > label {
+        font-size: 8px !important;
+        position: unset !important;
+        width: 100%;
+      }
+      .v-select__slot > .v-select__selections > input {
         font-size: 8px;
       }
-    }
-  }
-}
-.containerEtapes {
-  width: 100%;
-  margin-top: 30%;
-  position: absolute;
-  div > div > .text {
-    color: #616a79;
-    font-size: 10px;
-    opacity: 1;
-    position: absolute;
-    margin-top: -50px;
-    margin-left: 35px;
-  }
-  .premièreligne {
-    width: 100%;
-    display: inline-flex;
-    justify-content: center;
-    div > .num {
-      color: #ff0000;
-      opacity: 0.23;
-      padding: 20px;
-      font-size: 50px;
-      font-weight: bolder;
-    }
-    .deuxieme,
-    .troisieme {
-      margin-right: 15%;
-    }
-  }
-  .deuxièmeligne {
-    padding: 20px;
-    padding-top: 0 !important;
-    width: 100%;
-    display: inline-flex;
-    justify-content: space-around;
-    div > .num {
-      color: #ff0000;
-      opacity: 0.23;
-      padding: 20px;
-      font-size: 50px;
-      font-weight: bolder;
-    }
-    .premier,
-    .quatrieme {
-      margin-right: 30%;
-      margin-left: 15%;
-    }
-  }
-}
-.planetpersonacceuil {
-  margin-top: 50%;
-  margin-left: 10% !important;
-  width: 90%;
-  margin-left: auto;
-}
-.planetquitourneavecperso {
-  width: 100vw;
-  left: 50%;
-  margin-left: -50vw;
-  bottom: 0;
-  vertical-align: bottom;
-}
-.planettournecontainer {
-  position: relative;
-  bottom: 0;
-  margin-top: 190vw;
-}
-.blocchiffretexteetapes {
-  display: block;
-}
-#inputrechercheevent {
-  font-size: 2.5vw;
-  width: 18vw;
-  transform: translateY(-7px);
-}
-.nomevent {
-}
-.pastille {
-}
-.date {
-  width: 13vw !important;
-}
-.endroit {
-  width: 18vw !important;
-}
-#btncreereventredinterieur {
-  margin-top: 5px !important;
-}
-.titrecarduserheader {
-  background-color: #ff0000;
-}
-.affichenomprenomuser {
-  margin-top: -12px;
-  position: absolute;
-  color: white;
-}
-.divheader {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  padding-top: 10px;
-  z-index: 1000;
-  padding-left: 5%;
-  padding-right: 5%;
-  div,
-  a,
-  button {
-    height: 100% !important;
-    color: white !important;
-  }
-  a {
-    padding: 3px !important;
-    span {
-      font-size: 10px;
-      margin-left: 0px;
-      margin-right: 0px;
-    }
-  }
-  #btncreerevent {
-    padding: 1px !important;
-    box-shadow: 0px 0px 16px -3px rgb(0 0 0 / 25%);
-    background-color: white;
-    span {
-      font-size: 10px;
-      color: #727c8e;
-      font-weight: 700;
-      #btncreereventredinterieur {
-        border-radius: 50%;
-        margin-left: 5px;
-        box-shadow: unset !important;
-        color: red;
-        background-color: red;
-        border: solid 2px;
-        width: 20px;
-        height: 20px;
-        min-width: 25px !important;
-        min-height: 25px !important;
-        margin-top: 3px;
-        margin-bottom: 3px;
+      .v-select__slot > .v-select__selections > span {
+        background-color: white;
+        span {
+          font-size: 8px;
+        }
       }
     }
   }
-}
-#btncreereventredinterieurrecherche {
-  margin-top: -2px;
-  border-radius: 50%;
-  margin-left: 5px;
-  margin-right: 5px;
-  box-shadow: unset !important;
-  color: red;
-  background-color: red;
-  border: solid 2px;
-  width: 20px;
-  height: 20px;
-  min-width: 25px !important;
-  min-height: 25px !important;
-  margin-top: 3px;
-  margin-bottom: 3px;
-}
-.userconnected {
-  display: inline-flex;
-  justify-content: space-around !important;
-  align-items: center;
-  justify-content: center;
-  .imgavataracceuil {
-    width: 50px;
-  }
-  .usernameuseracceuil {
-    margin-left: 10px;
-    width: fit-content;
-    display: block;
+  .containerEtapes {
     width: 100%;
+    margin-top: 30%;
+    position: absolute;
+    div > div > .text {
+      color: #616a79;
+      font-size: 10px;
+      opacity: 1;
+      position: absolute;
+      margin-top: -50px;
+      margin-left: 35px;
+    }
+    .premièreligne {
+      width: 100%;
+      display: inline-flex;
+      justify-content: center;
+      div > .num {
+        color: #ff0000;
+        opacity: 0.23;
+        padding: 20px;
+        font-size: 50px;
+        font-weight: bolder;
+      }
+      .deuxieme,
+      .troisieme {
+        margin-right: 15%;
+      }
+    }
+    .deuxièmeligne {
+      padding: 20px;
+      padding-top: 0 !important;
+      width: 100%;
+      display: inline-flex;
+      justify-content: space-around;
+      div > .num {
+        color: #ff0000;
+        opacity: 0.23;
+        padding: 20px;
+        font-size: 50px;
+        font-weight: bolder;
+      }
+      .premier,
+      .quatrieme {
+        margin-right: 30%;
+        margin-left: 15%;
+      }
+    }
+  }
+  .planetpersonacceuil {
+    margin-top: 50%;
+    margin-left: 10% !important;
+    width: 90%;
+    margin-left: auto;
+  }
+  .planetquitourneavecperso {
+    width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
+    bottom: 0;
+    vertical-align: bottom;
+  }
+  .planettournecontainer {
+    position: relative;
+    bottom: 0;
+    margin-top: 190vw;
+  }
+  .blocchiffretexteetapes {
+    display: block;
+  }
+  #inputrechercheevent {
+    font-size: 2.5vw;
+    width: 18vw;
+    transform: translateY(-7px);
+  }
+  .nomevent {
+  }
+  .pastille {
+  }
+  .date {
+    width: 13vw !important;
+  }
+  .endroit {
+    width: 18vw !important;
+  }
+  #btncreereventredinterieur {
+    margin-top: 5px !important;
+  }
+  .titrecarduserheader {
+    background-color: #ff0000;
+  }
+  .affichenomprenomuser {
+    margin-top: -12px;
+    position: absolute;
+    color: white;
+  }
+  .divheader {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    z-index: 1000;
+    padding-left: 5%;
+    padding-right: 5%;
+    div,
+    a,
+    button {
+      height: 100% !important;
+      color: white !important;
+    }
+    a {
+      padding: 3px !important;
+      span {
+        font-size: 10px;
+        margin-left: 0px;
+        margin-right: 0px;
+      }
+    }
+    #btncreerevent {
+      padding: 1px !important;
+      box-shadow: 0px 0px 16px -3px rgb(0 0 0 / 25%);
+      background-color: white;
+      span {
+        font-size: 10px;
+        color: #727c8e;
+        font-weight: 700;
+        #btncreereventredinterieur {
+          border-radius: 50%;
+          margin-left: 5px;
+          box-shadow: unset !important;
+          color: red;
+          background-color: red;
+          border: solid 2px;
+          width: 20px;
+          height: 20px;
+          min-width: 25px !important;
+          min-height: 25px !important;
+          margin-top: 3px;
+          margin-bottom: 3px;
+        }
+      }
+    }
+  }
+  #btncreereventredinterieurrecherche {
+    margin-top: -2px;
+    border-radius: 50%;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: unset !important;
+    color: red;
+    background-color: red;
+    border: solid 2px;
+    width: 20px;
+    height: 20px;
+    min-width: 25px !important;
+    min-height: 25px !important;
+    margin-top: 3px;
+    margin-bottom: 3px;
+  }
+  .userconnected {
+    display: inline-flex;
+    justify-content: space-around !important;
+    align-items: center;
+    justify-content: center;
+    .imgavataracceuil {
+      width: 50px;
+    }
+    .usernameuseracceuil {
+      margin-left: 10px;
+      width: fit-content;
+      display: block;
+      width: 100%;
+    }
+  }
+  .btnhead {
+    margin-top: 5px;
+    position: relative;
+    float: right;
+    margin-right: 30px;
+    i {
+      font-size: 30px !important;
+      color: white;
+    }
+    .nbnotif {
+      position: absolute;
+      width: 23px;
+      height: 23px;
+      text-align: center;
+      background-color: #a91d1c;
+      color: white;
+      border-radius: 100px;
+      z-index: 20;
+      margin-left: 15px;
+    }
+  }
+  .popupnotifcontainercontainer {
+    z-index: 1000;
+    width: 100vw;
+    position: absolute;
+    margin-top: 40px;
+    .popupnotifcontainer {
+      padding: 15px;
+      border-radius: 15px;
+      margin-right: 25px;
+      float: right;
+      background-color: white;
+      width: 300px;
+      box-shadow: 0px 0px 10px 7px rgba(0, 0, 0, 0.15);
+      .titre {
+        font-weight: 600;
+        font-size: 18px;
+      }
+      .emojiNotif {
+        font-size: 40px;
+      }
+      .event {
+        display: inline-flex;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        .contenuNotif {
+          margin-left: 10px;
+          .nom {
+            font-weight: 600;
+            white-space: nowrap;
+          }
+          .lieux {
+            font-size: 12px;
+            white-space: nowrap;
+          }
+          .date {
+            font-weight: bold;
+            color: #e92626;
+            font-size: 12px;
+            white-space: nowrap;
+          }
+        }
+      }
+    }
   }
 }
 </style>

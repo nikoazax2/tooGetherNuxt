@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="vueregister">
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
@@ -384,103 +384,105 @@ export default {
   position: relative;
   height: 100vh;
 }
-body {
-  overflow: hidden;
-}
-#degoulineInscription > svg {
-  margin-top: -10vh;
-  width: 100%;
-  height: auto;
-}
-#degoulineInscription {
-  width: 101%;
-  position: absolute;
-}
-.title {
-  z-index: 1;
-}
-.conteneurplanet {
-  width: 100%;
-}
-.planetquitourneinscription {
-  margin-top: -10% !important;
-  height: 20%;
-  left: 35%;
-  width: 33vw;
-  height: 33vw;
-}
+.vueregister {
+  body {
+    overflow: hidden;
+  }
+  #degoulineInscription > svg {
+    margin-top: -10vh;
+    width: 100%;
+    height: auto;
+  }
+  #degoulineInscription {
+    width: 101%;
+    position: absolute;
+  }
+  .title {
+    z-index: 1;
+  }
+  .conteneurplanet {
+    width: 100%;
+  }
+  .planetquitourneinscription {
+    margin-top: -10% !important;
+    height: 20%;
+    left: 35%;
+    width: 33vw;
+    height: 33vw;
+  }
 
-.titrecard {
-  padding-top: 20%;
-  margin-top: 0% !important;
-  background-color: transparent !important;
-  box-shadow: unset !important;
-  text-align: center;
+  .titrecard {
+    padding-top: 20%;
+    margin-top: 0% !important;
+    background-color: transparent !important;
+    box-shadow: unset !important;
+    text-align: center;
 
-  .v-card__title {
-    font-weight: 700;
-    justify-content: center;
+    .v-card__title {
+      font-weight: 700;
+      justify-content: center;
+      color: white;
+      padding-bottom: 0 !important;
+      font-size: 25px;
+    }
+    .v-card__text {
+      font-family: "Noto Sans", sans-serif;
+      opacity: 0.7;
+      color: white !important;
+      font-size: 12px;
+    }
+  }
+  .rowregister {
+    padding-left: 15px;
+    padding-top: 0px;
+    border-radius: 20px;
+    margin: 20px;
+    height: 40px;
+    box-shadow: 0px 0px 16px -3px rgb(0 0 0 / 25%);
+    div > input {
+      width: 97%;
+    }
+  }
+  .btnreg {
+    text-align: center;
+    padding-top: 10px;
+    border-radius: 20px;
+    margin: 20px;
+    height: 40px;
+    background-color: #e92626;
     color: white;
-    padding-bottom: 0 !important;
-    font-size: 25px;
+    box-shadow: 0px 0px 10px -3px rgb(233 38 38 / 50%);
+    font-weight: 700;
   }
-  .v-card__text {
+  .btnreg.avatar {
+    background-color: #65c9ff;
+    box-shadow: 0px 0px 10px -3px rgb(101 201 255 / 50%);
+  }
+  .btnreg.creercompte {
+    background-color: white;
+    color: #e92626;
+  }
+  .formulairereg {
+    margin-bottom: 50px;
+    margin-top: 0%;
+  }
+  .containerdivinscr {
+    text-align: center;
+    margin-top: 30%;
+  }
+  .avatarreate {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+  }
+  .imgavatar {
+    width: 100%;
+  }
+  .titleinsription {
+    color: #e92626;
+    font-weight: 700;
     font-family: "Noto Sans", sans-serif;
-    opacity: 0.7;
-    color: white !important;
-    font-size: 12px;
   }
-}
-.rowregister {
-  padding-left: 15px;
-  padding-top: 0px;
-  border-radius: 20px;
-  margin: 20px;
-  height: 40px;
-  box-shadow: 0px 0px 16px -3px rgb(0 0 0 / 25%);
-  div > input {
-    width: 97%;
-  }
-}
-.btnreg {
-  text-align: center;
-  padding-top: 10px;
-  border-radius: 20px;
-  margin: 20px;
-  height: 40px;
-  background-color: #e92626;
-  color: white;
-  box-shadow: 0px 0px 10px -3px rgb(233 38 38 / 50%);
-  font-weight: 700;
-}
-.btnreg.avatar {
-  background-color: #65c9ff;
-  box-shadow: 0px 0px 10px -3px rgb(101 201 255 / 50%);
-}
-.btnreg.creercompte {
-  background-color: white;
-  color: #e92626;
-}
-.formulairereg {
-  margin-bottom: 50px;
-  margin-top: 0%;
-}
-.containerdivinscr {
-  text-align: center;
-  margin-top: 30%;
-}
-.avatarreate {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: fit-content;
-}
-.imgavatar {
-  width: 100%;
-}
-.titleinsription {
-  color: #e92626;
-  font-weight: 700;
-  font-family: "Noto Sans", sans-serif;
 }
 </style>

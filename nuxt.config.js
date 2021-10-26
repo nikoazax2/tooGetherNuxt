@@ -39,7 +39,10 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
+  plugins: [{
+    src: '@/plugins/vuelayers.js',
+    ssr: false
+  }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -55,10 +58,9 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
+    './store/modules/vuelayers',
   ],
-
-
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     baseURL: 'http://dev-tgt.local:3001/api'

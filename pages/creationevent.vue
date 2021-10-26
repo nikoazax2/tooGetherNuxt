@@ -1,5 +1,5 @@
 <template>
-  <div id="app" data-app>
+  <div id="app" class="vuecreationevent" data-app>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
@@ -69,25 +69,102 @@
     </div>
 
     <form class="formcreerevent" action="#" @submit.prevent="submit">
-      <div class="form-group rowcreerevenet">
-        <div class="col-md-6">
-          <input
-            placeholder="Nom de l'évènnement"
-            id="name inputcreerevent"
-            type="name"
-            class="form-control"
-            name="name"
-            value
-            required
-            autofocus
-            v-model="form.name"
-          />
+      <div class="premiereligne">
+        <v-menu offset-y class="menuGetEmoji" content-class="menuEmoji">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn color="primary" v-bind="attrs" v-on="on">
+              <code v-html="'<p>&\#x1F' + emojiSelected + ';</p>'"> </code>
+            </v-btn>
+          </template>
+          <div @click.stop>
+            <v-tabs centered icons-and-text>
+              <v-tabs-slider></v-tabs-slider>
+              <v-tab class="activity">
+                <p>&#x1F3C0;</p>
+              </v-tab>
+              <v-tab class="travelPlaces">
+                <p>&#x1F6EB;</p>
+              </v-tab>
+              <v-tab class="fooddrink">
+                <p>&#x1F349;</p>
+              </v-tab>
+              <v-tab class="animalsnature">
+                <p>&#x1F420;</p>
+              </v-tab>
+              <v-tab-item class="activity">
+                <div class="listEmojis">
+                  <div
+                    class="emoji"
+                    v-for="emoji in listeEmojis.activity"
+                    :key="emoji.code"
+                    @click="selectEmoji(emoji)"
+                  >
+                    <code v-html="'<p>&\#x1F' + emoji.code + ';</p>'"> </code>
+                  </div>
+                </div>
+              </v-tab-item>
+              <v-tab-item class="travelPlaces">
+                <div class="listEmojis">
+                  <div
+                    class="emoji"
+                    v-for="emoji in listeEmojis.travelPlaces"
+                    :key="emoji.code"
+                    @click="selectEmoji(emoji)"
+                  >
+                    <code v-html="'<p>&\#x1F' + emoji.code + ';</p>'"> </code>
+                  </div>
+                </div>
+              </v-tab-item>
+              <v-tab-item class="fooddrink">
+                <div class="listEmojis">
+                  <div
+                    class="emoji"
+                    v-for="emoji in listeEmojis.fooddrink"
+                    :key="emoji.code"
+                    @click="selectEmoji(emoji)"
+                  >
+                    <code v-html="'<p>&\#x1F' + emoji.code + ';</p>'"> </code>
+                  </div>
+                </div>
+              </v-tab-item>
+              <v-tab-item class="animalsnature">
+                <div class="listEmojis">
+                  <div
+                    class="emoji"
+                    v-for="emoji in listeEmojis.animalsnature"
+                    :key="emoji.code"
+                    @click="selectEmoji(emoji)"
+                  >
+                    <code v-html="'<p>&\#x1F' + emoji.code + ';</p>'"> </code>
+                  </div>
+                </div>
+              </v-tab-item>
+            </v-tabs>
+            <div class="listEmojis">
+              <!--  <div class="emoji" v-for="emoji in listeEmojis" :key="emoji.code"><code v-html="'<p>&#x1F'+emoji.code+';</p>'"> </code></div> -->
+            </div>
+          </div>
+        </v-menu>
+        <div class="form-group rowcreerevenet">
+          <div class="col-md-6">
+            <input
+              placeholder="Nom de l'évènnement"
+              id="name inputcreerevent"
+              type="name"
+              class="form-control"
+              name="name"
+              value
+              required
+              autofocus
+              v-model="form.name"
+            />
+          </div>
         </div>
       </div>
       <div class="form-group rowcreerevenet">
         <places
           class="inputlieux"
-          v-model="form.lieux"
+          :value="form.lieux"
           placeholder="Lieux"
           @change="
             val => {
@@ -191,12 +268,14 @@
 <script>
 import degouline from "@/components/degoulinerouge";
 import Places from "vue-places";
+import fileEmoji from "../assets/emoji.json";
+
 // import firebase from "firebase";
 // const db = firebase.firestore();
 const API_URL = "http://dev-tgt.local:3001/api";
 export default {
   name: "App",
-  async created() {},
+
   data: function() {
     return {
       clickMinute: false,
@@ -215,16 +294,38 @@ export default {
         date: "",
         hour: ""
       },
+      tab: null,
       errors: [],
-      idact: null
+      idact: null,
+      emojiSelected: "",
+      listeEmojis: []
     };
   },
   components: {
     degouline: degouline,
     places: Places
   },
-
+  async created() {
+    this.listeEmojis.fooddrink = fileEmoji.fooddrink.filter(
+      emoji => !emoji.code.includes("U+")
+    );
+    this.listeEmojis.activity = fileEmoji.activity.filter(
+      emoji => !emoji.code.includes("U+")
+    );
+    this.listeEmojis.travelPlaces = fileEmoji.travelPlaces.filter(
+      emoji => !emoji.code.includes("U+")
+    );
+    this.listeEmojis.animalsnature = fileEmoji.animalsnature.filter(
+      emoji => !emoji.code.includes("U+")
+    );
+    var code = fileEmoji.activity[0].code;
+    this.emojiSelected = code;
+  },
   methods: {
+    selectEmoji(item) {
+      console.log(item.code);
+      this.emojiSelected = item.code;
+    },
     test() {
       this.clickMinute = true;
     },
@@ -233,7 +334,11 @@ export default {
     allowedStep: m => m % 10 === 0,
 
     chargeMap(val) {
-      this.form.lieux = val.value;
+      if (val.city) {
+        this.form.lieux = val.name + ", " + val.city;
+      } else {
+        this.form.lieux = val.name;
+      }
       this.form.coord = val.latlng;
     },
 
@@ -256,7 +361,8 @@ export default {
               description: this.form.tags,
               lieux: this.form.lieux,
               date: this.form.date + "," + this.form.hour,
-              coordlieux: JSON.stringify(this.form.coord)
+              coordlieux: JSON.stringify(this.form.coord),
+              emoji: this.emojiSelected
             })
             .then(response => {
               console.log("inséré");
@@ -296,141 +402,190 @@ export default {
   position: relative;
   height: 100vh;
 }
-body {
-  overflow: hidden;
-}
-#degoulineInscription > svg {
-  margin-top: -25vw;
-  width: 100%;
-  height: auto;
-}
-#degoulineInscription {
-  width: 101%;
-  position: absolute;
-}
-.title {
-  z-index: 1;
-}
-.conteneurplanet {
-  width: 100%;
-}
-.planetquitourneinscription {
-  margin-top: -10% !important;
-  height: 20%;
-  left: 35%;
-  width: 33vw;
-  height: 33vw;
-}
-
-.titrecard {
-  padding-top: 20%;
-  margin-top: 0% !important;
-  background-color: transparent !important;
-  box-shadow: unset !important;
-  text-align: center;
-
-  .v-card__title {
-    font-weight: 700;
-    justify-content: center;
-    color: white;
-    padding-bottom: 0 !important;
-    font-size: 25px;
+.vuecreationevent {
+  body {
+    overflow: hidden;
   }
-  .v-card__text {
-    font-family: "Noto Sans", sans-serif;
-    opacity: 0.7;
-    color: white !important;
+  #degoulineInscription > svg {
+    margin-top: -25vw;
+    width: 100%;
+    height: auto;
+  }
+  #degoulineInscription {
+    width: 101%;
+    position: absolute;
+  }
+  .title {
+    z-index: 1;
+  }
+  .conteneurplanet {
+    width: 100%;
+  }
+  .planetquitourneinscription {
+    margin-top: -10% !important;
+    height: 20%;
+    left: 35%;
+    width: 33vw;
+    height: 33vw;
+  }
+
+  .titrecard {
+    padding-top: 20%;
+    margin-top: 0% !important;
+    background-color: transparent !important;
+    box-shadow: unset !important;
+    text-align: center;
+
+    .v-card__title {
+      font-weight: 700;
+      justify-content: center;
+      color: white;
+      padding-bottom: 0 !important;
+      font-size: 25px;
+    }
+    .v-card__text {
+      font-family: "Noto Sans", sans-serif;
+      opacity: 0.7;
+      color: white !important;
+      font-size: 12px;
+    }
+  }
+  .containerdiv {
+    margin: auto;
+    width: 100%;
+    margin-top: 20%;
+  }
+  .titleinsription {
+    margin-top: 5px;
+    font-size: 17px;
+    //font-weight: 700;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600 !important;
+    color: #e92626;
+  }
+  .rowcreerevenet {
+    padding-left: 15px;
+    padding-top: 9px;
+    border-radius: 20px;
+    margin: 20px;
+    height: 40px;
+    box-shadow: 0px 0px 16px -3px rgba(0, 0, 0, 0.25);
+    div > input {
+      width: 95%;
+    }
+    .col-md-6 {
+      padding-top: 0;
+    }
+    .inputlieux {
+      margin-top: -8px;
+      border: unset;
+    }
+  }
+  .btnajoutenevent {
+    text-align: center;
+    padding-top: 5px;
+    border-radius: 20px;
+    margin: 20px;
+    height: 40px;
+    background-color: #e92626;
+    color: white;
+    box-shadow: 0px 0px 16px -3px rgba(233, 38, 38, 0.75);
+    div {
+      padding: 0 !important;
+    }
+  }
+  .containerdivtitrecreationevent {
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 20%;
+    display: inline-flex;
+  }
+  .v-picker__title,
+  .v-time-picker-clock__hand {
+    background-color: #e92626;
+    border-color: #e92626;
+  }
+  .v-time-picker-clock__item--active {
+    background-color: #e92626;
+  }
+  .champchoixheure {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+  .theme--light.v-btn.v-btn--has-bg {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  .v-btn--is-elevated {
+    box-shadow: unset;
+  }
+  .btnajoutenevent {
+    div > a > .v-btn__content {
+      color: white;
+    }
+  }
+  .expaceur {
+    width: 20px;
+  }
+  #btnvalidercreationevent {
+    span {
+      color: white;
+    }
+  }
+  .formcreerevent {
+    //margin-top: 40% !important;
+    .premiereligne {
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      button {
+        margin-left: 20px;
+        height: 100%;
+        padding-right: 0;
+        p {
+          font-size: 40px;
+        }
+      }
+      .rowcreerevenet {
+        width: 100%;
+        margin-right: 20px;
+      }
+    }
+  }
+  .menuEmoji {
+    border-radius: 15px;
+    height: 40%;
+    background-color: white;
+    max-width: 90% !important;
+    .listEmojis {
+      display: flex;
+      flex-flow: wrap;
+      text-align: center;
+      justify-content: center;
+      .emoji {
+        padding: 10px;
+        text-align: center;
+        font-size: 30px;
+        width: 50px;
+      }
+    }
+    .theme--dark.v-tabs > .v-tabs-bar,
+    .theme--dark.v-tabs-items {
+      background-color: white;
+    }
+    .v-tab {
+      font-size: 20px;
+      color: black !important;
+      padding: 0 !important;
+      width: 25% !important;
+      max-width: 25% !important;
+      min-width: 25% !important;
+    }
+  }
+  .pastoutremplis {
+    text-align: center;
     font-size: 12px;
+    color: #e92626;
   }
-}
-.containerdiv {
-  margin: auto;
-  width: 100%;
-  margin-top: 20%;
-}
-.titleinsription {
-  margin-top: 5px;
-  font-size: 17px;
-  //font-weight: 700;
-  text-align: center;
-  font-size: 18px;
-  font-weight: 600 !important;
-  color: #e92626;
-}
-.rowcreerevenet {
-  padding-left: 15px;
-  padding-top: 9px;
-  border-radius: 20px;
-  margin: 20px;
-  height: 40px;
-  box-shadow: 0px 0px 16px -3px rgba(0, 0, 0, 0.25);
-  div > input {
-    width: 95%;
-  }
-  .col-md-6 {
-    padding-top: 0;
-  }
-  .inputlieux {
-    margin-top: -8px;
-    border: unset;
-  }
-}
-.btnajoutenevent {
-  text-align: center;
-  padding-top: 5px;
-  border-radius: 20px;
-  margin: 20px;
-  height: 40px;
-  background-color: #e92626;
-  color: white;
-  box-shadow: 0px 0px 16px -3px rgba(233, 38, 38, 0.75);
-  div {
-    padding: 0 !important;
-  }
-}
-.containerdivtitrecreationevent {
-  justify-content: space-around;
-  width: 100%;
-  margin-top: 20%;
-  display: inline-flex;
-}
-.v-picker__title,
-.v-time-picker-clock__hand {
-  background-color: #e92626;
-  border-color: #e92626;
-}
-.v-time-picker-clock__item--active {
-  background-color: #e92626;
-}
-.champchoixheure {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-}
-.theme--light.v-btn.v-btn--has-bg {
-  background-color: rgba(0, 0, 0, 0);
-}
-.v-btn--is-elevated {
-  box-shadow: unset;
-}
-.btnajoutenevent {
-  div > a > .v-btn__content {
-    color: white;
-  }
-}
-.expaceur {
-  width: 20px;
-}
-#btnvalidercreationevent {
-  span {
-    color: white;
-  }
-}
-.formcreerevent {
-  //margin-top: 40% !important;
-}
-.pastoutremplis {
-  text-align: center;
-  font-size: 12px;
-  color: #e92626;
 }
 </style>
