@@ -158,7 +158,7 @@ export default {
   #degoulinelogin {
     z-index: -1;
     margin-top: -10% !important;
-    width: 101%;
+    width: 100%;
     position: absolute;
   }
   .title {

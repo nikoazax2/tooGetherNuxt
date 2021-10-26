@@ -275,7 +275,7 @@
 
 <script>
 import degouline from "@/components/degoulinerouge";
-import footer from "@/components/footer";
+import lefooter from "@/components/footer";
 import { mapGetters } from "vuex";
 import fileEmoji from "../assets/emoji.json";
 
@@ -469,6 +469,9 @@ export default {
 * {
   font-family: "Noto Sans", sans-serif;
 }
+html {
+  overflow: hidden;
+}
 .vueIndex {
   #app {
     position: relative;
@@ -482,7 +485,7 @@ export default {
     height: auto;
   }
   #degouline {
-    width: 101%;
+    width: 100%;
     position: absolute;
   }
   .title {
@@ -749,7 +752,7 @@ export default {
       width: 23px;
       height: 23px;
       text-align: center;
-      background-color: #e92626;
+      background-color: #65c9ff;
       border: solid white 2px;
       color: white;
       border-radius: 100px;

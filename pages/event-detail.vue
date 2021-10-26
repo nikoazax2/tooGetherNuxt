@@ -318,7 +318,7 @@ html {
     }
   }
   #degoulineInscription {
-    width: 101%;
+    width: 100%;
     position: absolute;
   }
   .title {

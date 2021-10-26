@@ -201,11 +201,13 @@
         </div>
       </div>
     </div>
+    <lefooter></lefooter>
   </div>
 </template>
 
 <script>
 import degouline from "@/components/degoulinerouge";
+import lefooter from "@/components/footer";
 export default {
   name: "App",
   created: function() {},
@@ -222,7 +224,8 @@ export default {
     };
   },
   components: {
-    degouline: degouline
+    degouline: degouline,
+    lefooter: lefooter
   },
   methods: {
     gotoedit(id) {
@@ -323,7 +326,7 @@ export default {
   }
   #degoulinerecherche {
     margin-top: -10%;
-    width: 101%;
+    width: 100%;
     position: absolute;
   }
   .title {

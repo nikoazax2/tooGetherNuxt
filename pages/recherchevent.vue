@@ -179,6 +179,7 @@
         color="#e92626"
       ></v-progress-circular>
     </div>
+    <lefooter></lefooter>
   </div>
 </template>
 
@@ -187,7 +188,7 @@ import degouline from "@/components/degoulinerouge";
 import Mapbox from "mapbox-gl";
 import { MglMap, MglMarker } from "vue-mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
-
+import lefooter from "@/components/footer";
 export default {
   name: "App",
   created: function() {},
@@ -243,7 +244,8 @@ export default {
   components: {
     degouline: degouline,
     MglMap,
-    MglMarker
+    MglMarker,
+    lefooter: lefooter
   },
   methods: {
     gotoCreationEvenet() {
@@ -397,7 +399,7 @@ export default {
   }
   #degoulinerecherche {
     margin-top: -10%;
-    width: 101%;
+    width: 100%;
     position: absolute;
   }
   .title {

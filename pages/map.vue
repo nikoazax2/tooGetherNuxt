@@ -96,7 +96,26 @@
         </p>
       </div>
       <div @click="gotodetail(activity)" id="caseact" class="caselieux">
-        <div class="titreLieux">{{ activity.lieux }}</div>
+        <!-- <div class="titreLieux">{{ activity.lieux }}</div> -->
+        <div class="lacartepetite">
+          <MglMap
+            :zoom="13"
+            :center="activity.coordlieux"
+            :accessToken="accessToken"
+            :mapStyle.sync="mapStyle"
+          >
+            <MglMarker
+              :coordinates="[activity.coordlieux[0], activity.coordlieux[1]]"
+            >
+              <div @click="clickeventmap(event)" slot="marker" class=" marker">
+                <code
+                  class="emojiMap"
+                  v-html="'<p>&\#x1F' + activity.emoji + ';</p>'"
+                ></code>
+              </div>
+            </MglMarker>
+          </MglMap>
+        </div>
       </div>
       <div @click="gotodetail(activity)" id="caseact" class="caseparticipants">
         <p class="titredelevent">PARTICIPANTS</p>
@@ -120,6 +139,7 @@
         color="#e92626"
       ></v-progress-circular>
     </div>
+    <lefooter></lefooter>
   </div>
 </template>
 
@@ -129,6 +149,7 @@ import Places from "vue-places";
 import Mapbox from "mapbox-gl";
 import { MglMap, MglMarker } from "vue-mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
+import lefooter from "@/components/footer";
 
 const API_URL = "http://dev-tgt.local:3001/api";
 export default {
@@ -154,7 +175,8 @@ export default {
     degouline: degouline,
     places: Places,
     MglMap,
-    MglMarker
+    MglMarker,
+    lefooter: lefooter
   },
 
   methods: {
@@ -184,7 +206,7 @@ export default {
     },
     zoomAnimation() {
       setTimeout(() => {
-        if (this.zoom < 15) {
+        if (this.zoom < 10) {
           this.zoom = this.zoom + 1;
         }
         this.zoomAnimation();
@@ -240,7 +262,7 @@ export default {
     height: auto;
   }
   #degoulineInscription {
-    width: 101%;
+    width: 100%;
     position: absolute;
   }
   .title {
@@ -308,6 +330,20 @@ export default {
     }
     .mapboxgl-map {
       height: 100vh !important;
+    }
+  }
+  .lacartepetite {
+    width: 100px;
+    height: 120px;
+    position: absolute;
+    margin-top: 1%;
+    .mapboxgl-canvas {
+      height: 120px !important;
+      width: 100px !important;
+    }
+    .mapboxgl-map {
+      height: 120px !important;
+      border-radius: 15px;
     }
   }
   @keyframes jump {
@@ -432,6 +468,7 @@ export default {
   .conteneurevent {
     width: 90vw;
     bottom: 0;
+    margin-bottom: 15% !important;
     background-color: white;
     position: absolute;
     height: 140px;
