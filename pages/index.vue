@@ -787,7 +787,7 @@ export default {
           }
           .date {
             font-weight: bold;
-            color: #e92626;
+            color: #eb2424;
             font-size: 12px;
             white-space: nowrap;
           }
