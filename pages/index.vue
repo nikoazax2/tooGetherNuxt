@@ -13,12 +13,6 @@
           v-model="group"
           active-class="deep-purple--text text--accent-4"
         >
-          <v-list-item>
-            <v-list-item-title @click="tomyevents"
-              >Mes evenements</v-list-item-title
-            >
-          </v-list-item>
-
           <v-list-item v-if="$auth.user">
             <v-list-item-title @click.prevent="signOut"
               >Déconnexion</v-list-item-title
@@ -149,11 +143,11 @@
           mdi-bell
         </v-icon>
       </div>
-      <div @click="gotomap()" class="btnhead btncarte">
+      <!--    <div @click="gotomap()" class="btnhead btncarte">
         <v-icon large>
           mdi-map
         </v-icon>
-      </div>
+      </div> -->
     </div>
     <img
       class="planetquitourne"
@@ -684,15 +678,19 @@ html {
     }
     #btncreerevent {
       padding: 1px !important;
+
       box-shadow: 0px 0px 16px -3px rgb(0 0 0 / 25%);
       background-color: white;
+      .v-btn__content {
+        padding-left: 5px;
+      }
       span {
         font-size: 10px;
         color: #727c8e;
         font-weight: 700;
         #btncreereventredinterieur {
+          padding-left: 10px;
           border-radius: 50%;
-          margin-left: 5px;
           box-shadow: unset !important;
           color: red;
           background-color: red;

@@ -417,7 +417,7 @@ export default {
   }
   .barrederecherchecontainer {
     margin-bottom: 2vh;
-    margin-top: 7vh;
+    margin-top: 4vh;
     position: absolute;
     width: 100%;
   }
@@ -604,8 +604,25 @@ export default {
     font-size: 9px;
   }
   .conteneurEvents {
-    margin-top: 25%;
+    margin-top: 15%;
     overflow-y: scroll;
+    height: 72vh;
+  }
+  #degoulinerecherche {
+    margin-top: -5%;
+    width: 100%;
+    position: absolute;
+  }
+  .conteneurplanet {
+    margin-top: -10% !important;
+  }
+  .titrecard {
+    margin-top: -10% !important;
+    .v-card__title {
+      margin-top: 0%;
+    }
+    .v-card__text {
+    }
   }
   .lacarte {
     width: 100px;

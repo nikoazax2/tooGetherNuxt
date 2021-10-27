@@ -404,9 +404,10 @@ export default {
   }
   .containerdivtitrecreationevent {
     width: 100%;
-    margin-top: 20%;
+    margin-top: 30%;
     display: inline-flex;
     float: left;
+    padding-left: 5%;
   }
   .v-picker__title,
   .v-time-picker-clock__hand {

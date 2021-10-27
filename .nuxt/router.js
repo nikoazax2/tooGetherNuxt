@@ -14,6 +14,7 @@ const _54388de1 = () => interopDefault(import('..\\pages\\mapbackup.vue' /* webp
 const _2c2f2052 = () => interopDefault(import('..\\pages\\myevents.vue' /* webpackChunkName: "pages/myevents" */))
 const _f64b431a = () => interopDefault(import('..\\pages\\recherchevent.vue' /* webpackChunkName: "pages/recherchevent" */))
 const _381c9ba0 = () => interopDefault(import('..\\pages\\register.vue' /* webpackChunkName: "pages/register" */))
+const _69957fb0 = () => interopDefault(import('..\\pages\\settings.vue' /* webpackChunkName: "pages/settings" */))
 const _60ba6415 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages/index" */))
 
 const emptyFn = () => {}
@@ -67,6 +68,10 @@ export const routerOptions = {
     path: "/register",
     component: _381c9ba0,
     name: "register"
+  }, {
+    path: "/settings",
+    component: _69957fb0,
+    name: "settings"
   }, {
     path: "/",
     component: _60ba6415,
