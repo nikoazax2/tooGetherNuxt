@@ -161,19 +161,75 @@
           </div>
         </div>
       </div>
-      <div class="form-group rowcreerevenet">
-        <places
-          class="inputlieux"
-          :value="form.lieux"
-          placeholder="Lieux"
-          @change="
-            val => {
-              chargeMap(val);
-            }
-          "
-          :options="{ countries: ['FR'] }"
-        >
-        </places>
+
+      <div class="deuxiemeligne">
+        <v-menu offset-y class="menuIsPhysic" content-class="menuIsPhysic">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn color="primary" v-bind="attrs" v-on="on">
+              <div v-if="isPhysics">
+                <code v-html="'<p>&\#x1F30D;</p>'"> </code>
+                <div class="texte">Physique</div>
+              </div>
+              <div v-if="!isPhysics">
+                <code v-html="'<p>&\#x1F30C;</p>'"> </code>
+                <div class="texte">En ligne</div>
+              </div>
+            </v-btn>
+          </template>
+          <div class="leschoix">
+            <div>
+              <div class="texte">Physique</div>
+              <code
+                @click="isPhysics = true"
+                class="emoji"
+                v-html="'<p>&\#x1F30D;</p>'"
+              >
+              </code>
+            </div>
+            <div>
+              <div class="texte">En ligne</div>
+              <code
+                @click="isPhysics = false"
+                class="emoji"
+                v-html="'<p>&\#x1F30C;</p>'"
+              >
+              </code>
+            </div>
+          </div>
+        </v-menu>
+        <div class="form-group rowcreerevenet">
+          <div :class="{ hidden: !isPhysics }">
+            <places
+              class="inputlieux"
+              :value="form.lieux"
+              placeholder="Lieux"
+              @change="
+                val => {
+                  chargeMap(val);
+                }
+              "
+              :options="{ countries: ['FR'] }"
+            >
+            </places>
+          </div>
+
+          <div v-if="!isPhysics">
+            <input
+              placeholder="Site"
+              id="site"
+              type="site"
+              class="form-control"
+              name="site"
+              required
+              v-model="form.lieux"
+              @change="
+                val => {
+                  val + ':online';
+                }
+              "
+            />
+          </div>
+        </div>
       </div>
 
       <div class="form-group rowcreerevenet">
@@ -287,6 +343,7 @@ export default {
       drawer: false,
       group: null,
       act: ["slt", "lol"],
+      isPhysics: true,
       form: {
         name: "",
         lieux: "",
@@ -401,6 +458,10 @@ export default {
 #app {
   position: relative;
   height: 100vh;
+}
+.hidden {
+  visibility: hidden;
+  height: 0;
 }
 .vuecreationevent {
   body {
@@ -534,7 +595,8 @@ export default {
   }
   .formcreerevent {
     //margin-top: 40% !important;
-    .premiereligne {
+    .premiereligne,
+    .deuxiemeligne {
       width: 100%;
       display: inline-flex;
       align-items: center;
@@ -549,6 +611,48 @@ export default {
       .rowcreerevenet {
         width: 100%;
         margin-right: 20px;
+      }
+      .v-btn__content {
+        .texte {
+          margin-bottom: -5px;
+          font-weight: 800;
+          font-size: 10px;
+          color: grey;
+        }
+      }
+    }
+  }
+  .menuIsPhysic {
+    border-radius: 15px;
+    height: 10%;
+    width: 90vw;
+    background-color: white;
+    max-width: 90% !important;
+
+    .emoji {
+      padding: 10px;
+      text-align: center;
+      font-size: 30px;
+      width: 50px;
+    }
+    .leschoix {
+      display: inline-flex;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      div {
+        width: 50%;
+        text-align: center;
+        .emoji {
+          height: 0 !important;
+          padding: 0 !important;
+        }
+      }
+      .texte {
+        width: 100%;
+        font-weight: 800;
+        font-size: 10px;
+        color: grey;
       }
     }
   }

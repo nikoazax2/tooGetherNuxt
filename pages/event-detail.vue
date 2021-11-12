@@ -59,13 +59,6 @@
         />
       </div>
 
-      <v-card @click="gotorechercheevent" class="titrecard">
-        <v-card-title>T o o G e t h e r</v-card-title>
-        <v-card-text
-          >Faites des rencontres en faisant ce que vous aimez</v-card-text
-        >
-      </v-card>
-
       <div class="conteneurcard">
         <v-card
           v-if="!chargement"
@@ -189,6 +182,7 @@
         </v-card>
       </div>
     </div>
+    <lefooter></lefooter>
   </div>
 </template>
 
@@ -197,6 +191,7 @@ import degouline from "@/components/degoulinerouge";
 import Mapbox from "mapbox-gl";
 import { MglMap, MglMarker } from "vue-mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
+import lefooter from "@/components/footer";
 
 const API_URL = "http://dev-tgt.local:3001/api";
 export default {
@@ -220,7 +215,8 @@ export default {
   components: {
     degouline: degouline,
     MglMap,
-    MglMarker
+    MglMarker,
+    lefooter: lefooter
   },
   methods: {
     formatDate(ladate) {
@@ -303,7 +299,7 @@ html {
     overflow: hidden;
   }
   #degoulineInscription > svg {
-    margin-top: -22vw;
+    margin-top: -62vw;
     width: 100%;
     height: auto;
   }
@@ -428,6 +424,7 @@ html {
     width: 90vw;
     align-items: center;
     margin-top: 30%;
+    margin-bottom: 200px !important;
     .participantsliste {
       margin-left: 15px !important;
     }

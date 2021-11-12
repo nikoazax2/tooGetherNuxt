@@ -127,6 +127,7 @@
                 <div class="date">{{ formatDate(activity.date) }}</div>
               </div>
             </div>
+            <br />
           </div>
         </div>
       </div>
@@ -137,7 +138,9 @@
         class="btnhead btnnotif"
       >
         <div class="nbnotif">
-          <div>{{ this.listeEventsUser.length }}</div>
+          <div v-if="this.listeEventsUser.length > 0">
+            {{ this.listeEventsUser.length }}
+          </div>
         </div>
         <v-icon large>
           mdi-bell
@@ -831,6 +834,13 @@ html {
             font-size: 12px;
             white-space: nowrap;
           }
+        }
+      }
+      .popupnotif {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        .event {
+          width: 100%;
         }
       }
     }
