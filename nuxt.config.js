@@ -31,6 +31,10 @@ export default {
         name: 'editevent',
         path: '/editevent/:id',
         component: resolve(__dirname, 'pages/editevent.vue')
+      }, {
+        name: 'chatActivity',
+        path: '/chatActivity/:id',
+        component: resolve(__dirname, 'pages/chatActivity.vue')
       })
     }
   },

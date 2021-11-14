@@ -4,6 +4,7 @@ import { normalizeURL, decode } from 'ufo'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
+const _5a04c194 = () => interopDefault(import('..\\pages\\chatActivity.vue' /* webpackChunkName: "pages/chatActivity" */))
 const _2ed48ade = () => interopDefault(import('..\\pages\\creationevent.vue' /* webpackChunkName: "pages/creationevent" */))
 const _60710cda = () => interopDefault(import('..\\pages\\editevent.vue' /* webpackChunkName: "pages/editevent" */))
 const _10cbf11e = () => interopDefault(import('..\\pages\\event-detail.vue' /* webpackChunkName: "pages/event-detail" */))
@@ -29,6 +30,10 @@ export const routerOptions = {
   scrollBehavior,
 
   routes: [{
+    path: "/chatActivity",
+    component: _5a04c194,
+    name: "chatActivity"
+  }, {
     path: "/creationevent",
     component: _2ed48ade,
     name: "creationevent"
@@ -84,6 +89,10 @@ export const routerOptions = {
     path: "/editevent/:id",
     component: _60710cda,
     name: "editevent"
+  }, {
+    path: "/chatActivity/:id",
+    component: _5a04c194,
+    name: "chatActivity"
   }],
 
   fallback: false

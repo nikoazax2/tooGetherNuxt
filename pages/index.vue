@@ -126,11 +126,17 @@
                 <div class="lieux">{{ activity.lieux }}</div>
                 <div class="date">{{ formatDate(activity.date) }}</div>
               </div>
+              <div class="iconmessage">
+                <div @click="gotochat(activity)">
+                  <v-icon>mdi-message-processing</v-icon>
+                </div>
+              </div>
             </div>
             <br />
           </div>
         </div>
       </div>
+
       <div
         @click="menunotif = !menunotif"
         @click.stop
@@ -146,6 +152,7 @@
           mdi-bell
         </v-icon>
       </div>
+
       <!--    <div @click="gotomap()" class="btnhead btncarte">
         <v-icon large>
           mdi-map
@@ -373,6 +380,9 @@ export default {
       });
 
       var dateEvent;
+    },
+    gotochat(activity) {
+      this.$router.push(`/chatActivity/${activity.id}`);
     },
     gotomap() {
       this.$router.push("/map");
@@ -833,6 +843,20 @@ html {
             color: #e92626;
             font-size: 12px;
             white-space: nowrap;
+          }
+        }
+        .iconmessage {
+          display: flex;
+          float: right;
+          margin-left: auto;
+          align-items: center;
+
+          order: 2;
+          border-left: solid rgb(189, 189, 189) 1px;
+          width: 25%;
+          div {
+            text-align: center;
+            width: 100%;
           }
         }
       }

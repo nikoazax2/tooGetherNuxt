@@ -399,7 +399,7 @@ export default {
   }
   #degoulinerecherche {
     margin-top: -10%;
-    width: 100%;
+    width: 101%;
     position: absolute;
   }
   .title {
@@ -610,7 +610,7 @@ export default {
   }
   #degoulinerecherche {
     margin-top: -5%;
-    width: 100%;
+    width: 101%;
     position: absolute;
   }
   .conteneurplanet {

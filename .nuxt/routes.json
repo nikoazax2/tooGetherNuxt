@@ -1,5 +1,11 @@
 [
   {
+    "name": "chatActivity",
+    "path": "/chatActivity",
+    "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\chatActivity.vue",
+    "chunkName": "pages/chatActivity"
+  },
+  {
     "name": "creationevent",
     "path": "/creationevent",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\creationevent.vue",
@@ -80,5 +86,10 @@
     "name": "editevent",
     "path": "/editevent/:id",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\editevent.vue"
+  },
+  {
+    "name": "chatActivity",
+    "path": "/chatActivity/:id",
+    "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\chatActivity.vue"
   }
 ]
