@@ -332,7 +332,7 @@ export default {
   }
   #degoulinerecherche {
     margin-top: -5%;
-    width: 101%;
+    width: 100%;
     position: absolute;
   }
   .conteneurplanet {

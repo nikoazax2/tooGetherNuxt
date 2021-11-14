@@ -128,7 +128,7 @@
               </div>
               <div class="iconmessage">
                 <div @click="gotochat(activity)">
-                  <v-icon>mdi-message-processing</v-icon>
+                  <v-icon>mdi-message-processing-outline</v-icon>
                 </div>
               </div>
             </div>
@@ -850,10 +850,8 @@ html {
           float: right;
           margin-left: auto;
           align-items: center;
-
           order: 2;
-          border-left: solid rgb(189, 189, 189) 1px;
-          width: 25%;
+          width: 15%;
           div {
             text-align: center;
             width: 100%;
