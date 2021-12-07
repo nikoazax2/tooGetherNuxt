@@ -2,21 +2,21 @@
   <div class="lefooter">
     <div class="conteneur">
       <div
-        class="settings"
-        :class="{ selected: routePos == '/settings' }"
-        @click="goto('/settings')"
-      >
-        <v-icon>
-          mdi-cog
-        </v-icon>
-      </div>
-      <div
         class="myevents"
         :class="{ selected: routePos == '/myevents' }"
         @click="goto('/myevents')"
       >
         <v-icon>
-          mdi-archive-star
+          mdi-account-group
+        </v-icon>
+      </div>
+      <div
+        class="chatSearch"
+        :class="{ selected: routePos == '/chatSearch' }"
+        @click="goto('/chatSearch')"
+      >
+        <v-icon>
+          mdi-message
         </v-icon>
       </div>
       <div
@@ -31,7 +31,9 @@
 
       <div
         class="recherche"
-        :class="{ selected: routePos == '/recherchevent' }"
+        :class="{
+          selected: routePos.includes('recherchevent')
+        }"
         @click="goto('/recherchevent')"
       >
         <v-icon>
@@ -75,7 +77,7 @@ export default {
   position: fixed;
   height: 35px;
   background-color: #202023;
-  bottom: 0px;
+  bottom: -2px;
   left: 0px;
   right: 0px;
   margin-bottom: 0px;

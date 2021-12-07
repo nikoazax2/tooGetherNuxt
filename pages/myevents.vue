@@ -171,9 +171,9 @@
           </div>
         </div>
       </div>
-      <div class="containerdiv" v-else>
+      <div class="containerdiv" v-if="!$auth.user">
         <div class="lesbtncreereveent">
-          <div class="aucunevent">Tu n'a aucun évènement :(</div>
+          <div class="aucunevent">Connecte toi pour voir tes activités</div>
           <v-btn
             color="accent"
             id="btncreerevent"
@@ -183,7 +183,7 @@
             text
             @click="gotoCreationEvenet"
           >
-            CREER UN EVENEMENT
+            CREER UNE ACTIVITÉ
           </v-btn>
           <v-btn
             color="accent"
@@ -194,7 +194,39 @@
             text
             @click="gotoRecherche"
           >
-            CHERCHER UN EVENEMENT
+            CHERCHER UNE ACTIVITÉ
+          </v-btn>
+        </div>
+      </div>
+      <div
+        class="containerdiv"
+        v-if="
+          listeEventsCreator.length == 0 || listeEventsPaticipant.length == 0
+        "
+      >
+        <div class="lesbtncreereveent">
+          <div class="aucunevent">Tu n'a aucune activité :(</div>
+          <v-btn
+            color="accent"
+            id="btncreerevent"
+            elevation="4"
+            raised
+            rounded
+            text
+            @click="gotoCreationEvenet"
+          >
+            CREER UNE ACTIVITÉ
+          </v-btn>
+          <v-btn
+            color="accent"
+            id="btncreerevent"
+            elevation="4"
+            raised
+            rounded
+            text
+            @click="gotoRecherche"
+          >
+            CHERCHER UNE ACTIVITÉ
           </v-btn>
         </div>
       </div>

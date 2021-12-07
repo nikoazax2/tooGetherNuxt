@@ -19,9 +19,6 @@
 
     <v-card class="titrecard" to="/">
       <v-card-title>T o o G e t h e r</v-card-title>
-      <v-card-text
-        >Faites des rencontres en faisant ce que vous aimez</v-card-text
-      >
     </v-card>
     <div class="containerdivtitrecreationevent">
       <v-btn
@@ -64,260 +61,276 @@
           </g>
         </svg>
       </v-btn>
-      <p class="titleinsription">CREER UN ÉVÈNEMENT</p>
+      <p class="titleinsription">CREER UNE ACTIVITÉ</p>
       <div class="expaceur"></div>
     </div>
-
-    <form class="formcreerevent" action="#" @submit.prevent="submit">
-      <div class="premiereligne">
-        <v-menu offset-y class="menuGetEmoji" content-class="menuEmoji">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" v-bind="attrs" v-on="on">
-              <code v-html="'<p>&\#x1F' + emojiSelected + ';</p>'"> </code>
-            </v-btn>
-          </template>
-          <div @click.stop>
-            <v-tabs centered icons-and-text>
-              <v-tabs-slider></v-tabs-slider>
-              <v-tab class="activity">
-                <p>&#x1F3C0;</p>
-              </v-tab>
-              <v-tab class="travelPlaces">
-                <p>&#x1F6EB;</p>
-              </v-tab>
-              <v-tab class="fooddrink">
-                <p>&#x1F349;</p>
-              </v-tab>
-              <v-tab class="animalsnature">
-                <p>&#x1F420;</p>
-              </v-tab>
-              <v-tab-item class="activity">
-                <div class="listEmojis">
-                  <div
-                    class="emoji"
-                    v-for="emoji in listeEmojis.activity"
-                    :key="emoji.code"
-                    @click="selectEmoji(emoji)"
-                  >
-                    <code v-html="'<p>&\#x1F' + emoji.code + ';</p>'"> </code>
+    <div>
+      <form class="formcreerevent" action="#" @submit.prevent="submit">
+        <div class="premiereligne">
+          <v-menu offset-y class="menuGetEmoji" content-class="menuEmoji">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="primary" v-bind="attrs" v-on="on">
+                <code v-html="'<p>&\#x1F' + emojiSelected + ';</p>'"> </code>
+              </v-btn>
+            </template>
+            <div @click.stop>
+              <v-tabs centered icons-and-text>
+                <v-tabs-slider></v-tabs-slider>
+                <v-tab class="activity">
+                  <p>&#x1F3C0;</p>
+                </v-tab>
+                <v-tab class="travelPlaces">
+                  <p>&#x1F6EB;</p>
+                </v-tab>
+                <v-tab class="fooddrink">
+                  <p>&#x1F349;</p>
+                </v-tab>
+                <v-tab class="animalsnature">
+                  <p>&#x1F420;</p>
+                </v-tab>
+                <v-tab-item class="activity">
+                  <div class="listEmojis">
+                    <div
+                      class="emoji"
+                      v-for="emoji in listeEmojis.activity"
+                      :key="emoji.code"
+                      @click="selectEmoji(emoji)"
+                    >
+                      <code v-html="'<p>&\#x1F' + emoji.code + ';</p>'"> </code>
+                    </div>
                   </div>
-                </div>
-              </v-tab-item>
-              <v-tab-item class="travelPlaces">
-                <div class="listEmojis">
-                  <div
-                    class="emoji"
-                    v-for="emoji in listeEmojis.travelPlaces"
-                    :key="emoji.code"
-                    @click="selectEmoji(emoji)"
-                  >
-                    <code v-html="'<p>&\#x1F' + emoji.code + ';</p>'"> </code>
+                </v-tab-item>
+                <v-tab-item class="travelPlaces">
+                  <div class="listEmojis">
+                    <div
+                      class="emoji"
+                      v-for="emoji in listeEmojis.travelPlaces"
+                      :key="emoji.code"
+                      @click="selectEmoji(emoji)"
+                    >
+                      <code v-html="'<p>&\#x1F' + emoji.code + ';</p>'"> </code>
+                    </div>
                   </div>
-                </div>
-              </v-tab-item>
-              <v-tab-item class="fooddrink">
-                <div class="listEmojis">
-                  <div
-                    class="emoji"
-                    v-for="emoji in listeEmojis.fooddrink"
-                    :key="emoji.code"
-                    @click="selectEmoji(emoji)"
-                  >
-                    <code v-html="'<p>&\#x1F' + emoji.code + ';</p>'"> </code>
+                </v-tab-item>
+                <v-tab-item class="fooddrink">
+                  <div class="listEmojis">
+                    <div
+                      class="emoji"
+                      v-for="emoji in listeEmojis.fooddrink"
+                      :key="emoji.code"
+                      @click="selectEmoji(emoji)"
+                    >
+                      <code v-html="'<p>&\#x1F' + emoji.code + ';</p>'"> </code>
+                    </div>
                   </div>
-                </div>
-              </v-tab-item>
-              <v-tab-item class="animalsnature">
-                <div class="listEmojis">
-                  <div
-                    class="emoji"
-                    v-for="emoji in listeEmojis.animalsnature"
-                    :key="emoji.code"
-                    @click="selectEmoji(emoji)"
-                  >
-                    <code v-html="'<p>&\#x1F' + emoji.code + ';</p>'"> </code>
+                </v-tab-item>
+                <v-tab-item class="animalsnature">
+                  <div class="listEmojis">
+                    <div
+                      class="emoji"
+                      v-for="emoji in listeEmojis.animalsnature"
+                      :key="emoji.code"
+                      @click="selectEmoji(emoji)"
+                    >
+                      <code v-html="'<p>&\#x1F' + emoji.code + ';</p>'"> </code>
+                    </div>
                   </div>
-                </div>
-              </v-tab-item>
-            </v-tabs>
-            <div class="listEmojis">
-              <!--  <div class="emoji" v-for="emoji in listeEmojis" :key="emoji.code"><code v-html="'<p>&#x1F'+emoji.code+';</p>'"> </code></div> -->
+                </v-tab-item>
+              </v-tabs>
+              <div class="listEmojis">
+                <!--  <div class="emoji" v-for="emoji in listeEmojis" :key="emoji.code"><code v-html="'<p>&#x1F'+emoji.code+';</p>'"> </code></div> -->
+              </div>
+            </div>
+          </v-menu>
+          <div class="form-group rowcreerevenet">
+            <div class="col-md-6">
+              <input
+                placeholder="Nom de l'activité"
+                id="name inputcreerevent"
+                type="name"
+                class="form-control"
+                name="name"
+                value
+                required
+                autofocus
+                v-model="form.name"
+              />
             </div>
           </div>
-        </v-menu>
+        </div>
+        <br />
+        <div class="deuxiemeligne">
+          <v-menu offset-y class="menuIsPhysic" content-class="menuIsPhysic">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="primary" v-bind="attrs" v-on="on">
+                <div v-if="isPhysics">
+                  <code v-html="'<p>&\#x1F30D;</p>'"> </code>
+                  <div class="texte">Physique</div>
+                </div>
+                <div v-if="!isPhysics">
+                  <code v-html="'<p>&\#x1F30C;</p>'"> </code>
+                  <div class="texte">En ligne</div>
+                </div>
+              </v-btn>
+            </template>
+            <div class="leschoix">
+              <div>
+                <div class="texte">Physique</div>
+                <code
+                  @click="isPhysics = true"
+                  class="emoji"
+                  v-html="'<p>&\#x1F30D;</p>'"
+                >
+                </code>
+              </div>
+              <div>
+                <div class="texte">En ligne</div>
+                <code
+                  @click="isPhysics = false"
+                  class="emoji"
+                  v-html="'<p>&\#x1F30C;</p>'"
+                >
+                </code>
+              </div>
+            </div>
+          </v-menu>
+          <div class="form-group rowcreerevenet">
+            <div :class="{ hidden: !isPhysics }">
+              <places
+                class="inputlieux"
+                :value="form.lieux"
+                placeholder="Lieux"
+                @change="
+                  val => {
+                    chargeMap(val);
+                  }
+                "
+                :options="{ countries: ['FR'] }"
+              >
+              </places>
+            </div>
+
+            <div v-if="!isPhysics">
+              <input
+                placeholder="Site"
+                id="site"
+                type="site"
+                class="form-control"
+                name="site"
+                required
+                v-model="form.lieux"
+                @change="
+                  val => {
+                    val + ':online';
+                  }
+                "
+              />
+            </div>
+          </div>
+        </div>
+
         <div class="form-group rowcreerevenet">
           <div class="col-md-6">
             <input
-              placeholder="Nom de l'évènnement"
-              id="name inputcreerevent"
-              type="name"
+              placeholder="Date"
+              id="date"
+              type="date"
               class="form-control"
-              name="name"
-              value
+              name="date"
               required
-              autofocus
-              v-model="form.name"
+              v-model="form.date"
             />
           </div>
         </div>
-      </div>
 
-      <div class="deuxiemeligne">
-        <v-menu offset-y class="menuIsPhysic" content-class="menuIsPhysic">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" v-bind="attrs" v-on="on">
-              <div v-if="isPhysics">
-                <code v-html="'<p>&\#x1F30D;</p>'"> </code>
-                <div class="texte">Physique</div>
-              </div>
-              <div v-if="!isPhysics">
-                <code v-html="'<p>&\#x1F30C;</p>'"> </code>
-                <div class="texte">En ligne</div>
-              </div>
-            </v-btn>
-          </template>
-          <div class="leschoix">
-            <div>
-              <div class="texte">Physique</div>
-              <code
-                @click="isPhysics = true"
-                class="emoji"
-                v-html="'<p>&\#x1F30D;</p>'"
-              >
-              </code>
-            </div>
-            <div>
-              <div class="texte">En ligne</div>
-              <code
-                @click="isPhysics = false"
-                class="emoji"
-                v-html="'<p>&\#x1F30C;</p>'"
-              >
-              </code>
-            </div>
-          </div>
-        </v-menu>
         <div class="form-group rowcreerevenet">
-          <div :class="{ hidden: !isPhysics }">
-            <places
-              class="inputlieux"
-              :value="form.lieux"
-              placeholder="Lieux"
-              @change="
-                val => {
-                  chargeMap(val);
-                }
-              "
-              :options="{ countries: ['FR'] }"
-            >
-            </places>
-          </div>
+          <v-row>
+            <v-col cols="11" sm="5">
+              <v-dialog
+                ref="dialog"
+                v-model="modal2"
+                :return-value.sync="form.hour"
+                width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    class="champchoixheure"
+                    v-model="form.hour"
+                    label="Heure"
+                    @click="form.hour = ''"
+                    prepend-icon="mdi-clock-time-four-outline"
+                    readonly
+                    required
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-time-picker
+                  v-if="modal2"
+                  required
+                  format="24hr"
+                  v-model="form.hour"
+                  full-width
+                  @click:minute="test"
+                >
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="modal2 = false">
+                    Annuler
+                  </v-btn>
+                  <v-btn
+                    text
+                    color="primary"
+                    v-if="clickMinute"
+                    @click="(clickMinute = false), $refs.dialog.save(form.hour)"
+                  >
+                    OK
+                  </v-btn>
+                </v-time-picker>
+              </v-dialog>
+            </v-col>
+          </v-row>
+        </div>
 
-          <div v-if="!isPhysics">
+        <div class="form-group rowcreerevenet">
+          <div class="col-md-6">
             <input
-              placeholder="Site"
-              id="site"
-              type="site"
+              placeholder="Description"
+              id="tags"
+              type="tags"
               class="form-control"
-              name="site"
+              name="tags"
               required
-              v-model="form.lieux"
-              @change="
-                val => {
-                  val + ':online';
-                }
-              "
+              v-model="form.tags"
             />
           </div>
         </div>
-      </div>
-
-      <div class="form-group rowcreerevenet">
-        <div class="col-md-6">
-          <input
-            placeholder="Date"
-            id="date"
-            type="date"
-            class="form-control"
-            name="date"
-            required
-            v-model="form.date"
-          />
+        <div>
+          <v-card-text class="pt-0 sliderNbMax">
+            <div class="selecteurnbMax">
+              <v-slider
+                max="20"
+                min="2"
+                content-class="slider"
+                v-model="form.nbMax"
+                step="1"
+              ></v-slider>
+              <div class="texte">{{ form.nbMax }} Participants max.</div>
+            </div>
+          </v-card-text>
         </div>
-      </div>
 
-      <div class="form-group rowcreerevenet">
-        <v-row>
-          <v-col cols="11" sm="5">
-            <v-dialog
-              ref="dialog"
-              v-model="modal2"
-              :return-value.sync="form.hour"
-              width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  class="champchoixheure"
-                  v-model="form.hour"
-                  label="Heure"
-                  @click="form.hour = ''"
-                  prepend-icon="mdi-clock-time-four-outline"
-                  readonly
-                  required
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-time-picker
-                v-if="modal2"
-                required
-                format="24hr"
-                v-model="form.hour"
-                full-width
-                @click:minute="test"
-              >
-                <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="modal2 = false">
-                  Annuler
-                </v-btn>
-                <v-btn
-                  text
-                  color="primary"
-                  v-if="clickMinute"
-                  @click="(clickMinute = false), $refs.dialog.save(form.hour)"
-                >
-                  OK
-                </v-btn>
-              </v-time-picker>
-            </v-dialog>
-          </v-col>
-        </v-row>
-      </div>
-
-      <div class="form-group rowcreerevenet">
-        <div class="col-md-6">
-          <input
-            placeholder="Description"
-            id="tags"
-            type="tags"
-            class="form-control"
-            name="tags"
-            required
-            v-model="form.tags"
-          />
+        <p class="pastoutremplis" v-if="pasToutRemplis">
+          Renseigne toutes les infos !
+        </p>
+        <div @click="addEvent()" class="form-group row mb-0 btnajoutenevent">
+          <div class="col-md-8 offset-md-4">
+            <v-btn id="btnvalidercreationevent">
+              AJOUTER
+            </v-btn>
+          </div>
         </div>
-      </div>
-      <p class="pastoutremplis" v-if="pasToutRemplis">
-        Renseigne toutes les infos !
-      </p>
-      <div @click="addEvent()" class="form-group row mb-0 btnajoutenevent">
-        <div class="col-md-8 offset-md-4">
-          <v-btn id="btnvalidercreationevent">
-            AJOUTER
-          </v-btn>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -349,7 +362,8 @@ export default {
         lieux: "",
         tags: "",
         date: "",
-        hour: ""
+        hour: "",
+        nbMax: "6"
       },
       tab: null,
       errors: [],
@@ -419,7 +433,8 @@ export default {
               lieux: this.form.lieux,
               date: this.form.date + "," + this.form.hour,
               coordlieux: JSON.stringify(this.form.coord),
-              emoji: this.emojiSelected
+              emoji: this.emojiSelected,
+              nbMax: this.form.nbMax
             })
             .then(response => {
               console.log("inséré");
@@ -468,7 +483,7 @@ export default {
     overflow: hidden;
   }
   #degoulineInscription > svg {
-    margin-top: -25vw;
+    margin-top: -55vw;
     width: 100%;
     height: auto;
   }
@@ -483,7 +498,7 @@ export default {
     width: 100%;
   }
   .planetquitourneinscription {
-    margin-top: -10% !important;
+    margin-top: -20% !important;
     height: 20%;
     left: 35%;
     width: 33vw;
@@ -559,7 +574,7 @@ export default {
   .containerdivtitrecreationevent {
     justify-content: space-around;
     width: 100%;
-    margin-top: 20%;
+    margin-top: 0%;
     display: inline-flex;
   }
   .v-picker__title,
@@ -573,6 +588,10 @@ export default {
   .champchoixheure {
     margin-top: 0 !important;
     padding-top: 0 !important;
+    .v-input__slot:before {
+      border: unset !important;
+      border-style: hidden !important;
+    }
   }
   .theme--light.v-btn.v-btn--has-bg {
     background-color: rgba(0, 0, 0, 0);
@@ -690,6 +709,27 @@ export default {
     text-align: center;
     font-size: 12px;
     color: #e92626;
+  }
+  .sliderNbMax {
+    padding-top: 0px !important;
+    .v-slider__thumb-label {
+      background-color: #e92626;
+    }
+
+    .selecteurnbMax {
+      width: 100%;
+      display: inline-flex;
+      .v-input {
+        width: 80%;
+      }
+      .texte {
+        white-space: nowrap;
+        color: #e92626;
+        font-weight: bold;
+        font-size: 12px;
+        margin-top: 3px;
+      }
+    }
   }
 }
 </style>

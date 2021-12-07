@@ -10,47 +10,7 @@
       <!-- ------------------------------------------HEADER-------------------------------------------- -->
 
       <degouline v-if="true" id="degoulineInscription"></degouline>
-      <div class="containerdivtitrecreationevent" @click="gotorechercheevent">
-        <v-btn
-          id="btncreereventredinterieur"
-          color="accent"
-          elevation="2"
-          rounded
-          small
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="37.69"
-            height="38.729"
-            viewBox="0 0 37.69 38.729"
-          >
-            <g
-              id="Groupe_53"
-              data-name="Groupe 53"
-              transform="translate(-342.164 -323.941)"
-            >
-              <rect
-                id="Rectangle_2"
-                data-name="Rectangle 2"
-                width="37.03"
-                height="38.088"
-                rx="18.515"
-                transform="matrix(-1, -0.017, 0.017, -1, 379.189, 362.67)"
-                fill="#e92626"
-              />
-              <path
-                id="Tracé_11"
-                data-name="Tracé 11"
-                d="M8.464,7.4v0A1.054,1.054,0,0,0,8.14,6.64h0L1.793.292l0,0A1.058,1.058,0,1,0,.369,1.86L5.912,7.4.3,13.02h0a1.058,1.058,0,0,0,1.5,1.5h0L8.141,8.168h0a1.054,1.054,0,0,0,.324-.761Z"
-                transform="matrix(-1, -0.017, 0.017, -1, 365.37, 350.789)"
-                fill="#fff"
-                stroke="#fff"
-                stroke-width="1"
-              />
-            </g>
-          </svg>
-        </v-btn>
-      </div>
+
       <div class="conteneurplanet">
         <img
           class="planetquitourneinscription"
@@ -235,15 +195,14 @@ export default {
 
       if (this.activity.users.length > 0) {
         this.activity.users.forEach((participant, index, object) => {
+          if (this.activity.creatorId == participant.id) {
+            this.activity.creator = participant;
+            object.splice(index, 1);
+          }
           if (this.$auth.user) {
             if (participant.id == this.$auth.user.id) {
               this.inscrit = true;
             }
-          }
-          if (this.activity.creatorId == participant.id) {
-            this.activity.creator = participant;
-            object.splice(index, 1);
-            console.log(this.activity);
           }
         });
       }
@@ -324,7 +283,7 @@ html {
     width: 100%;
   }
   .planetquitourneinscription {
-    margin-top: -10% !important;
+    margin-top: -23% !important;
     height: 20%;
     left: 35%;
     width: 33vw;

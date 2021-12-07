@@ -18,7 +18,7 @@
           </v-list-item>
 
           <v-list-item>
-            <v-list-item-title>Mes evenements</v-list-item-title>
+            <v-list-item-title>Mes activités</v-list-item-title>
           </v-list-item>
 
           <v-list-item>

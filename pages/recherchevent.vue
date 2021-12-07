@@ -30,7 +30,7 @@
           <img class="pastille" src="@/assets/pastille.svg" alt="pastille" />
           <input
             id="inputrechercheevent"
-            class="l'évènnement"
+            class="activity"
             type="text"
             :placeholder="placehorlderRecherche.nom"
             v-model="form.name"
@@ -151,7 +151,7 @@
       v-if="listeEvents.length == 0 && !chargement"
     >
       <div class="aucunevent ">
-        Aucun évènement ne correspond à ta recherche :(
+        Aucune activité ne correspond à ta recherche :(
       </div>
       <div class="aucunevent  ">
         Pas de panique, tu peux
@@ -165,7 +165,7 @@
         text
         @click="gotoCreationEvenet"
       >
-        CREER UN EVENEMENT
+        CREER UNE ACTIVITÉ
       </v-btn>
       <div class="aucunevent">
         ou en chercher un autre !

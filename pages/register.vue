@@ -17,78 +17,73 @@
       />
     </div>
 
-    <v-card class="titrecard" to="/">
-      <v-card-title>T o o G e t h e r</v-card-title>
-      <v-card-text
-        >Faites des rencontres en faisant ce que vous aimez</v-card-text
-      >
-    </v-card>
-    <div class="containerdiv containerdivinscr">
-      <p class="titleinsription">INSCRIPTION</p>
-    </div>
+    <div class="body-register">
+      <div class="containerdiv containerdivinscr">
+        <p class="titleinsription">INSCRIPTION</p>
+      </div>
+      <form class="formulairereg" action="#" @submit.prevent="submit">
+        <div class="form-group row rowregister">
+          <div class=" col-md-6">
+            <input
+              id="name"
+              type="text"
+              class=" form-control"
+              placeholder="Surnom"
+              name="name"
+              value
+              required
+              autofocus
+              v-model="form.surname"
+            />
+          </div>
+        </div>
+        <div class="form-group row rowregister">
+          <div class=" col-md-6">
+            <input
+              id="email"
+              type="email"
+              class=" form-control"
+              placeholder="E-mail"
+              name="email"
+              value
+              required
+              autofocus
+              v-model="form.email"
+              @input="testexistmail"
+            />
+          </div>
+        </div>
 
-    <form class="formulairereg" action="#" @submit.prevent="submit">
-      <div class="form-group row rowregister">
-        <div class=" col-md-6">
-          <input
-            id="name"
-            type="text"
-            class=" form-control"
-            placeholder="Surnom"
-            name="name"
-            value
-            required
-            autofocus
-            v-model="form.surname"
-          />
+        <div class="form-group row rowregister">
+          <div class="col-md-6">
+            <input
+              placeholder="Mot de passe"
+              id="password"
+              type="password"
+              class="form-control"
+              name="password"
+              required
+              v-model="form.password"
+            />
+          </div>
         </div>
+      </form>
+      <div v-if="!chargeimg" class="avatarreate">
+        <v-img class="elevation-6 imgavatar" alt="" :src="srcavatar"></v-img>
       </div>
-      <div class="form-group row rowregister">
-        <div class=" col-md-6">
-          <input
-            id="email"
-            type="email"
-            class=" form-control"
-            placeholder="E-mail"
-            name="email"
-            value
-            required
-            autofocus
-            v-model="form.email"
-            @input="testexistmail"
-          />
-        </div>
+      <div class="btnreg avatar">
+        <button @click="changeavatar" class="btn btn-primary ">
+          Changer l'avatar
+        </button>
       </div>
-
-      <div class="form-group row rowregister">
-        <div class="col-md-6">
-          <input
-            placeholder="Mot de passe"
-            id="password"
-            type="password"
-            class="form-control"
-            name="password"
-            required
-            v-model="form.password"
-          />
-        </div>
+      <div class="btnreg">
+        <button @click="submit" class="btn btn-primary">S'inscrire</button>
       </div>
-    </form>
-    <div v-if="!chargeimg" class="avatarreate">
-      <v-img class="elevation-6 imgavatar" alt="" :src="srcavatar"></v-img>
-    </div>
-    <div class="btnreg avatar">
-      <button @click="changeavatar" class="btn btn-primary ">
-        Changer l'avatar
-      </button>
-    </div>
-    <div class="btnreg">
-      <button @click="submit" class="btn btn-primary">S'inscrire</button>
-    </div>
-    <div class="btnreg creercompte">
-      <button @click="gotologin" class="btn btn-primary ">
-        J'ai déjà un compte
-      </button>
+      <div class="btnreg creercompte">
+        <button @click="gotologin" class="btn btn-primary ">
+          J'ai déjà un compte
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -389,7 +384,7 @@ export default {
     overflow: hidden;
   }
   #degoulineInscription > svg {
-    margin-top: -10vh;
+    margin-top: -55vw;
     width: 100%;
     height: auto;
   }
@@ -404,7 +399,7 @@ export default {
     width: 100%;
   }
   .planetquitourneinscription {
-    margin-top: -10% !important;
+    margin-top: -20% !important;
     height: 20%;
     left: 35%;
     width: 33vw;
@@ -463,7 +458,7 @@ export default {
     color: #e92626;
   }
   .formulairereg {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     margin-top: 0%;
   }
   .containerdivinscr {
@@ -483,6 +478,10 @@ export default {
     color: #e92626;
     font-weight: 700;
     font-family: "Noto Sans", sans-serif;
+  }
+  .body-register {
+    overflow-y: scroll;
+    height: 100vh;
   }
 }
 </style>

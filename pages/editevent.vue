@@ -64,7 +64,7 @@
           </g>
         </svg>
       </v-btn>
-      <p class="titleinsription">MODIFIER L'ÉVÈNEMENT</p>
+      <p class="titleinsription">MODIFIER L'ACTIVITÉ</p>
       <div class="expaceur"></div>
     </div>
 
@@ -148,7 +148,7 @@
         <div class="form-group rowcreerevenet">
           <div class="col-md-6">
             <input
-              placeholder="Nom de l'évènnement"
+              placeholder="Nom de l'activité"
               id="name inputcreerevent"
               type="name"
               class="form-control"

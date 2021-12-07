@@ -33,7 +33,7 @@
         small
         text
       >
-        CREER UN EVENEMENT
+        CREER UNE ACTIVITÉ
         <v-btn
           id="btncreereventredinterieur"
           color="accent"
@@ -69,7 +69,7 @@
         small
         text
       >
-        CREER UN EVENEMENT
+        CREER UNE ACTIVITÉ
         <v-btn
           id="btncreereventredinterieur"
           color="accent"
@@ -121,7 +121,7 @@
           small
           text
         >
-          CREER UN EVENEMENT
+          CREER UNE ACTIVITÉ
           <v-btn
             id="btncreereventredinterieur"
             color="accent"
@@ -157,7 +157,7 @@
           small
           text
         >
-          CREER UN EVENEMENT
+          CREER UNE ACTIVITÉ
           <v-btn
             id="btncreereventredinterieur"
             color="accent"

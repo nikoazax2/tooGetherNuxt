@@ -80,7 +80,7 @@
           text
           @click="gotoCreationEvenet"
         >
-          CREER UN EVENEMENT
+          CREER UNE ACTIVITÉ
           <v-btn
             id="btncreereventredinterieur"
             color="accent"
@@ -111,25 +111,33 @@
         <div class="popupnotifcontainer">
           <div class="titre">Notifications</div>
           <div class="popupnotif">
-            <div
-              class="event"
-              v-for="(activity, index) in listeEventsUser"
-              :key="activity.id"
-            >
-              <code
-                class="emojiNotif jump"
-                v-html="'<p>&\#x1F' + activity.emoji + ';</p>'"
+            <div v-if="listeEventsUser.length > 0">
+              <div
+                class="event"
+                v-for="(activity, index) in listeEventsUser"
+                :key="activity.id"
               >
-              </code>
-              <div class="contenuNotif">
-                <div class="nom">{{ activity.name }}</div>
-                <div class="lieux">{{ activity.lieux }}</div>
-                <div class="date">{{ formatDate(activity.date) }}</div>
-              </div>
-              <div class="iconmessage">
-                <div @click="gotochat(activity)">
-                  <v-icon>mdi-message-processing-outline</v-icon>
+                <code
+                  class="emojiNotif jump"
+                  v-html="'<p>&\#x1F' + activity.emoji + ';</p>'"
+                >
+                </code>
+                <div class="contenuNotif">
+                  <div class="nom">{{ activity.name }}</div>
+                  <div class="lieux">{{ activity.lieux }}</div>
+                  <div class="date">{{ formatDate(activity.date) }}</div>
                 </div>
+                <div class="iconmessage">
+                  <div @click="gotochat(activity)">
+                    <v-icon>mdi-message-processing-outline</v-icon>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="noNotif" v-else>
+              <div class="nonotiftitre">Aucune notification</div>
+              <div class="inscrittoi" @click="gotorecherche()">
+                Inscrit toi à une activité !
               </div>
             </div>
             <br />
@@ -143,8 +151,8 @@
         v-if="$auth.user"
         class="btnhead btnnotif"
       >
-        <div class="nbnotif">
-          <div v-if="this.listeEventsUser.length > 0">
+        <div class="nbnotif" v-if="this.listeEventsUser.length > 0">
+          <div>
             {{ this.listeEventsUser.length }}
           </div>
         </div>
@@ -176,7 +184,7 @@
           <img class="pastille" src="@/assets/pastille.svg" alt="pastille" />
           <input
             id="inputrechercheevent"
-            class="l'évènnement"
+            class="activity"
             type="text"
             :placeholder="placehorlderRecherche.nom"
             v-model="form.name"
@@ -235,7 +243,7 @@
           <div class="num">2</div>
           <div class="text">
             <strong>RECHERCHE</strong>
-            <br />CRÉE UN ÉVÉNEMENT
+            <br />CRÉE UNE ACTIVITÉ
           </div>
         </div>
         <div class="troisieme blocchiffretexteetapes">
@@ -270,7 +278,7 @@
       <img
         class="planetquitourneavecperso"
         style="position: absolute"
-        src="@/assets/avecperso.gif"
+        src="@/assets/TooGetherPlanet.gif"
       />
     </div>
     <lefooter></lefooter>
@@ -636,7 +644,7 @@ html {
   .planettournecontainer {
     position: relative;
     bottom: 0;
-    margin-top: 190vw;
+    margin-top: 183vw;
   }
   .blocchiffretexteetapes {
     display: block;
@@ -865,6 +873,17 @@ html {
           width: 100%;
         }
       }
+    }
+  }
+  .noNotif {
+    text-align: center;
+    margin-top: 20px;
+    .nonotiftitre {
+    }
+    .inscrittoi {
+      font-size: 12px;
+      font-weight: bold;
+      color: #e92626;
     }
   }
 }

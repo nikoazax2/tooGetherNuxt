@@ -1,5 +1,5 @@
 <template>
-  <div class="vuemyevent">
+  <div class="chat">
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
@@ -9,43 +9,76 @@
     <!-- ------------------------------------------HEADER-------------------------------------------- -->
 
     <degouline v-if="true" id="degoulinerecherche"></degouline>
+
     <div class="conteneurplanet">
       <img
         class="planetquitourneinscription"
         style="position: absolute"
         src="@/assets/planetquitournerouge.gif"
       />
+      <v-card v-if="!chargement" class="titrecard" to="/">
+        <code
+          class="emojiNotif jump"
+          v-html="'<p>&\#x1F' + activity.activity_emoji + ';</p>'"
+        >
+        </code>
+        {{ activity.activity_name }}
+      </v-card>
     </div>
-
-    <v-card class="titrecard" to="/">
-      <v-card-title>T o o G e t h e r</v-card-title>
-      <v-card-text
-        >Faites des rencontres en faisant ce que vous aimez</v-card-text
-      >
-    </v-card>
-    <div class="body" v-if="!chargement && !aucunMess">
-      <div class="messages">
-        <div
-          :class="{ envoyeur: $auth.$state.user.id == message.userId }"
-          class="message"
-          v-for="(message, key) in messages"
-          :key="key"
-        >
-          {{ message.message }}
+    <div class="containerbody">
+      <div class="body" v-if="!chargement && !aucunMess">
+        <div class="messages">
+          <div
+            class="containermessage"
+            :class="{ envoyeur: $auth.$state.user.id == message.userId }"
+            v-for="(message, key) in messages"
+            :key="key"
+          >
+            <div
+              class="messavatar"
+              v-if="$auth.$state.user.id != message.userId"
+            >
+              <div class="avatarmess">
+                <v-img
+                  class="elevation-6 imgavataracceuil"
+                  alt=""
+                  :src="message.user_avatar"
+                ></v-img>
+              </div>
+              <div class="message">
+                {{ message.chat_message }}
+              </div>
+            </div>
+            <div
+              class="messavatar"
+              v-if="$auth.$state.user.id == message.userId"
+            >
+              <div class="message">
+                {{ message.chat_message }}
+              </div>
+              <div class="avatarmess">
+                <v-img
+                  class="elevation-6 imgavataracceuil"
+                  alt=""
+                  :src="message.user_avatar"
+                ></v-img>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="inputmessage">
-        <v-text-field v-model="messageInput" class="textfield" outlined>
-          <template v-slot:append>
-            <div @click.stop @click="envoiMessage">ENVOYER</div>
-          </template></v-text-field
-        >
+        <div class="inputmessage">
+          <v-text-field v-model="messageInput" class="textfield" outlined>
+            <template v-slot:append>
+              <div @click.stop @click="envoiMessage">ENVOYER</div>
+            </template></v-text-field
+          >
+        </div>
       </div>
     </div>
     <div class="body bodyNomess" v-if="!chargement && aucunMess">
       <div class="nomess" v-if="aucunMess">
         Sois le premier à engager la conversation <br />
-        pour organiser votre activitée !
+        pour organiser votre activité !
       </div>
       <div class="inputmessage">
         <v-text-field v-model="messageInput" class="textfield" outlined>
@@ -79,9 +112,10 @@ export default {
   data: function() {
     return {
       messageInput: "",
-      chargement: false,
+      chargement: true,
       aucunMess: false,
-      messages: []
+      messages: [],
+      activity: null
     };
   },
   components: {
@@ -108,10 +142,18 @@ export default {
     },
     async Read() {
       this.chargement = true;
+
+      /*  let res = await this.$axios.get(
+        "/activities/" + this.$route.params.id + "/detail"
+      );
+      this.activity = res.data; */
+
       let rescreator = await this.$axios.get(
         "/chats/" + this.$route.params.id + "/chat"
       );
-      this.messages = rescreator.data;
+      this.messages = rescreator.data.chats;
+      this.activity = rescreator.data.activity[0];
+      console.log(this.activity);
       this.messages.length == 0
         ? (this.aucunMess = true)
         : (this.aucunMess = false);
@@ -134,7 +176,13 @@ export default {
   position: relative;
   height: 100vh;
 }
-.vuemyevent {
+.chat {
+  .containerbody {
+    height: 100vh;
+    flex-direction: column-reverse;
+    display: flex;
+    padding-bottom: 74px;
+  }
   body {
     overflow: hidden;
   }
@@ -148,24 +196,14 @@ export default {
     height: auto;
   }
   #degoulinerecherche {
-    margin-top: -5%;
+    margin-top: -10%;
     width: 100%;
     position: absolute;
   }
   .conteneurplanet {
     margin-top: -10% !important;
   }
-  .titrecard {
-    margin-top: -10% !important;
-    .v-card__title {
-      margin-top: 0%;
-    }
-    .v-card__text {
-    }
-  }
-  .title {
-    z-index: 1;
-  }
+
   .conteneurplanet {
     width: 100%;
   }
@@ -178,6 +216,8 @@ export default {
   }
 
   .titrecard {
+    width: 100vw;
+    position: absolute;
     padding-top: 20%;
     margin-top: 0% !important;
     background-color: transparent !important;
@@ -218,40 +258,56 @@ export default {
           font-size: 12px;
           height: 100% !important;
           margin: 0;
+          margin-top: 3px;
         }
       }
     }
   }
   .body {
-    height: 70vh;
+    height: 74vh;
+    width: 100vw;
+    padding-left: 10px;
+    padding-right: 10px;
     display: flex;
-    flex-direction: column;
-
+    flex-direction: column-reverse;
+    position: absolute;
+    z-index: -10;
+    overflow-y: scroll;
     .chat {
       height: 100%;
     }
 
     .messages {
       display: inline-block;
-      margin-top: auto;
+      margin-top: 0;
       margin-bottom: 0 !important;
-      .message {
-        background-color: white;
-        border: #ff0000 2px solid;
-        color: rgb(36, 36, 36);
-        float: left !important;
-        border-radius: 25px;
-        font-size: 12px;
-        padding: 10px;
-        margin: 10px;
-        margin-bottom: 7px;
-        margin-top: 7px;
-        width: fit-content;
+      .containermessage {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        .message {
+          background-color: white;
+          border: #ff0000 2px solid;
+          color: rgb(36, 36, 36);
+          float: left !important;
+          border-radius: 25px;
+          font-size: 12px;
+          padding: 10px;
+          margin: 10px;
+          margin-bottom: 7px;
+          margin-top: 0px;
+          width: fit-content;
+        }
       }
-      .message.envoyeur {
-        background-color: red;
-        color: white;
-        float: right !important;
+      .envoyeur {
+        justify-content: right;
+        .message {
+          background-color: red;
+          color: white;
+          float: right !important;
+          max-width: 80vw;
+          overflow-wrap: break-word;
+        }
       }
     }
   }
@@ -272,6 +328,46 @@ export default {
     text-align: center;
     align-items: center;
     height: 80vh;
+  }
+  .messavatar {
+    display: inline-flex;
+    align-items: end;
+    .avatarmess {
+      width: 40px;
+      transform: translate(0, -7px);
+    }
+  }
+  .emojiNotif {
+    font-size: 40px;
+  }
+  .jump {
+    display: inline-block;
+    animation-duration: 1.5s;
+    animation-name: jump;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes jump {
+    0%,
+    100% {
+      transform: scale(1.1, 1) translateY(0);
+    }
+
+    5% {
+      transform: scale(1, 1) translateY(-0.4em);
+    }
+
+    15% {
+      transform: scale(1.1, 0.9) translateY(-0.5em);
+    }
+
+    25% {
+      transform: scale(1, 1) translateY(-0.4em);
+    }
+
+    30% {
+      transform: scale(1, 1) translateY(0);
+    }
   }
 }
 </style>
