@@ -26,7 +26,10 @@
     <div v-if="!chargement">
       <div
         class="containerdiv"
-        v-if="listeEventsCreator.length > 0 || listeEventsPaticipant.length > 0"
+        v-if="
+          $auth.user &&
+            (listeEventsCreator.length > 0 || listeEventsPaticipant.length > 0)
+        "
       >
         <div v-if="listeEventsCreator.length > 0">
           <div class="titreMyEvent">CREATEUR</div>
@@ -173,7 +176,9 @@
       </div>
       <div class="containerdiv" v-if="!$auth.user">
         <div class="lesbtncreereveent">
-          <div class="aucunevent">Connecte toi pour voir tes activités</div>
+          <div class="aucunevent">
+            Connecte ou inscrit toi pour voir tes activités
+          </div>
           <v-btn
             color="accent"
             id="btncreerevent"
@@ -181,9 +186,9 @@
             raised
             rounded
             text
-            @click="gotoCreationEvenet"
+            to="/login"
           >
-            CREER UNE ACTIVITÉ
+            CONNEXION
           </v-btn>
           <v-btn
             color="accent"
@@ -192,16 +197,18 @@
             raised
             rounded
             text
-            @click="gotoRecherche"
+            to="/register"
           >
-            CHERCHER UNE ACTIVITÉ
+            INSCRIPTION
           </v-btn>
         </div>
       </div>
       <div
         class="containerdiv"
         v-if="
-          listeEventsCreator.length == 0 || listeEventsPaticipant.length == 0
+          $auth.user &&
+            listeEventsCreator.length == 0 &&
+            listeEventsPaticipant.length == 0
         "
       >
         <div class="lesbtncreereveent">
@@ -306,25 +313,27 @@ export default {
     },
     async Read() {
       this.chargement = true;
-      let rescreator = await this.$axios.get(
-        "/activities/" + this.$auth.user.id + "/creator"
-      );
-      this.listeEventsCreator = rescreator.data;
+      if (this.$auth.user) {
+        let rescreator = await this.$axios.get(
+          "/activities/" + this.$auth.user.id + "/creator"
+        );
+        this.listeEventsCreator = rescreator.data;
 
-      this.listeEventsCreator.forEach(element => {
-        var coord = JSON.parse(element.coordlieux);
-        element.coordlieux = [coord.lng, coord.lat];
-      });
+        this.listeEventsCreator.forEach(element => {
+          var coord = JSON.parse(element.coordlieux);
+          element.coordlieux = [coord.lng, coord.lat];
+        });
 
-      let resparticipant = await this.$axios.get(
-        "/activities/" + this.$auth.user.id + "/participant"
-      );
-      this.listeEventsPaticipant = resparticipant.data;
+        let resparticipant = await this.$axios.get(
+          "/activities/" + this.$auth.user.id + "/participant"
+        );
+        this.listeEventsPaticipant = resparticipant.data;
 
-      this.listeEventsPaticipant.forEach(element => {
-        var coord = JSON.parse(element.coordlieux);
-        element.coordlieux = [coord.lng, coord.lat];
-      });
+        this.listeEventsPaticipant.forEach(element => {
+          var coord = JSON.parse(element.coordlieux);
+          element.coordlieux = [coord.lng, coord.lat];
+        });
+      }
 
       this.chargement = false;
     }

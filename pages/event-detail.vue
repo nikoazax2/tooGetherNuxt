@@ -95,7 +95,7 @@
           <v-card-actions>
             <div class="participantsliste" v-if="activity.users.length > 0">
               <div v-for="users in activity.users" :key="users.id">
-                <div>
+                <div v-if="users.id != activity.creatorId">
                   <v-list-item-avatar color="grey darken-3">
                     <v-img
                       class="elevation-6"
@@ -196,8 +196,8 @@ export default {
       if (this.activity.users.length > 0) {
         this.activity.users.forEach((participant, index, object) => {
           if (this.activity.creatorId == participant.id) {
+            console.log("test");
             this.activity.creator = participant;
-            object.splice(index, 1);
           }
           if (this.$auth.user) {
             if (participant.id == this.$auth.user.id) {
@@ -206,9 +206,6 @@ export default {
           }
         });
       }
-
-      console.log(this.activity);
-
       var coord = JSON.parse(this.activity.coordlieux);
       this.activity.coordlieux = [coord.lng, coord.lat];
 
