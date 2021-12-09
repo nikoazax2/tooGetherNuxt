@@ -160,7 +160,7 @@ import degouline from "@/components/degoulinerouge";
 import Places from "vue-places";
 // import firebase from "firebase";
 // const db = firebase.firestore();
-const API_URL = "http://dev-tgt.local:3001/api";
+const API_URL = "http://api.toogther.com";
 export default {
   name: "App",
   async created() {

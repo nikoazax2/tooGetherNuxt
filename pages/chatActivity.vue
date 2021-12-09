@@ -104,7 +104,7 @@
 <script>
 import degouline from "@/components/degoulinerouge";
 import lefooter from "@/components/footer";
-const API_URL = "http://dev-tgt.local:3001/api";
+const API_URL = "http://api.toogther.com";
 
 export default {
   name: "App",

@@ -93,7 +93,7 @@
 <script>
 import degouline from "@/components/degoulinerouge";
 import headere from "@/components/headerlogin";
-const API_URL = "http://dev-tgt.local:3000/api";
+const API_URL = "http://api.toogther.com";
 export default {
   name: "App",
   created: function() {},
