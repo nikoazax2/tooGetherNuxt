@@ -90,7 +90,7 @@
 
 <script>
 import degouline from "@/components/degoulinerouge";
-const API_URL = "http://api.toogther.com";
+const API_URL = "http://api.toogther.com/api";
 export default {
   name: "App",
   created: function() {
