@@ -175,7 +175,7 @@
     <v-card class="titrecard">
       <v-card-title>T o o G e t h e r</v-card-title>
       <v-card-text
-        >Faites des rencontres en faisant ce que vous aimez</v-card-text
+        >Faites des rencontres en faisant ce que vous aimez test</v-card-text
       >
     </v-card>
     <div class="barrederecherchecontainer">
