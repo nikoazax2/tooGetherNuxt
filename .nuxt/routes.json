@@ -3,99 +3,116 @@
     "name": "chatActivity",
     "path": "/chatActivity",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\chatActivity.vue",
-    "chunkName": "pages/chatActivity"
+    "chunkName": "pages/chatActivity",
+    "_name": "_5a04c194"
   },
   {
     "name": "chatSearch",
     "path": "/chatSearch",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\chatSearch.vue",
-    "chunkName": "pages/chatSearch"
+    "chunkName": "pages/chatSearch",
+    "_name": "_134f9226"
   },
   {
     "name": "creationevent",
     "path": "/creationevent",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\creationevent.vue",
-    "chunkName": "pages/creationevent"
+    "chunkName": "pages/creationevent",
+    "_name": "_2ed48ade"
   },
   {
     "name": "creationevent backup",
     "path": "/creationevent%20backup",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\creationevent backup.vue",
-    "chunkName": "pages/creationevent backup"
+    "chunkName": "pages/creationevent backup",
+    "_name": "_062b8718"
   },
   {
     "name": "editevent",
     "path": "/editevent",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\editevent.vue",
-    "chunkName": "pages/editevent"
+    "chunkName": "pages/editevent",
+    "_name": "_60710cda"
   },
   {
     "name": "event-detail",
     "path": "/event-detail",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\event-detail.vue",
-    "chunkName": "pages/event-detail"
+    "chunkName": "pages/event-detail",
+    "_name": "_10cbf11e"
   },
   {
     "name": "events",
     "path": "/events",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\events.vue",
-    "chunkName": "pages/events"
+    "chunkName": "pages/events",
+    "_name": "_6f3d5a34"
   },
   {
     "name": "login",
     "path": "/login",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\login.vue",
-    "chunkName": "pages/login"
+    "chunkName": "pages/login",
+    "_name": "_2a62072c"
   },
   {
     "name": "map",
     "path": "/map",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\map.vue",
-    "chunkName": "pages/map"
+    "chunkName": "pages/map",
+    "_name": "_69e5fa5f"
   },
   {
     "name": "mapbackup",
     "path": "/mapbackup",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\mapbackup.vue",
-    "chunkName": "pages/mapbackup"
+    "chunkName": "pages/mapbackup",
+    "_name": "_54388de1"
   },
   {
     "name": "myevents",
     "path": "/myevents",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\myevents.vue",
-    "chunkName": "pages/myevents"
+    "chunkName": "pages/myevents",
+    "_name": "_2c2f2052"
   },
   {
     "name": "recherchevent",
     "path": "/recherchevent",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\recherchevent.vue",
-    "chunkName": "pages/recherchevent"
+    "chunkName": "pages/recherchevent",
+    "_name": "_f64b431a"
   },
   {
     "name": "register",
     "path": "/register",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\register.vue",
-    "chunkName": "pages/register"
+    "chunkName": "pages/register",
+    "_name": "_381c9ba0"
   },
   {
     "name": "index",
     "path": "/",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\index.vue",
-    "chunkName": "pages/index"
+    "chunkName": "pages/index",
+    "_name": "_60ba6415"
   },
   {
     "name": "recherchevent",
     "path": "/recherchevent/:nomevent/:lieuevent/:dateevent",
-    "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\recherchevent.vue"
+    "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\recherchevent.vue",
+    "_name": "_f64b431a"
   },
   {
     "name": "editevent",
     "path": "/editevent/:id",
-    "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\editevent.vue"
+    "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\editevent.vue",
+    "_name": "_60710cda"
   },
   {
     "name": "chatActivity",
     "path": "/chatActivity/:id",
-    "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\chatActivity.vue"
+    "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\chatActivity.vue",
+    "_name": "_5a04c194"
   }
 ]
