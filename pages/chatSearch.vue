@@ -17,6 +17,73 @@
       />
     </div>
 
+    <v-card class="titrecard" to="/">
+      <v-card-title>T o o G e t h e r</v-card-title>
+      <v-card-text
+        >Faites des rencontres en faisant ce que vous aimez</v-card-text
+      >
+    </v-card>
+
+    <div class="barrederecherchecontainer">
+      <div class="barrederecherche">
+        <div>
+          <img class="pastille" src="@/assets/pastille.svg" alt="pastille" />
+          <input
+            id="inputrechercheevent"
+            class="activity"
+            type="text"
+            :placeholder="placehorlderRecherche.nom"
+            v-model="form.name"
+          />
+        </div>
+        <div>
+          <img class="pastille" src="@/assets/pastille.svg" alt="pastille" />
+          <input
+            class="endroit"
+            id="inputrechercheevent"
+            type="text"
+            :placeholder="placehorlderRecherche.lieux"
+            v-model="form.lieux"
+          />
+        </div>
+        <div>
+          <img class="pastille" src="@/assets/pastille.svg" alt="pastille" />
+          <input
+            class="date"
+            id="inputrechercheevent"
+            type="text"
+            :placeholder="placehorlderRecherche.date"
+            v-model="form.date"
+          />
+        </div>
+        <v-btn
+          @click="gotorecherche"
+          id="btncreereventredinterieurrecherche"
+          color="accent"
+          elevation="2"
+          rounded
+          small
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="7.582"
+            height="12.519"
+            viewBox="0 0 7.582 12.519"
+          >
+            <path
+              id="Tracé_11"
+              data-name="Tracé 11"
+              d="M26.582,16.758v0a.82.82,0,0,0-.252-.592h0l-4.937-4.937,0,0a.822.822,0,1,0-1.105,1.218L24.6,16.758,20.23,21.125h0a.823.823,0,0,0,1.163,1.163h0l4.937-4.937h0a.82.82,0,0,0,.252-.592Z"
+              transform="translate(-19.5 -10.5)"
+              fill="#fff"
+              stroke="#fff"
+              stroke-width="1"
+            />
+          </svg>
+        </v-btn>
+      </div>
+    </div>
+
     <div class="conteneurEvents" v-if="listeEvents.length > 0 && !chargement">
       <div v-for="item in listeEvents" :key="item.id" class="conteneurevent">
         <div @click="gotodetail(item)" id="caseact" class="casenomdate">
