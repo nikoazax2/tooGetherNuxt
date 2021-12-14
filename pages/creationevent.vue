@@ -341,7 +341,7 @@ import fileEmoji from "../assets/emoji.json";
 
 // import firebase from "firebase";
 // const db = firebase.firestore();
-const API_URL = "http://api.toogther.com/api";
+const API_URL = "http://dev-tgt.local:3001/api";
 export default {
   name: "App",
 
@@ -426,7 +426,7 @@ export default {
       ) {
         try {
           await this.$axios
-            .post(`${API_URL}/activities`, {
+            .post(`${process.env.URL}/activities`, {
               creatorId: this.$auth.user.id,
               name: this.form.name,
               description: this.form.tags,
@@ -451,7 +451,9 @@ export default {
     },
     async inscritalevent() {
       await this.$axios
-        .put(`${API_URL}/activities/${this.idact}/user/${this.$auth.user.id}`)
+        .put(
+          `${process.env.URL}/activities/${this.idact}/user/${this.$auth.user.id}`
+        )
         .then();
 
       this.$router.push("/");
