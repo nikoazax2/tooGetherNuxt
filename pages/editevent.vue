@@ -271,7 +271,7 @@ import Places from "vue-places";
 import fileEmoji from "../assets/emoji.json";
 // import firebase from "firebase";
 // const db = firebase.firestore();
-const API_URL = "http://api.toogther.com/api";
+const API_URL = "http://dev-tgt.local:3001/api";
 export default {
   name: "App",
   async created() {
@@ -340,7 +340,7 @@ export default {
       ) {
         try {
           await this.$axios
-            .patch(`${API_URL}/activities/${this.$route.params.id}`, {
+            .patch(`${process.env.URL}/activities/${this.$route.params.id}`, {
               creatorId: this.$auth.user.id,
               name: this.form.name,
               description: this.form.tags,
@@ -364,7 +364,7 @@ export default {
     async deleteEvent() {
       try {
         await this.$axios
-          .delete(`${API_URL}/activities/${this.$route.params.id}`)
+          .delete(`${process.env.URL}/activities/${this.$route.params.id}`)
           .then(response => {
             this.$router.push("/myevents");
           });

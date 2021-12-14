@@ -1,5 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
+
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -20,6 +22,9 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
 
     ]
+  },
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
   },
   router: {
     extendRoutes(routes, resolve) {
@@ -56,7 +61,7 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/vuetify
-    '@nuxtjs/vuetify', '@nuxtjs/router',
+    '@nuxtjs/vuetify', '@nuxtjs/router', '@nuxtjs/dotenv'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -64,11 +69,11 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
-    './store/modules/vuelayers',
+    './store/modules/vuelayers', '@nuxtjs/dotenv'
   ],
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'http://api.toogther.com/api'
+    baseURL: 'http://dev-tgt.local:3001/api'
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

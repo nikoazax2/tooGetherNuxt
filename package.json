@@ -11,9 +11,11 @@
   "dependencies": {
     "@nuxtjs/auth-next": "5.0.0-1622918202.e815752",
     "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/proxy": "^2.1.0",
     "core-js": "^3.9.1",
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "mapbox-gl": "^2.5.1",
     "nuxt": "^2.15.3",
     "vue-mapbox": "^0.4.1",

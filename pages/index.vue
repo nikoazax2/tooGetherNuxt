@@ -295,6 +295,7 @@ export default {
   name: "App",
   computed: {},
   mounted: function() {
+    console.log(process.env.URL);
     var d = new Date();
     var day = String(d.getDate()).padStart(2, "0");
     var month = String(d.getMonth() + 1).padStart(2, "0");

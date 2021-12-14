@@ -104,7 +104,7 @@
 <script>
 import degouline from "@/components/degoulinerouge";
 import lefooter from "@/components/footer";
-const API_URL = "http://api.toogther.com/api";
+const API_URL = "http://dev-tgt.local:3001/api";
 
 export default {
   name: "App",
@@ -126,7 +126,7 @@ export default {
     async envoiMessage() {
       console.log("test");
       await this.$axios
-        .post(`${API_URL}/chats`, {
+        .post(`${process.env.URL}/chats`, {
           userId: this.$auth.$state.user.id,
           message: this.messageInput,
           date: new Date(),

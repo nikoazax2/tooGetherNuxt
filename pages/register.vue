@@ -90,7 +90,7 @@
 
 <script>
 import degouline from "@/components/degoulinerouge";
-const API_URL = "http://api.toogther.com/api";
+const API_URL = "http://dev-tgt.local:3001/api";
 export default {
   name: "App",
   created: function() {
@@ -335,7 +335,7 @@ export default {
     },
     async submit() {
       await this.$axios
-        .post(`${API_URL}/auth/register`, {
+        .post(`${process.env.URL}/auth/register`, {
           surname: this.form.surname,
           email: this.form.email,
           password: this.form.password,
