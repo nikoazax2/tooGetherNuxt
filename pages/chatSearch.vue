@@ -17,160 +17,10 @@
       />
     </div>
 
-    <v-card class="titrecard" to="/">
-      <v-card-title>T o o G e t h e r</v-card-title>
-      <v-card-text
-        >Faites des rencontres en faisant ce que vous aimez</v-card-text
-      >
-    </v-card>
+    <v-card class="titrecard" to="/"> </v-card>
 
-    <div class="barrederecherchecontainer">
-      <div class="barrederecherche">
-        <div>
-          <img class="pastille" src="@/assets/pastille.svg" alt="pastille" />
-          <input
-            id="inputrechercheevent"
-            class="activity"
-            type="text"
-            :placeholder="placehorlderRecherche.nom"
-            v-model="form.name"
-          />
-        </div>
-        <div>
-          <img class="pastille" src="@/assets/pastille.svg" alt="pastille" />
-          <input
-            class="endroit"
-            id="inputrechercheevent"
-            type="text"
-            :placeholder="placehorlderRecherche.lieux"
-            v-model="form.lieux"
-          />
-        </div>
-        <div>
-          <img class="pastille" src="@/assets/pastille.svg" alt="pastille" />
-          <input
-            class="date"
-            id="inputrechercheevent"
-            type="text"
-            :placeholder="placehorlderRecherche.date"
-            v-model="form.date"
-          />
-        </div>
-        <v-btn
-          @click="gotorecherche"
-          id="btncreereventredinterieurrecherche"
-          color="accent"
-          elevation="2"
-          rounded
-          small
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="7.582"
-            height="12.519"
-            viewBox="0 0 7.582 12.519"
-          >
-            <path
-              id="Tracé_11"
-              data-name="Tracé 11"
-              d="M26.582,16.758v0a.82.82,0,0,0-.252-.592h0l-4.937-4.937,0,0a.822.822,0,1,0-1.105,1.218L24.6,16.758,20.23,21.125h0a.823.823,0,0,0,1.163,1.163h0l4.937-4.937h0a.82.82,0,0,0,.252-.592Z"
-              transform="translate(-19.5 -10.5)"
-              fill="#fff"
-              stroke="#fff"
-              stroke-width="1"
-            />
-          </svg>
-        </v-btn>
-      </div>
-    </div>
+    <div>a</div>
 
-    <div class="conteneurEvents" v-if="listeEvents.length > 0 && !chargement">
-      <div v-for="item in listeEvents" :key="item.id" class="conteneurevent">
-        <div @click="gotodetail(item)" id="caseact" class="casenomdate">
-          <code
-            class="emojidelevent jump"
-            v-html="'<p >&\#x1F' + item.emoji + ';</p>'"
-          >
-          </code>
-
-          <p class="titredelevent">{{ item.name.toUpperCase() }}</p>
-          <p class="titredelevent dateheure">
-            {{ formatDate(item.date) }}
-          </p>
-          <!-- <p class="datedelevent">
-            le {{ item.datereformattee.toUpperCase() }} à
-            {{ item.data.hour.toUpperCase() }}
-          </p> -->
-        </div>
-        <div @click="gotodetail(item)" id="caseact" class="caselieux">
-          <div class="lacarte">
-            <MglMap
-              :zoom="13"
-              :center="item.coordlieux"
-              :accessToken="accessToken"
-              :mapStyle.sync="mapStyle"
-            >
-              <MglMarker
-                :coordinates="[item.coordlieux[0], item.coordlieux[1]]"
-              >
-                <div
-                  @click="clickeventmap(event)"
-                  slot="marker"
-                  class=" marker"
-                >
-                  <code
-                    class="emojiMap"
-                    v-html="'<p>&\#x1F' + item.emoji + ';</p>'"
-                  ></code>
-                </div>
-              </MglMarker>
-            </MglMap>
-          </div>
-          <!-- <div class="titreLieux">{{ item.lieux }}</div> -->
-        </div>
-        <div @click="gotodetail(item)" id="caseact" class="caseparticipants">
-          <p class="titredelevent">PARTICIPANTS</p>
-          <div class="conteneurAvatar">
-            <div
-              class="sousconteneuravatar"
-              v-for="user in item.users"
-              :key="user.id"
-            >
-              <v-img
-                class="avatar elevation-6"
-                alt=""
-                :src="user.avatar"
-              ></v-img>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="lesbtncreereveent"
-      v-if="listeEvents.length == 0 && !chargement"
-    >
-      <div class="aucunevent ">
-        Aucune activité ne correspond à ta recherche :(
-      </div>
-      <div class="aucunevent  ">
-        Pas de panique, tu peux
-      </div>
-      <v-btn
-        color="accent"
-        id="btncreerevent"
-        elevation="4"
-        raised
-        rounded
-        text
-        @click="gotoCreationEvenet"
-      >
-        CREER UNE ACTIVITÉ
-      </v-btn>
-      <div class="aucunevent">
-        ou en chercher un autre !
-      </div>
-    </div>
     <div class="chargement" v-if="chargement">
       <v-progress-circular
         indeterminate
@@ -194,51 +44,7 @@ export default {
   created: function() {},
   data: function() {
     return {
-      accessToken:
-        "pk.eyJ1Ijoibmlrb2F6YXgyIiwiYSI6ImNrdjZodng1ODA0cHIycHF1NDkzejRrbDgifQ.jBzUp1BXIVGbZWrQXrtbKQ", // your access token. Needed if you using Mapbox maps
-      mapStyle: "mapbox://styles/mapbox/streets-v11", // your map style
-
-      chargement: false,
-
-      rotation: 0,
-      geolocPosition: undefined,
-
-      drawer: false,
-      group: null,
-      act: ["slt", "lol"],
-      form: {
-        name: "",
-        lieux: "",
-        date: ""
-      },
-      lesParticipants: [],
-      listeEvents: [],
-      error: null,
-      placehorlderRechercheListe: {
-        nom: [
-          "Jouer au foot",
-          "Faire un basket",
-          "Aller au cinéma",
-          "Boire une bière"
-        ],
-        lieux: [
-          "à Grenoble",
-          "à Lyon",
-          "à Paris",
-          "à Montpellier",
-          "à Metz",
-          "à Marseille",
-          "à Toulouse",
-          "à Montpellier",
-          "à Nantes",
-          "à Nice"
-        ]
-      },
-      placehorlderRecherche: {
-        nom: "Aller au cinéma",
-        lieux: "à Grenoble",
-        date: ""
-      }
+      chargement: false
     };
   },
   components: {
@@ -248,114 +54,13 @@ export default {
     lefooter: lefooter
   },
   methods: {
-    gotoCreationEvenet() {
-      if (this.$auth.user) {
-        this.$router.push({
-          path: "/creationevent"
-        });
-      } else {
-        this.$router.push({
-          path: "/login"
-        });
-      }
-    },
-    formatDate(ladateheure) {
-      var heure = ladateheure.split(",")[1];
-      var ladate = ladateheure.split(",")[0];
-      var date = new Date(ladate);
-      var month = date.getMonth() + 1;
-      return (
-        "le " +
-        date.getDate() +
-        "/" +
-        month +
-        "/" +
-        date.getFullYear() +
-        " à " +
-        heure
-      );
-    },
-    gotorecherche() {
-      var laQuery = {};
-      if (this.form.name) {
-        laQuery.formname = this.form.name;
-      }
-      if (this.form.lieux) {
-        laQuery.formlieux = this.form.lieux;
-      }
-      if (this.form.date) {
-        laQuery.formdate = this.form.date;
-      }
-      this.$router.push({
-        path: "/recherchevent/",
-        query: laQuery
-      });
-      setTimeout(() => {
-        this.Read();
-        var ladate = new Date();
-        var datemonth = ladate.getMonth() + 1;
-
-        this.placehorlderRecherche.date =
-          ladate.getDate() + "/" + datemonth + "/" + ladate.getFullYear();
-      }, 100);
-    },
-    gotodetail(item) {
-      this.$router.push({ path: "/event-detail/", query: { id: item.id } });
-    },
-    placeholderChangement(liste, placeholder, day, month) {
-      setTimeout(() => {
-        var random = Math.floor(Math.random() * liste.nom.length);
-        placeholder.nom = liste.nom[random];
-
-        var randomlieux = Math.floor(Math.random() * liste.lieux.length);
-        placeholder.lieux = liste.lieux[randomlieux];
-
-        placeholder.date = day + "/" + month;
-
-        if (day < 30) day++;
-        else {
-          month = month + 1;
-          day = 1;
-        }
-
-        if (month > 12) {
-          month = 0;
-        }
-
-        this.placeholderChangement(liste, placeholder, day, month);
-      }, 3000);
-    },
-
     async Read() {
       this.chargement = true;
-      var queryParamName = "";
-      if (this.$route.query.formname) {
-        queryParamName = queryParamName + "/" + this.$route.query.formname;
-      } else {
-        queryParamName = queryParamName + "/null";
-      }
-      if (this.$route.query.formlieux) {
-        queryParamName = queryParamName + "/" + this.$route.query.formlieux;
-      } else {
-        queryParamName = queryParamName + "/null";
-      }
-      if (this.$route.query.formdate) {
-        queryParamName =
-          queryParamName +
-          "/" +
-          this.$route.query.formdate.replaceAll("/", ":");
-      } else {
-        queryParamName = queryParamName + "/null";
-      }
+
       let res = await this.$axios.get(
-        "/activities" + queryParamName + "/recherche"
+        "/chats/" + this.$auth.$state.user.id + "/chatList"
       );
-      this.listeEvents = res.data;
-      this.listeEvents.forEach(element => {
-        var coord = JSON.parse(element.coordlieux);
-        element.coordlieux = [coord.lng, coord.lat];
-      });
-      console.log(this.listeEvents);
+
       this.chargement = false;
     }
   },
@@ -366,11 +71,6 @@ export default {
   },
   mounted() {
     this.Read();
-    var ladate = new Date();
-    var datemonth = ladate.getMonth() + 1;
-
-    this.placehorlderRecherche.date =
-      ladate.getDate() + "/" + datemonth + "/" + ladate.getFullYear();
   }
 };
 </script>
@@ -398,7 +98,7 @@ export default {
     height: auto;
   }
   #degoulinerecherche {
-    margin-top: -10%;
+    margin-top: -27%;
     width: 100%;
     position: absolute;
   }
@@ -607,11 +307,6 @@ export default {
     margin-top: 15%;
     overflow-y: scroll;
     height: 72vh;
-  }
-  #degoulinerecherche {
-    margin-top: -5%;
-    width: 100%;
-    position: absolute;
   }
   .conteneurplanet {
     margin-top: -10% !important;
