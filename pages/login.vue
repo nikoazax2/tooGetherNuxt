@@ -126,7 +126,7 @@ export default {
         });
         this.$router.push("/");
       } catch (err) {
-        if (err.toString().includes("401")) {
+        if (err) {
           this.errorAuth = true;
         }
       }
