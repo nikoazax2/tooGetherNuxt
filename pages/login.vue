@@ -7,30 +7,6 @@
       rel="stylesheet"
     />
     <!-- ------------------------------------------HEADER-------------------------------------------- -->
-    <v-navigation-drawer v-model="drawer" absolute left temporary>
-      <v-list nav dense>
-        <v-list-item-group
-          v-model="group"
-          active-class="deep-purple--text text--accent-4"
-        >
-          <v-list-item>
-            <v-list-item-title>Alertes</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-title>Mes activités</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-title>Mes amis</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-title>Paramètres</v-list-item-title>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
-    </v-navigation-drawer>
     <degouline v-if="true" id="degoulinelogin"></degouline>
     <headere></headere>
     <img

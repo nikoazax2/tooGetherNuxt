@@ -1,0 +1,207 @@
+<template>
+  <div class="vueIndex" @click="menunotif = false">
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- ------------------------------------------HEADER-------------------------------------------- -->
+
+    <degouline v-if="true" id="degouline"></degouline>
+    <img
+      class="planetquitourne"
+      style="position: absolute"
+      src="@/assets/planetquitournerouge.gif"
+    />
+    <div v-if="!chargement" class="contenu-vue">
+      <div class="avatarreate-container">
+        <div class="avatarreate">
+          <v-img
+            class="elevation-6 imgavataracceuil"
+            alt=""
+            :src="$auth.user.avatar"
+          ></v-img>
+        </div>
+      </div>
+      <div class="info-container">
+        <div class="infos">{{ user.surname }}</div>
+      </div>
+      <div class="btn-countainer">
+        <div class="btn-ami">
+          <v-icon color="white" small> mdi-plus </v-icon> ajouter
+        </div>
+        <div class="btn-mess">
+          <v-icon color="white" small> mdi-message-outline </v-icon> message
+        </div>
+      </div>
+    </div>
+    <div class="chargement" v-if="chargement">
+      <v-progress-circular
+        indeterminate
+        width="7"
+        size="70"
+        color="#e92626"
+      ></v-progress-circular>
+    </div>
+    <lefooter></lefooter>
+  </div>
+</template>
+
+<script>
+import degouline from "@/components/degoulinerouge";
+import lefooter from "@/components/footer";
+import fileEmoji from "../assets/emoji.json";
+
+export default {
+  name: "App",
+  computed: {},
+  mounted: function() {
+    this.getUser();
+  },
+  data: function() {
+    return {
+      chargement: true,
+      user: null
+    };
+  },
+  components: {
+    degouline: degouline,
+    lefooter: lefooter
+  },
+  methods: {
+    async getUser() {
+      this.chargement = true;
+      let userData = await this.$axios.get(
+        "users/profile/" + this.$route.query.id
+      );
+      this.user = userData.data;
+      console.log(this.user);
+      this.chargement = false;
+    },
+
+    async signOut() {
+      try {
+        await this.$auth.logout();
+      } catch (error) {
+      } finally {
+        this.$router.push("/");
+        document.location.reload();
+      }
+    }
+  },
+  watch: {}
+};
+</script>
+
+<style lang="scss">
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap");
+* {
+  font-family: "Noto Sans", sans-serif;
+}
+html {
+  overflow: hidden;
+}
+.vueIndex {
+  #app {
+    position: relative;
+    height: 100vh;
+  }
+  body {
+    overflow: hidden;
+  }
+  #degouline > svg {
+    width: 100%;
+    height: auto;
+  }
+  #degouline {
+    width: 100%;
+    position: absolute;
+  }
+  .contenu-vue {
+    padding-top: 2vh;
+    .avatarreate-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      .avatarreate {
+        width: 40vw;
+      }
+    }
+    .info-container {
+      position: absolute;
+      z-index: 1;
+      width: 100vw;
+      text-align: center;
+      color: white;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+    .btn-countainer {
+      position: absolute;
+      z-index: 1;
+      width: 100vw;
+      text-align: center;
+      .btn-ami {
+        margin-right: 5px;
+      }
+      .btn-ami,
+      .btn-mess {
+        text-align: center;
+        display: inline-flex;
+        margin-top: 40px;
+        color: white;
+        font-size: 12px;
+        font-weight: 700;
+        border: 2px white solid;
+        border-radius: 15px;
+        padding: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+        i {
+          color: white;
+          margin-right: 5px;
+          font-size: 18px !important;
+        }
+      }
+      .btn-ami:hover,
+      .btn-mess:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+      }
+    }
+  }
+  .planetquitourne {
+    margin-top: 5%;
+    margin-left: -20%;
+    height: 20%;
+  }
+
+  .planetpersonacceuil {
+    margin-top: 50%;
+    margin-left: 10% !important;
+    width: 90%;
+    margin-left: auto;
+  }
+  .planetquitourneavecperso {
+    width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
+    bottom: 0;
+    vertical-align: bottom;
+  }
+  .planettournecontainer {
+    position: relative;
+    bottom: 0;
+    margin-top: 183vw;
+  }
+  .chargement {
+    text-align: center;
+    margin-left: 41vw;
+    margin-top: 61vh;
+    position: absolute;
+    height: 100%;
+  }
+}
+</style>

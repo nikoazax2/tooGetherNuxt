@@ -515,6 +515,7 @@ export default {
     margin: 5%;
     box-shadow: 0px 0px 16px -3px rgba(0, 0, 0, 0.25);
     .caselieux {
+      position: relative;
       border-radius: 15px !important;
       .emojiMap {
         font-size: 20px;

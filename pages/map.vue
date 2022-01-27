@@ -204,16 +204,8 @@ export default {
       var coord = JSON.parse(this.activity.coordlieux);
       this.activity.coordlieux = [coord.lng, coord.lat];
       this.coordinates = [coord.lng, coord.lat];
-      this.zoomAnimation();
     },
-    zoomAnimation() {
-      setTimeout(() => {
-        if (this.zoom < 10) {
-          this.zoom = this.zoom + 1;
-        }
-        this.zoomAnimation();
-      }, 10);
-    },
+
     async getActivity() {
       this.chargement = true;
 

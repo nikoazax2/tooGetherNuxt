@@ -35,7 +35,7 @@
       >
         CREER UNE ACTIVITÉ
         <v-btn
-          id="btncreereventredinterieur"
+          id="btncreereventredinterieur btncreeract"
           color="accent"
           elevation="2"
           rounded
@@ -279,6 +279,9 @@ button {
   display: flex;
   width: 100%;
   justify-content: space-evenly;
+}
+#btncreeract > .v-btn__content {
+  padding: 0 !important;
 }
 .titrecarduserheader {
   margin-top: -10%;

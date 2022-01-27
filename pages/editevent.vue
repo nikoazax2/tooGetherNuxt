@@ -261,7 +261,41 @@
           </v-btn>
         </div>
       </div>
+      <div @click="dialogSupp = true" class="form-group row mb-0">
+        <div class="col-md-8 offset-md-4 btnsuppevent">
+          Supprimer l'évènement
+        </div>
+      </div>
     </form>
+
+    <v-dialog v-model="dialogSupp" max-width="290">
+      <v-card>
+        <v-card-title class="text-h5 titre-supp">
+          Supprimer l'évènement ?
+        </v-card-title>
+
+        <v-card-text class="text-supp">
+          L'évènement ne sera plus jamais accessible pour vous et les
+          participants. Vous pourrez tout de même le recréer.
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="green darken-1" text @click="dialogSupp = false">
+            Annuler
+          </v-btn>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="(dialogSupp = false), deleteEvent()"
+          >
+            Supprimer
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -301,6 +335,7 @@ export default {
       drawer: false,
       group: null,
       act: ["slt", "lol"],
+      dialogSupp: false,
       form: {
         name: "",
         lieux: "",
@@ -361,6 +396,7 @@ export default {
         this.pasToutRemplis = true;
       }
     },
+
     async deleteEvent() {
       try {
         await this.$axios
@@ -408,6 +444,13 @@ export default {
   height: 100vh;
 }
 .vueeditevent {
+  .titre-supp {
+    font-size: 18px !important;
+    white-space: nowrap;
+  }
+  .text-supp {
+    text-align: justify;
+  }
   body {
     overflow: hidden;
   }
@@ -497,6 +540,16 @@ export default {
     div {
       padding: 0 !important;
     }
+  }
+  .btnsuppevent {
+    color: grey;
+    width: 100%;
+    height: 5%;
+    position: absolute;
+    bottom: 0 !important;
+    text-align: center;
+    padding: 0;
+    margin: 0;
   }
   .btnajouteneventsupp {
     background-color: white;

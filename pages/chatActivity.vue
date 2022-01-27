@@ -21,12 +21,13 @@
           class="emojiNotif jump"
           v-html="'<p>&\#x1F' + activity.activity_emoji + ';</p>'"
         >
-        </code>
+        </code
+        ><br />
         {{ activity.activity_name }}
       </v-card>
     </div>
-    <div class="containerbody">
-      <div class="body" v-if="!chargement && !aucunMess">
+    <div class="containerbody" v-if="!chargement && !aucunMess">
+      <div class="body">
         <div class="messages">
           <div
             class="containermessage"
@@ -66,13 +67,13 @@
             </div>
           </div>
         </div>
-        <div class="inputmessage">
-          <v-text-field v-model="messageInput" class="textfield" outlined>
-            <template v-slot:append>
-              <div @click.stop @click="envoiMessage">ENVOYER</div>
-            </template></v-text-field
-          >
-        </div>
+      </div>
+      <div class="inputmessage">
+        <v-text-field v-model="messageInput" class="textfield" outlined>
+          <template v-slot:append>
+            <div @click.stop @click="envoiMessage">ENVOYER</div>
+          </template></v-text-field
+        >
       </div>
     </div>
     <div class="body bodyNomess" v-if="!chargement && aucunMess">
@@ -124,21 +125,22 @@ export default {
   },
   methods: {
     async envoiMessage() {
-      console.log("test");
-      await this.$axios
-        .post(`${process.env.URL}/chats`, {
-          userId: this.$auth.$state.user.id,
-          message: this.messageInput,
-          date: new Date(),
-          activityId: this.$route.params.id
-        })
-        .then(response => {
-          if (response.status == 201) {
-            this.messageInput = "";
-            this.Read();
-            console.log("inséré");
-          }
-        });
+      if (this.messageInput != "") {
+        await this.$axios
+          .post(`${process.env.URL}/chats`, {
+            userId: this.$auth.$state.user.id,
+            message: this.messageInput,
+            date: new Date(),
+            activityId: this.$route.params.id
+          })
+          .then(response => {
+            if (response.status == 201) {
+              this.messageInput = "";
+              this.Read();
+              console.log("inséré");
+            }
+          });
+      }
     },
     async Read() {
       this.chargement = true;
@@ -177,13 +179,15 @@ export default {
   height: 100vh;
 }
 .chat {
+  height: 100vh !important;
   .containerbody {
-    height: 100vh;
+    height: 100vh !important;
     flex-direction: column-reverse;
     display: flex;
     padding-bottom: 74px;
   }
   body {
+    height: 100%;
     overflow: hidden;
   }
   .marker {
@@ -196,12 +200,15 @@ export default {
     height: auto;
   }
   #degoulinerecherche {
-    margin-top: -10%;
+    z-index: 1;
+    margin-top: -20%;
     width: 100%;
     position: absolute;
   }
   .conteneurplanet {
     margin-top: -10% !important;
+    z-index: 1000;
+    position: absolute;
   }
 
   .conteneurplanet {
@@ -223,11 +230,12 @@ export default {
     background-color: transparent !important;
     box-shadow: unset !important;
     text-align: center;
-
+    color: white;
+    font-weight: 700;
     .v-card__title {
       font-weight: 700;
       justify-content: center;
-      color: white;
+
       padding-bottom: 0 !important;
       font-size: 25px;
     }
@@ -264,15 +272,16 @@ export default {
     }
   }
   .body {
-    height: 74vh;
+    padding-top: 50px;
+    height: 75vh;
     width: 100vw;
     padding-left: 10px;
     padding-right: 10px;
     display: flex;
     flex-direction: column-reverse;
     position: absolute;
-    z-index: -10;
     overflow-y: scroll;
+    margin-bottom: 30px;
     .chat {
       height: 100%;
     }

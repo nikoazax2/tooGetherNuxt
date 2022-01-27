@@ -73,7 +73,7 @@
                 <code v-html="'<p>&\#x1F' + emojiSelected + ';</p>'"> </code>
               </v-btn>
             </template>
-            <div @click.stop>
+            <div class="menu" @click.stop>
               <v-tabs centered icons-and-text>
                 <v-tabs-slider></v-tabs-slider>
                 <v-tab class="activity">
@@ -682,6 +682,21 @@ export default {
     height: 40%;
     background-color: white;
     max-width: 90% !important;
+    overflow-y: hidden;
+    .v-tabs-slider-wrapper {
+      height: 0 !important;
+      border-top: 2px solid black;
+    }
+    .menu {
+      height: 100%;
+    }
+    .v-tabs {
+      height: 100%;
+    }
+    .v-window {
+      height: 80%;
+      overflow-y: scroll;
+    }
     .listEmojis {
       display: flex;
       flex-flow: wrap;

@@ -14,6 +14,9 @@
           active-class="deep-purple--text text--accent-4"
         >
           <v-list-item v-if="$auth.user">
+            <v-list-item-title @click="gotoprofile">Profil</v-list-item-title>
+          </v-list-item>
+          <v-list-item v-if="$auth.user">
             <v-list-item-title @click.prevent="signOut"
               >Déconnexion</v-list-item-title
             >
@@ -114,6 +117,7 @@
             <div v-if="listeEventsUser.length > 0">
               <div
                 class="event"
+                :class="{ activityPassed: activity.passed }"
                 v-for="(activity, index) in listeEventsUser"
                 :key="activity.id"
               >
@@ -125,7 +129,9 @@
                 <div class="contenuNotif">
                   <div class="nom">{{ activity.name }}</div>
                   <div class="lieux">{{ activity.lieux }}</div>
-                  <div class="date">{{ formatDate(activity.date) }}</div>
+                  <div class="date">
+                    {{ formatDate(activity.date, activity) }}
+                  </div>
                 </div>
                 <div class="iconmessage">
                   <div @click="gotochat(activity)">
@@ -140,7 +146,6 @@
                 Inscrit toi à une activité !
               </div>
             </div>
-            <br />
           </div>
         </div>
       </div>
@@ -175,8 +180,8 @@
     <v-card class="titrecard">
       <v-card-title>T o o G e t h e r</v-card-title>
       <v-card-text
-        >Faites des rencontres en faisant ce que vous aimez test</v-card-text
-      >
+        >Faites des rencontres en faisant ce que vous aimez
+      </v-card-text>
     </v-card>
     <div class="barrederecherchecontainer">
       <div class="barrederecherche">
@@ -343,21 +348,65 @@ export default {
     lefooter: lefooter
   },
   methods: {
-    formatDate(ladateheure) {
+    gotoprofile() {
+      this.$router.push({
+        path: "/profile/",
+        query: { id: this.$auth.user.id }
+      });
+    },
+    formatDate(ladateheure, activity) {
+      this.menunotif = false;
       var heure = ladateheure.split(",")[1];
       var ladate = ladateheure.split(",")[0];
       var date = new Date(ladate);
-      var month = date.getMonth() + 1;
-      return (
-        "le " +
-        date.getDate() +
-        "/" +
-        month +
-        "/" +
-        date.getFullYear() +
-        " à " +
-        heure
-      );
+      var month = (date.getMonth() + 1).toString();
+      month.length == 1 ? (month = "0" + month) : "";
+      var dateToday = new Date();
+      date.setHours(heure.split(":")[0], heure.split(":")[1], 0);
+      var leretour = "";
+
+      //max après demain minuit
+      let afterTomorrow = new Date();
+      afterTomorrow.setDate(dateToday.getDate() + 2);
+      afterTomorrow.setHours(0, 0, 1);
+      //max  demain minuit
+      let tomorrow = new Date();
+      tomorrow.setDate(dateToday.getDate() + 1);
+      tomorrow.setHours(0, 0, 1);
+      //max  aujourdhui minuit
+      let today = new Date();
+      today.setDate(dateToday.getDate());
+      //max  hier minuit
+      let yesterday = new Date();
+      yesterday.setDate(dateToday.getDate() - 1);
+      yesterday.setHours(0, 0, 1);
+
+      let minutes = date.getMinutes().toString();
+      minutes.length == 1 ? (minutes = "0" + minutes) : "";
+
+      if (date > afterTomorrow) {
+        leretour = `Le ${date.getDate()}/${month}/${date.getFullYear()} à ${date.getHours()}h${minutes}`;
+      }
+      if (date < afterTomorrow && date > tomorrow) {
+        leretour = `Demain à ${date.getHours()}h${minutes}`;
+      }
+      if (date < tomorrow && date > today && date > dateToday) {
+        leretour = `Aujourd'hui à ${date.getHours()}h${minutes}`;
+      }
+      if (date > today && date < dateToday) {
+        leretour = `Passé aujourd'hui à ${date.getHours()}h${minutes}`;
+        activity.passed = true;
+      }
+      if (date < today && date > yesterday) {
+        leretour = `Passé hier à ${date.getHours()}h${minutes}`;
+        activity.passed = true;
+      }
+      if (date < today && date < yesterday) {
+        leretour = `Passé le ${date.getDate()}/${month}/${date.getFullYear()} à ${date.getHours()}h${minutes}`;
+        activity.passed = true;
+      }
+      this.menunotif = true;
+      return leretour;
     },
     getEmojis() {
       console.log(fileEmoji.Activities);
@@ -370,6 +419,11 @@ export default {
         );
 
         this.listeEventsUser = eventuser.data;
+        eventuser.data.sort(function(a, b) {
+          // Turn your strings into dates, and then subtract them
+          // to get a value that is either negative, positive, or zero.
+          return new Date(b.date) - new Date(a.date);
+        });
 
         this.listeEventsUser.forEach(element => {
           var coord = JSON.parse(element.coordlieux);
@@ -818,6 +872,9 @@ html {
     width: 100vw;
     position: absolute;
     margin-top: 40px;
+    .activityPassed {
+      opacity: 0.3;
+    }
     .popupnotifcontainer {
       padding: 15px;
       border-radius: 15px;
@@ -844,14 +901,15 @@ html {
             white-space: nowrap;
           }
           .lieux {
+            width: fit-content;
             font-size: 12px;
-            white-space: nowrap;
+            white-space: normal !important;
           }
           .date {
             font-weight: bold;
             color: #e92626;
             font-size: 12px;
-            white-space: nowrap;
+            white-space: nowrap !important;
           }
         }
         .iconmessage {

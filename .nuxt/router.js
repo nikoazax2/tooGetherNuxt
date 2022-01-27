@@ -7,7 +7,6 @@ import scrollBehavior from './router.scrollBehavior.js'
 const _5a04c194 = () => interopDefault(import('..\\pages\\chatActivity.vue' /* webpackChunkName: "pages/chatActivity" */))
 const _134f9226 = () => interopDefault(import('..\\pages\\chatSearch.vue' /* webpackChunkName: "pages/chatSearch" */))
 const _2ed48ade = () => interopDefault(import('..\\pages\\creationevent.vue' /* webpackChunkName: "pages/creationevent" */))
-const _062b8718 = () => interopDefault(import('..\\pages\\creationevent backup.vue' /* webpackChunkName: "pages/creationevent backup" */))
 const _60710cda = () => interopDefault(import('..\\pages\\editevent.vue' /* webpackChunkName: "pages/editevent" */))
 const _10cbf11e = () => interopDefault(import('..\\pages\\event-detail.vue' /* webpackChunkName: "pages/event-detail" */))
 const _6f3d5a34 = () => interopDefault(import('..\\pages\\events.vue' /* webpackChunkName: "pages/events" */))
@@ -15,6 +14,7 @@ const _2a62072c = () => interopDefault(import('..\\pages\\login.vue' /* webpackC
 const _69e5fa5f = () => interopDefault(import('..\\pages\\map.vue' /* webpackChunkName: "pages/map" */))
 const _54388de1 = () => interopDefault(import('..\\pages\\mapbackup.vue' /* webpackChunkName: "pages/mapbackup" */))
 const _2c2f2052 = () => interopDefault(import('..\\pages\\myevents.vue' /* webpackChunkName: "pages/myevents" */))
+const _1529c2ac = () => interopDefault(import('..\\pages\\profile.vue' /* webpackChunkName: "pages/profile" */))
 const _f64b431a = () => interopDefault(import('..\\pages\\recherchevent.vue' /* webpackChunkName: "pages/recherchevent" */))
 const _381c9ba0 = () => interopDefault(import('..\\pages\\register.vue' /* webpackChunkName: "pages/register" */))
 const _60ba6415 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages/index" */))
@@ -42,10 +42,6 @@ export const routerOptions = {
     path: "/creationevent",
     component: _2ed48ade,
     name: "creationevent"
-  }, {
-    path: "/creationevent%20backup",
-    component: _062b8718,
-    name: "creationevent backup"
   }, {
     path: "/editevent",
     component: _60710cda,
@@ -75,6 +71,10 @@ export const routerOptions = {
     component: _2c2f2052,
     name: "myevents"
   }, {
+    path: "/profile",
+    component: _1529c2ac,
+    name: "profile"
+  }, {
     path: "/recherchevent",
     component: _f64b431a,
     name: "recherchevent"
@@ -94,6 +94,10 @@ export const routerOptions = {
     path: "/editevent/:id",
     component: _60710cda,
     name: "editevent"
+  }, {
+    path: "/profile/:id",
+    component: _1529c2ac,
+    name: "profile"
   }, {
     path: "/chatActivity/:id",
     component: _5a04c194,

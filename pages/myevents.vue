@@ -433,6 +433,7 @@ export default {
     margin: auto;
     width: 100%;
     margin-top: 20%;
+    overflow-y: scroll;
     .titleinsription {
       text-align: center;
       font-family: "Noto Sans", sans-serif !important;
