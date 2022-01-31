@@ -20,7 +20,7 @@
           <v-img
             class="elevation-6 imgavataracceuil"
             alt=""
-            :src="$auth.user.avatar"
+            :src="user.avatar"
           ></v-img>
         </div>
       </div>
@@ -28,12 +28,18 @@
         <div class="infos">{{ user.surname }}</div>
       </div>
       <div class="btn-countainer">
-        <div class="btn-ami">
-          <v-icon color="white" small> mdi-plus </v-icon> ajouter
+        <div class="btn-ami" v-if="!user.friend" @click="ajoutFriend()">
+          <v-icon color="white" small> mdi-plus </v-icon>
+          ajouter
         </div>
-        <div class="btn-mess">
+
+        <div class="btn-ami" v-if="user.friend">
+          <v-icon color="white" small> mdi-check </v-icon>
+          ami
+        </div>
+        <!--  <div class="btn-mess">
           <v-icon color="white" small> mdi-message-outline </v-icon> message
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="chargement" v-if="chargement">
@@ -70,12 +76,26 @@ export default {
     lefooter: lefooter
   },
   methods: {
+    async ajoutFriend() {
+      await this.$axios
+        .post(`${process.env.URL}/users/addFriend`, {
+          idUser: this.$auth.user.id,
+          idFriend: this.user.id
+        })
+        .then(response => {
+          if (response.status == 201) {
+            console.log("inséré");
+            this.getUser();
+          }
+        });
+    },
     async getUser() {
       this.chargement = true;
       let userData = await this.$axios.get(
-        "users/profile/" + this.$route.query.id
+        "users/profile/" + this.$route.query.id + "/" + this.$auth.user.id
       );
-      this.user = userData.data;
+      this.user = userData.data.profilUser;
+      this.user.friend = userData.data.friend;
       console.log(this.user);
       this.chargement = false;
     },

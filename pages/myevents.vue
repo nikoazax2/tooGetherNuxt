@@ -434,6 +434,7 @@ export default {
     width: 100%;
     margin-top: 20%;
     overflow-y: scroll;
+    height: 75vh;
     .titleinsription {
       text-align: center;
       font-family: "Noto Sans", sans-serif !important;
@@ -512,6 +513,7 @@ export default {
     width: 33%;
     height: 100%;
     text-align: center;
+    position: relative;
     .emojidelevent {
       font-size: 30px;
     }
