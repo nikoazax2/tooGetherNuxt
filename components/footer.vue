@@ -7,7 +7,7 @@
         @click="goto('/chatSearch')"
       >
         <v-icon>
-          mdi-message
+          mdi-account-group
         </v-icon>
       </div>
       <div
@@ -16,7 +16,7 @@
         @click="goto('/myevents')"
       >
         <v-icon>
-          mdi-account-group
+          mdi-account-cowboy-hat
         </v-icon>
       </div>
       <div

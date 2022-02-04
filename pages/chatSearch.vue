@@ -19,8 +19,6 @@
 
     <v-card class="titrecard" to="/"> </v-card>
 
-    <div>a</div>
-
     <div class="chargement" v-if="chargement">
       <v-progress-circular
         indeterminate
@@ -28,6 +26,30 @@
         size="70"
         color="#e92626"
       ></v-progress-circular>
+    </div>
+    <div class="containerdiv">
+      <div class="titreMyEvent" v-if="friends">{{ friends.length }} AMIS</div>
+      <div v-if="!chargement">
+        <div class="lesamis">
+          <div
+            @click="goToProfile(friend.id)"
+            class="ligneami"
+            v-for="friend in friends"
+            :key="friend.id"
+          >
+            <v-img
+              class="avatar elevation-6"
+              alt=""
+              :src="friend.avatar"
+            ></v-img>
+            <div class="nom">
+              {{
+                friend.surname.charAt(0).toUpperCase() + friend.surname.slice(1)
+              }}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <lefooter></lefooter>
   </div>
@@ -41,10 +63,16 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import lefooter from "@/components/footer";
 export default {
   name: "App",
-  created: function() {},
+  created: function() {
+    if (!this.$auth.user) {
+      this.$router.push({ path: "/login" });
+    }
+    this.Read();
+  },
   data: function() {
     return {
-      chargement: false
+      chargement: true,
+      friends: null
     };
   },
   components: {
@@ -54,12 +82,22 @@ export default {
     lefooter: lefooter
   },
   methods: {
+    goToProfile(id) {
+      this.$router.push({ path: "/profile/?id=" + id });
+    },
     async Read() {
       this.chargement = true;
+      if (this.$auth.user) {
+        let friendsData = await this.$axios.get(
+          "users/getFriends/" + this.$auth.user.id
+        );
 
-      let res = await this.$axios.get(
-        "/chats/" + this.$auth.$state.user.id + "/chatList"
-      );
+        this.friends = friendsData.data;
+
+        this.friends = this.friends.sort((a, b) =>
+          a.surname > b.surname ? 1 : b.surname > a.surname ? -1 : 0
+        );
+      }
 
       this.chargement = false;
     }
@@ -102,11 +140,63 @@ export default {
     width: 100%;
     position: absolute;
   }
+  .containerdiv {
+    margin: auto;
+    width: 100%;
+    margin-top: 20%;
+    overflow-y: scroll;
+    height: 75vh;
+    .lesamis {
+      width: 100%;
+      height: 70px;
+      .v-responsive__sizer {
+        padding: 0 !important;
+      }
+      .v-image {
+        flex: none;
+        width: 70px;
+      }
+      .nom {
+        align-items: center;
+        display: flex;
+        color: black;
+        font-size: 17px;
+        font-weight: 700;
+        margin-left: 10px;
+      }
+      .ligneami {
+        padding-bottom: 10px;
+        padding-left: 10px;
+        margin: 10px;
+        margin-bottom: 0;
+        box-shadow: 0px 0px 16px -3px rgb(0 0 0 / 25%);
+        border-radius: 15px;
+        width: 95%;
+        height: 80px;
+
+        display: inline-flex;
+        .v-image__image {
+          width: 65px;
+          height: 70px;
+        }
+      }
+    }
+    .titleinsription {
+      text-align: center;
+      font-family: "Noto Sans", sans-serif !important;
+    }
+  }
   .title {
     z-index: 1;
   }
   .conteneurplanet {
     width: 100%;
+  }
+  .titreMyEvent {
+    font-size: 18px;
+    text-align: center;
+    font-weight: 600 !important;
+    color: #e92626 !important;
   }
   .planetquitourneinscription {
     margin-top: -10% !important;

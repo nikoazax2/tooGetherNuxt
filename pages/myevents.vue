@@ -272,9 +272,9 @@
           <v-icon>mdi-account-cowboy-hat-outline</v-icon>
         </v-tab>
 
-        <v-tab @click="chargeAmis()" href="#amis">
+        <!--  <v-tab @click="chargeAmis()" href="#amis">
           <v-icon>mdi-account-supervisor</v-icon>
-        </v-tab>
+        </v-tab> -->
       </v-tabs>
     </div>
     <lefooter></lefooter>
@@ -288,7 +288,11 @@ import { MglMap, MglMarker } from "vue-mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 export default {
   name: "App",
-  created: function() {},
+  created: function() {
+    if (!this.$auth.user) {
+      this.$router.push({ path: "/login" });
+    }
+  },
   data: function() {
     return {
       accessToken:
@@ -314,9 +318,6 @@ export default {
     MglMarker
   },
   methods: {
-    goToProfile(id) {
-      this.$router.push({ path: "/profile/?id=" + id });
-    },
     gotoedit(id) {
       this.$router.push({ path: "/editevent/" + id });
     },
