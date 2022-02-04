@@ -94,7 +94,11 @@
           <div class="adresse">{{ activity.lieux }}</div>
           <v-card-actions>
             <div class="participantsliste" v-if="activity.users.length > 0">
-              <div v-for="users in activity.users" :key="users.id">
+              <div
+                @click="goToProfile(users.id)"
+                v-for="users in activity.users"
+                :key="users.id"
+              >
                 <div v-if="users.id != activity.creatorId">
                   <v-list-item-avatar color="grey darken-3">
                     <v-img
@@ -179,6 +183,9 @@ export default {
     lefooter: lefooter
   },
   methods: {
+    goToProfile(id) {
+      this.$router.push({ path: "/profile/?id=" + id });
+    },
     formatDate(ladate) {
       var date = new Date(ladate);
       var month = date.getMonth() + 1;

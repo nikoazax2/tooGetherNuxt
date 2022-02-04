@@ -2,21 +2,21 @@
   <div class="lefooter">
     <div class="conteneur">
       <div
-        class="myevents"
-        :class="{ selected: routePos == '/myevents' }"
-        @click="goto('/myevents')"
-      >
-        <v-icon>
-          mdi-account-group
-        </v-icon>
-      </div>
-      <div
         class="chatSearch"
         :class="{ selected: routePos == '/chatSearch' }"
         @click="goto('/chatSearch')"
       >
         <v-icon>
           mdi-message
+        </v-icon>
+      </div>
+      <div
+        class="myevents"
+        :class="{ selected: routePos == '/myevents' }"
+        @click="goto('/myevents')"
+      >
+        <v-icon>
+          mdi-account-group
         </v-icon>
       </div>
       <div

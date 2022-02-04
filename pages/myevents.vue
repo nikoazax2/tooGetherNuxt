@@ -24,14 +24,8 @@
       >
     </v-card>
     <div v-if="!chargement">
-      <div
-        class="containerdiv"
-        v-if="
-          $auth.user &&
-            (listeEventsCreator.length > 0 || listeEventsPaticipant.length > 0)
-        "
-      >
-        <div v-if="listeEventsCreator.length > 0">
+      <div class="containerdiv" v-if="tab == 'cree'">
+        <div>
           <div class="titreMyEvent">CREATEUR</div>
           <div>
             <div
@@ -80,75 +74,6 @@
                     </MglMap>
                   </div>
                 </div>
-                <!-- <div class="titreLieux">{{ item.lieux }}</div> -->
-              </div>
-              <div
-                @click="gotodetail(item)"
-                id="caseact"
-                class="caseparticipants"
-              >
-                <p class="titredelevent">PARTICIPANTS</p>
-                <div class="conteneurAvatar">
-                  <div
-                    class="sousconteneuravatar"
-                    v-for="user in item.users"
-                    :key="user.id"
-                  >
-                    <v-img
-                      class="avatar elevation-6"
-                      alt=""
-                      :src="user.avatar"
-                    ></v-img>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div v-if="listeEventsPaticipant.length > 0">
-          <div class="titreMyEvent">PARTICIPANT</div>
-          <div v-if="!chargement">
-            <div
-              v-for="item in listeEventsPaticipant"
-              :key="item.id"
-              class="conteneurevent"
-            >
-              <div @click="gotodetail(item)" id="caseact" class="casenomdate">
-                <code
-                  class="emojidelevent jump"
-                  v-html="'<p >&\#x1F' + item.emoji + ';</p>'"
-                >
-                </code>
-                <p class="titredelevent">{{ item.name.toUpperCase() }}</p>
-                <p class="titredelevent dateheure">
-                  {{ formatDate(item.date) }}
-                </p>
-              </div>
-              <div @click="gotodetail(item)" id="caseact" class="caselieux">
-                <div class="lacarte">
-                  <MglMap
-                    :zoom="13"
-                    :center="item.coordlieux"
-                    :accessToken="accessToken"
-                    :mapStyle.sync="mapStyle"
-                  >
-                    <MglMarker
-                      :coordinates="[item.coordlieux[0], item.coordlieux[1]]"
-                    >
-                      <div
-                        @click="clickeventmap(event)"
-                        slot="marker"
-                        class=" marker"
-                      >
-                        <code
-                          class="emojiMap"
-                          v-html="'<p>&\#x1F' + item.emoji + ';</p>'"
-                        ></code>
-                      </div>
-                    </MglMarker>
-                  </MglMap>
-                </div>
-                <!-- <div class="titreLieux">{{ item.lieux }}</div> -->
               </div>
               <div
                 @click="gotodetail(item)"
@@ -174,6 +99,99 @@
           </div>
         </div>
       </div>
+      <div class="containerdiv" v-if="tab == 'participe'">
+        <div class="titreMyEvent">PARTICIPANT</div>
+        <div v-if="!chargement">
+          <div
+            v-for="item in listeEventsPaticipant"
+            :key="item.id"
+            class="conteneurevent"
+          >
+            <div @click="gotodetail(item)" id="caseact" class="casenomdate">
+              <code
+                class="emojidelevent jump"
+                v-html="'<p >&\#x1F' + item.emoji + ';</p>'"
+              >
+              </code>
+              <p class="titredelevent">{{ item.name.toUpperCase() }}</p>
+              <p class="titredelevent dateheure">
+                {{ formatDate(item.date) }}
+              </p>
+            </div>
+            <div @click="gotodetail(item)" id="caseact" class="caselieux">
+              <div class="lacarte">
+                <MglMap
+                  :zoom="13"
+                  :center="item.coordlieux"
+                  :accessToken="accessToken"
+                  :mapStyle.sync="mapStyle"
+                >
+                  <MglMarker
+                    :coordinates="[item.coordlieux[0], item.coordlieux[1]]"
+                  >
+                    <div
+                      @click="clickeventmap(event)"
+                      slot="marker"
+                      class=" marker"
+                    >
+                      <code
+                        class="emojiMap"
+                        v-html="'<p>&\#x1F' + item.emoji + ';</p>'"
+                      ></code>
+                    </div>
+                  </MglMarker>
+                </MglMap>
+              </div>
+            </div>
+            <div
+              @click="gotodetail(item)"
+              id="caseact"
+              class="caseparticipants"
+            >
+              <p class="titredelevent">PARTICIPANTS</p>
+              <div class="conteneurAvatar">
+                <div
+                  class="sousconteneuravatar"
+                  v-for="user in item.users"
+                  :key="user.id"
+                >
+                  <v-img
+                    class="avatar elevation-6"
+                    alt=""
+                    :src="user.avatar"
+                  ></v-img>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="containerdiv" v-if="tab == 'amis'">
+        <div class="titreMyEvent">{{ friends.length }} AMIS</div>
+        <div v-if="!chargement">
+          <div class="lesamis">
+            <div
+              @click="goToProfile(friend.id)"
+              class="ligneami"
+              v-for="friend in friends"
+              :key="friend"
+            >
+              <v-img
+                class="avatar elevation-6"
+                alt=""
+                :src="friend.avatar"
+              ></v-img>
+              <div class="nom">
+                {{
+                  friend.surname.charAt(0).toUpperCase() +
+                    friend.surname.slice(1)
+                }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="containerdiv" v-if="!$auth.user">
         <div class="lesbtncreereveent">
           <div class="aucunevent">
@@ -238,6 +256,27 @@
         </div>
       </div>
     </div>
+    <div class="footermyevents">
+      <v-tabs
+        v-model="tab"
+        background-color="deep-purple accent-4"
+        centered
+        icons-and-text
+      >
+        <v-tabs-slider></v-tabs-slider>
+
+        <v-tab href="#cree">
+          <v-icon>mdi-account-cowboy-hat</v-icon>
+        </v-tab>
+        <v-tab href="#participe">
+          <v-icon>mdi-account-cowboy-hat-outline</v-icon>
+        </v-tab>
+
+        <v-tab @click="chargeAmis()" href="#amis">
+          <v-icon>mdi-account-supervisor</v-icon>
+        </v-tab>
+      </v-tabs>
+    </div>
     <lefooter></lefooter>
   </div>
 </template>
@@ -258,8 +297,10 @@ export default {
 
       rotation: 0,
       geolocPosition: undefined,
+      tab: null,
 
       chargement: true,
+      friends: null,
       drawer: false,
       group: null,
       listeEventsCreator: null,
@@ -273,6 +314,9 @@ export default {
     MglMarker
   },
   methods: {
+    goToProfile(id) {
+      this.$router.push({ path: "/profile/?id=" + id });
+    },
     gotoedit(id) {
       this.$router.push({ path: "/editevent/" + id });
     },
@@ -310,6 +354,22 @@ export default {
     },
     gotodetail(item) {
       this.$router.push({ path: "event-detail/", query: { id: item.id } });
+    },
+    async chargeAmis() {
+      this.chargement = true;
+      if (this.$auth.user) {
+        let friendsData = await this.$axios.get(
+          "users/getFriends/" + this.$auth.user.id
+        );
+
+        this.friends = friendsData.data;
+
+        this.friends = this.friends.sort((a, b) =>
+          a.surname > b.surname ? 1 : b.surname > a.surname ? -1 : 0
+        );
+      }
+
+      this.chargement = false;
     },
     async Read() {
       this.chargement = true;
@@ -361,6 +421,49 @@ export default {
 .vuemyevent {
   body {
     overflow: hidden;
+  }
+  .footermyevents {
+    z-index: 10;
+    position: absolute;
+    bottom: 0;
+    align-content: center;
+    margin-bottom: 45px;
+    width: 100vw;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    .v-slide-group__content {
+      background-color: rgba(255, 255, 255, 0);
+    }
+    .v-item-group {
+      background-color: grey;
+      border-radius: 15px;
+    }
+    i {
+      color: white !important;
+    }
+    .v-tabs-slider-wrapper {
+      display: flex;
+      justify-content: center;
+      .v-tabs-slider {
+        width: 50px !important;
+        color: white !important;
+      }
+    }
+    a {
+      padding: 0 !important;
+      border-radius: 15px;
+    }
+    .v-tabs--icons-and-text > .v-tabs-bar {
+      height: 40px;
+    }
+    .v-tabs {
+      align-items: center;
+      align-content: center;
+      display: flex;
+      justify-content: center;
+    }
   }
   .marker {
     width: 30px;
@@ -435,6 +538,41 @@ export default {
     margin-top: 20%;
     overflow-y: scroll;
     height: 75vh;
+    .lesamis {
+      width: 100%;
+      height: 70px;
+      .v-responsive__sizer {
+        padding: 0 !important;
+      }
+      .v-image {
+        flex: none;
+        width: 70px;
+      }
+      .nom {
+        align-items: center;
+        display: flex;
+        color: black;
+        font-size: 17px;
+        font-weight: 700;
+        margin-left: 10px;
+      }
+      .ligneami {
+        padding-bottom: 10px;
+        padding-left: 10px;
+        margin: 10px;
+        margin-bottom: 0;
+        box-shadow: 0px 0px 16px -3px rgb(0 0 0 / 25%);
+        border-radius: 15px;
+        width: 95%;
+        height: 80px;
+
+        display: inline-flex;
+        .v-image__image {
+          width: 65px;
+          height: 70px;
+        }
+      }
+    }
     .titleinsription {
       text-align: center;
       font-family: "Noto Sans", sans-serif !important;
