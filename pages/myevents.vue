@@ -52,7 +52,7 @@
                 <div>
                   <div class="lacarte">
                     <MglMap
-                      :zoom="13"
+                      :zoom="8"
                       :center="item.coordlieux"
                       :accessToken="accessToken"
                       :mapStyle.sync="mapStyle"
@@ -121,7 +121,7 @@
             <div @click="gotodetail(item)" id="caseact" class="caselieux">
               <div class="lacarte">
                 <MglMap
-                  :zoom="13"
+                  :zoom="8"
                   :center="item.coordlieux"
                   :accessToken="accessToken"
                   :mapStyle.sync="mapStyle"
