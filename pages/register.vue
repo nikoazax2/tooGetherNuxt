@@ -71,16 +71,16 @@
       <div v-if="!chargeimg" class="avatarreate">
         <v-img class="elevation-6 imgavatar" alt="" :src="srcavatar"></v-img>
       </div>
-      <div class="btnreg avatar">
-        <button @click="changeavatar" class="btn btn-primary ">
+      <div class="btnreg avatar" @click="changeavatar">
+        <button class="btn btn-primary ">
           Changer l'avatar
         </button>
       </div>
-      <div class="btnreg">
-        <button @click="submit" class="btn btn-primary">S'inscrire</button>
+      <div class="btnreg" @click="submit">
+        <button class="btn btn-primary">S'inscrire</button>
       </div>
-      <div class="btnreg creercompte">
-        <button @click="gotologin" class="btn btn-primary ">
+      <div class="btnreg creercompte" @click="gotologin">
+        <button class="btn btn-primary ">
           J'ai déjà un compte
         </button>
       </div>
