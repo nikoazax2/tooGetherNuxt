@@ -308,7 +308,7 @@
           <v-card-text class="pt-0 sliderNbMax">
             <div class="selecteurnbMax">
               <v-slider
-                max="20"
+                max="30"
                 min="2"
                 content-class="slider"
                 v-model="form.nbMax"
@@ -341,7 +341,7 @@ import fileEmoji from "../assets/emoji.json";
 
 // import firebase from "firebase";
 // const db = firebase.firestore();
-const API_URL = "http://api.toogther.com/api";
+const API_URL = "http://dev-tgt.local:3001/api";
 export default {
   name: "App",
 

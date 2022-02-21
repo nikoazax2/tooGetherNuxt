@@ -52,7 +52,7 @@
       </div>
     </form>
     <p class="mdpforget " v-if="errorAuth">Erreur d'authentification</p>
-    <p class="mdpforget grey" v-if="errorAuth" @click="envoieMailRecup">
+    <p class="mdpforget grey" v-if="errorAuth">
       Mot de passe oublié
     </p>
     <div class="btnlogin" @click="submit">
@@ -69,7 +69,7 @@
 <script>
 import degouline from "@/components/degoulinerouge";
 import headere from "@/components/headerlogin";
-const API_URL = "http://api.toogther.com/api";
+const API_URL = "http://dev-tgt.local:3001/api";
 export default {
   name: "App",
   created: function() {},
@@ -91,7 +91,6 @@ export default {
     headere: headere
   },
   methods: {
-    envoieMailRecup() {},
     gotoslash() {
       this.$router.push("/");
     },

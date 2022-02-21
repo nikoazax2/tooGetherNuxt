@@ -36,10 +36,24 @@
         >
           <div class="avatarreate">
             <v-img
+              v-if="$auth.user.avatar"
               class="elevation-6 imgavataracceuil"
               alt=""
               :src="$auth.user.avatar"
             ></v-img>
+
+            <div
+              v-if="profileImageBlob && !$auth.user.avatar"
+              class="containercontainerPhoto"
+            >
+              <div class="containerPhoto">
+                <img
+                  class="profile-image"
+                  :src="'data:image/png;base64,' + profileImageBlob"
+                  alt=""
+                />
+              </div>
+            </div>
           </div>
           <div class="usernameuseracceuil">
             <p class="affichenomprenomuser">
@@ -293,13 +307,13 @@
 <script>
 import degouline from "@/components/degoulinerouge";
 import lefooter from "@/components/footer";
-import { mapGetters } from "vuex";
 import fileEmoji from "../assets/emoji.json";
 
 export default {
   name: "App",
   computed: {},
   mounted: function() {
+    this.awaitUser();
     console.log(process.env.URL);
     var d = new Date();
     var day = String(d.getDate()).padStart(2, "0");
@@ -322,9 +336,11 @@ export default {
         lieux: "",
         date: ""
       },
+      profileImage: null,
       recherche: { titre: "", lieux: "", date: "" },
       drawer: false,
       group: null,
+      profileImageBlob: null,
       act: ["slt", "lol"],
       placehorlderRechercheListe: {
         nom: [
@@ -348,6 +364,25 @@ export default {
     lefooter: lefooter
   },
   methods: {
+    async awaitUser() {
+      await this.$auth;
+      this.getProfileImage();
+    },
+    async getProfileImage() {
+      if (this.$auth.user) {
+        await this.$axios
+          .get("users/profileImage/" + this.$auth.user.profileImage, {
+            responseType: "arraybuffer"
+          })
+          .then(response => {
+            this.profileImageBlob = Buffer.from(
+              response.data,
+              "binary"
+            ).toString("base64");
+          });
+      }
+    },
+
     gotoprofile() {
       this.$router.push({
         path: "/profile/",
@@ -804,6 +839,24 @@ html {
     justify-content: center;
     .imgavataracceuil {
       width: 50px;
+    }
+    .containercontainerPhoto {
+      display: flex;
+      justify-content: center;
+
+      .profile-image {
+        position: relative;
+        object-fit: cover;
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+      }
+      .v-image {
+      }
+      .containerPhoto {
+        width: 40px;
+        height: 40px;
+      }
     }
     .usernameuseracceuil {
       margin-left: 10px;

@@ -24,6 +24,18 @@
           ></v-img>
         </div>
       </div>
+      <div
+        v-if="profileImageBlob && !$auth.user.avatar"
+        class="containercontainerPhoto"
+      >
+        <div class="containerPhoto">
+          <img
+            class="profile-image"
+            :src="'data:image/png;base64,' + profileImageBlob"
+            alt=""
+          />
+        </div>
+      </div>
       <div class="info-container">
         <div class="infos">{{ user.surname }}</div>
       </div>
@@ -68,7 +80,8 @@ export default {
   data: function() {
     return {
       chargement: true,
-      user: null
+      user: null,
+      profileImageBlob: null
     };
   },
   components: {
@@ -96,10 +109,23 @@ export default {
       );
       this.user = userData.data.profilUser;
       this.user.friend = userData.data.friend;
-      console.log(this.user);
+      this.getProfileImage();
       this.chargement = false;
     },
-
+    async getProfileImage() {
+      if (this.$auth.user) {
+        await this.$axios
+          .get("users/profileImage/" + this.$auth.user.profileImage, {
+            responseType: "arraybuffer"
+          })
+          .then(response => {
+            this.profileImageBlob = Buffer.from(
+              response.data,
+              "binary"
+            ).toString("base64");
+          });
+      }
+    },
     async signOut() {
       try {
         await this.$auth.logout();
@@ -196,6 +222,24 @@ html {
     margin-top: 5%;
     margin-left: -20%;
     height: 20%;
+  }
+  .containercontainerPhoto {
+    display: flex;
+    justify-content: center;
+
+    .profile-image {
+      position: relative;
+      object-fit: cover;
+      width: 150px;
+      height: 150px;
+      border-radius: 100%;
+    }
+    .v-image {
+    }
+    .containerPhoto {
+      width: 150px;
+      height: 150px;
+    }
   }
 
   .planetpersonacceuil {

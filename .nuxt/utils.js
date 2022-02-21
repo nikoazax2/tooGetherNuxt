@@ -200,7 +200,7 @@ export async function setContext (app, context) {
       payload: context.payload,
       error: context.error,
       base: app.router.options.base,
-      env: {"baseUrl":"http://localhost:3000","URL":"http://api.toogther.com/api"}
+      env: {"baseUrl":"http://localhost:3000","URL":"http://dev-tgt.local:3001/api"}
     }
     // Only set once
 

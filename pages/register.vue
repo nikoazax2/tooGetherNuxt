@@ -49,7 +49,6 @@
               required
               autofocus
               v-model="form.email"
-              @input="testexistmail"
             />
           </div>
         </div>
@@ -68,15 +67,55 @@
           </div>
         </div>
       </form>
-      <div v-if="!chargeimg" class="avatarreate">
+      <div class="choix-photo-ou-avatar">
+        <div class="btnreg avatar">
+          <v-file-input
+            @change="Preview_image"
+            :rules="[
+              value =>
+                !value ||
+                value.size < 2000000 ||
+                'La photo doit être de moins de 2MB !'
+            ]"
+            accept="image/png, image/jpeg, image/bmp"
+            prepend-icon="mdi-camera"
+            v-model="tempProfilePhoto"
+            label="Importer une photo"
+            @click="chooseAvatarOrProfile = 'photo'"
+          ></v-file-input>
+        </div>
+        <div class="ou">OU</div>
+        <div class="btnreg avatar" @click="changeavatar">
+          <button
+            class="btn btn-primary "
+            @click="
+              (chooseAvatarOrProfile = 'avatar'),
+                (tempProfilePhoto = null),
+                (form.profilePhoto = null),
+                (url = null)
+            "
+          >
+            Choisir un avatar
+          </button>
+        </div>
+      </div>
+      <div
+        v-if="chooseAvatarOrProfile == 'photo'"
+        class="containercontainerPhoto"
+      >
+        <div class="containerPhoto">
+          <v-img class="imgPhoto" :src="url"></v-img>
+        </div>
+      </div>
+      <div
+        v-if="!chargeimg && chooseAvatarOrProfile == 'avatar'"
+        class="avatarreate"
+      >
         <v-img class="elevation-6 imgavatar" alt="" :src="srcavatar"></v-img>
       </div>
-      <div class="btnreg avatar" @click="changeavatar">
-        <button class="btn btn-primary ">
-          Changer l'avatar
-        </button>
-      </div>
-      <div class="btnreg" @click="submit">
+      <div v-if="chargeimg" class="chargimg"></div>
+
+      <div class="btnreg" @click="submitPhoto">
         <button class="btn btn-primary">S'inscrire</button>
       </div>
       <div class="btnreg creercompte" @click="gotologin">
@@ -90,7 +129,7 @@
 
 <script>
 import degouline from "@/components/degoulinerouge";
-const API_URL = "http://api.toogther.com/api";
+const API_URL = "http://dev-tgt.local:3001/api";
 export default {
   name: "App",
   created: function() {
@@ -98,14 +137,18 @@ export default {
   },
   data: function() {
     return {
+      chooseAvatarOrProfile: "avatar",
       drawer: false,
+      tempProfilePhoto: [],
       group: null,
+      url: "",
       act: ["slt", "lol"],
       form: {
         surname: "",
         email: "",
         password: "",
-        avatar: ""
+        avatar: "",
+        profilePhoto: []
       },
       srcavatar:
         "https://avataaars.io/?accessoriesType=Prescription02&avatarStyle=Circle&clotheColor=Heather&clotheType=GraphicShirt&eyeType=Cry&eyebrowType=UnibrowNatural&facialHairColor=Brown&facialHairType=MoustacheMagnum&hairColor=Blonde&mouthType=Twinkle&skinColor=Pale&topType=NoHair",
@@ -281,13 +324,28 @@ export default {
           "ShortHairTheCaesarSidePart"
         ]
       },
-      chargeimg: false
+      chargeimg: false,
+      imageProfilRenvoyee: ""
     };
   },
   components: {
     degouline: degouline
   },
   methods: {
+    Preview_image() {
+      if (
+        this.tempProfilePhoto &&
+        this.tempProfilePhoto.type &&
+        "image/png image/jpeg image/bmp".includes(this.tempProfilePhoto.type)
+      ) {
+        this.form.profilePhoto = this.tempProfilePhoto;
+        console.log("profilephoto");
+        console.log(this.form.profilePhoto);
+        this.url = URL.createObjectURL(this.form.profilePhoto);
+      } else {
+        this.tempProfilePhoto = [];
+      }
+    },
     gotologin() {
       this.$router.push("/login");
     },
@@ -333,13 +391,34 @@ export default {
     async testexistmail() {
       let res = await this.$axios.get("/activities");
     },
+    async submitPhoto() {
+      if (this.chooseAvatarOrProfile == "photo") {
+        let formData = new FormData();
+        formData.append("file", this.form.profilePhoto);
+        console.log(formData);
+        await this.$axios
+          .post(`${process.env.URL}/users/profileImage`, formData)
+          .then(response => {
+            this.imageProfilRenvoyee = response.data.filename;
+            if (response.status === 201) {
+              this.submit();
+            }
+          });
+      } else {
+        this.submit();
+      }
+    },
     async submit() {
+      this.chooseAvatarOrProfile != "avatar"
+        ? (this.form.avatar = null)
+        : (this.imageProfilRenvoyee = null);
       await this.$axios
         .post(`${process.env.URL}/auth/register`, {
           surname: this.form.surname,
           email: this.form.email,
           password: this.form.password,
-          avatar: this.form.avatar
+          avatar: this.form.avatar,
+          profileImage: this.imageProfilRenvoyee
         })
         .then(response => {
           if (response.status === 201) {
@@ -378,6 +457,9 @@ export default {
 #app {
   position: relative;
   height: 100vh;
+}
+.theme--light.v-text-field > .v-input__control > .v-input__slot:before {
+  opacity: 0 !important;
 }
 .vueregister {
   body {
@@ -427,6 +509,31 @@ export default {
       font-size: 12px;
     }
   }
+  .outlined {
+    background-color: transparent !important;
+    border: 2px solid #65c9ff !important;
+  }
+  .avatar {
+    .v-input {
+      margin-top: -20px !important;
+      .v-input__prepend-outer {
+        display: none;
+      }
+      .v-label {
+        padding-left: 5%;
+        text-align: center;
+        width: 100%;
+        color: white;
+      }
+      .v-input__slot {
+        border-color: white !important;
+      }
+      .v-text-field__slot {
+        border: none;
+      }
+    }
+  }
+
   .rowregister {
     padding-left: 15px;
     padding-top: 0px;
@@ -438,11 +545,40 @@ export default {
       width: 97%;
     }
   }
+  .containercontainerPhoto {
+    display: flex;
+    justify-content: center;
+
+    .v-image__image {
+      width: 275px;
+      height: 275px;
+      border-radius: 100%;
+    }
+    .v-image {
+      height: 100%;
+    }
+    .containerPhoto {
+      width: 275px;
+      height: 275px;
+    }
+  }
+  .choix-photo-ou-avatar {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+    .ou {
+      display: flex;
+      align-items: center;
+      color: #65c9ff;
+      font-weight: 700;
+      font-family: "Noto Sans", sans-serif;
+    }
+  }
   .btnreg {
     text-align: center;
     padding-top: 10px;
     border-radius: 20px;
-    margin: 20px;
+    margin: 5px;
     height: 40px;
     background-color: #e92626;
     color: white;
@@ -450,8 +586,13 @@ export default {
     font-weight: 700;
   }
   .btnreg.avatar {
+    width: 45%;
     background-color: #65c9ff;
     box-shadow: 0px 0px 10px -3px rgb(101 201 255 / 50%);
+    label,
+    button {
+      font-size: 14px;
+    }
   }
   .btnreg.creercompte {
     background-color: white;
@@ -470,6 +611,9 @@ export default {
     margin-left: auto;
     margin-right: auto;
     width: fit-content;
+  }
+  .chargimg {
+    height: 275px;
   }
   .imgavatar {
     width: 100%;
