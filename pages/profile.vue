@@ -113,9 +113,9 @@ export default {
       this.chargement = false;
     },
     async getProfileImage() {
-      if (this.$auth.user) {
+      if (this.user.profileImage) {
         await this.$axios
-          .get("users/profileImage/" + this.$auth.user.profileImage, {
+          .get("users/profileImage/" + this.user.profileImage, {
             responseType: "arraybuffer"
           })
           .then(response => {

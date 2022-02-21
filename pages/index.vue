@@ -375,6 +375,7 @@ export default {
             responseType: "arraybuffer"
           })
           .then(response => {
+            console.log(response);
             this.profileImageBlob = Buffer.from(
               response.data,
               "binary"

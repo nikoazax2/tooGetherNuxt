@@ -128,6 +128,7 @@
           </div>
           <!-- <div class="titreLieux">{{ item.lieux }}</div> -->
         </div>
+
         <div @click="gotodetail(item)" id="caseact" class="caseparticipants">
           <p class="titredelevent">PARTICIPANTS</p>
           <div class="conteneurAvatar">
@@ -137,10 +138,20 @@
               :key="user.id"
             >
               <v-img
+                v-if="user.avatar"
                 class="avatar elevation-6"
                 alt=""
                 :src="user.avatar"
               ></v-img>
+              <div v-if="user.profileImageBlob" class="containercontainerPhoto">
+                <div class="containerPhoto">
+                  <img
+                    class="profile-image"
+                    :src="'data:image/png;base64,' + user.profileImageBlob"
+                    alt=""
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -351,12 +362,31 @@ export default {
         "/activities" + queryParamName + "/recherche"
       );
       this.listeEvents = res.data;
-      this.listeEvents.forEach(element => {
-        var coord = JSON.parse(element.coordlieux);
-        element.coordlieux = [coord.lng, coord.lat];
+      this.listeEvents.forEach(activity => {
+        activity.users.forEach(user => {
+          if (user.profileImage != null) {
+            this.getProfileImage(user);
+          }
+        });
+
+        var coord = JSON.parse(activity.coordlieux);
+        activity.coordlieux = [coord.lng, coord.lat];
       });
-      console.log(this.listeEvents);
-      this.chargement = false;
+      setTimeout(() => {
+        this.chargement = false;
+      }, 2000);
+    },
+    async getProfileImage(user) {
+      await this.$axios
+        .get("users/profileImage/" + user.profileImage, {
+          responseType: "arraybuffer"
+        })
+        .then(response => {
+          user.profileImageBlob = Buffer.from(response.data, "binary")
+            .toString("base64")
+            .replaceAll(" ", "");
+          console.log(user);
+        });
     }
   },
   watch: {
@@ -641,6 +671,25 @@ export default {
   }
   .avatar {
     width: 30px;
+  }
+  .containercontainerPhoto {
+    display: flex;
+    justify-content: center;
+    margin-top: 3px;
+
+    .profile-image {
+      position: relative;
+      object-fit: cover;
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+    }
+    .v-image {
+    }
+    .containerPhoto {
+      width: 30px;
+      height: 30px;
+    }
   }
   .conteneurAvatar {
     width: 100%;
