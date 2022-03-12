@@ -2,9 +2,11 @@
   <div class="lefooter">
     <div class="conteneur">
       <div
-        class="chatSearch"
-        :class="{ selected: routePos == '/chatSearch' }"
-        @click="goto('/chatSearch')"
+        class="friends"
+        :class="{
+          selected: routePos == '/friends' || routePos == '/profile/'
+        }"
+        @click="goto('/friends')"
       >
         <v-icon>
           mdi-account-group
@@ -63,6 +65,7 @@ export default {
   },
   mounted: function() {
     this.routePos = this.$route.path;
+    console.log(this.routePos);
   },
   methods: {
     goto(route) {

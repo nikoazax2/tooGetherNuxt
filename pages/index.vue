@@ -144,7 +144,7 @@
                   <div class="nom">{{ activity.name }}</div>
                   <div class="lieux">{{ activity.lieux }}</div>
                   <div class="date">
-                    {{ formatDate(activity.date, activity) }}
+                    {{ activity.formatDate }}
                   </div>
                 </div>
                 <div class="iconmessage">
@@ -375,7 +375,6 @@ export default {
             responseType: "arraybuffer"
           })
           .then(response => {
-            console.log(response);
             this.profileImageBlob = Buffer.from(
               response.data,
               "binary"
@@ -390,60 +389,7 @@ export default {
         query: { id: this.$auth.user.id }
       });
     },
-    formatDate(ladateheure, activity) {
-      this.menunotif = false;
-      var heure = ladateheure.split(",")[1];
-      var ladate = ladateheure.split(",")[0];
-      var date = new Date(ladate);
-      var month = (date.getMonth() + 1).toString();
-      month.length == 1 ? (month = "0" + month) : "";
-      var dateToday = new Date();
-      date.setHours(heure.split(":")[0], heure.split(":")[1], 0);
-      var leretour = "";
 
-      //max après demain minuit
-      let afterTomorrow = new Date();
-      afterTomorrow.setDate(dateToday.getDate() + 2);
-      afterTomorrow.setHours(0, 0, 1);
-      //max  demain minuit
-      let tomorrow = new Date();
-      tomorrow.setDate(dateToday.getDate() + 1);
-      tomorrow.setHours(0, 0, 1);
-      //max  aujourdhui minuit
-      let today = new Date();
-      today.setDate(dateToday.getDate());
-      //max  hier minuit
-      let yesterday = new Date();
-      yesterday.setDate(dateToday.getDate() - 1);
-      yesterday.setHours(0, 0, 1);
-
-      let minutes = date.getMinutes().toString();
-      minutes.length == 1 ? (minutes = "0" + minutes) : "";
-
-      if (date > afterTomorrow) {
-        leretour = `Le ${date.getDate()}/${month}/${date.getFullYear()} à ${date.getHours()}h${minutes}`;
-      }
-      if (date < afterTomorrow && date > tomorrow) {
-        leretour = `Demain à ${date.getHours()}h${minutes}`;
-      }
-      if (date < tomorrow && date > today && date > dateToday) {
-        leretour = `Aujourd'hui à ${date.getHours()}h${minutes}`;
-      }
-      if (date > today && date < dateToday) {
-        leretour = `Passé aujourd'hui à ${date.getHours()}h${minutes}`;
-        activity.passed = true;
-      }
-      if (date < today && date > yesterday) {
-        leretour = `Passé hier à ${date.getHours()}h${minutes}`;
-        activity.passed = true;
-      }
-      if (date < today && date < yesterday) {
-        leretour = `Passé le ${date.getDate()}/${month}/${date.getFullYear()} à ${date.getHours()}h${minutes}`;
-        activity.passed = true;
-      }
-      this.menunotif = true;
-      return leretour;
-    },
     getEmojis() {
       console.log(fileEmoji.Activities);
     },
@@ -462,6 +408,8 @@ export default {
         });
 
         this.listeEventsUser.forEach(element => {
+          element.formatDate = this.$func.formatDate(element.date, element);
+
           var coord = JSON.parse(element.coordlieux);
           element.coordlieux = [coord.lng, coord.lat];
         });
@@ -471,14 +419,10 @@ export default {
       this.chargement = false;
     },
     setNotifs() {
-      var dateNow = new Date();
-
       this.listeEventsUser.forEach(activity => {
         var Actdate = activity.date.replace(",", " ");
         Actdate = new Date(Actdate);
       });
-
-      var dateEvent;
     },
     gotochat(activity) {
       this.$router.push(`/chatActivity/${activity.id}`);

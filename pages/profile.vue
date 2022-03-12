@@ -14,7 +14,7 @@
       style="position: absolute"
       src="@/assets/planetquitournerouge.gif"
     />
-    <div v-if="!chargement" class="contenu-vue">
+    <div v-if="!chargement" class="contenu-vue vue-profil">
       <div class="avatarreate-container">
         <div class="avatarreate">
           <v-img
@@ -24,10 +24,7 @@
           ></v-img>
         </div>
       </div>
-      <div
-        v-if="profileImageBlob && !$auth.user.avatar"
-        class="containercontainerPhoto"
-      >
+      <div v-if="profileImageBlob" class="containercontainerPhoto">
         <div class="containerPhoto">
           <img
             class="profile-image"
@@ -45,7 +42,7 @@
           ajouter
         </div>
 
-        <div class="btn-ami" v-if="user.friend">
+        <div class="btn-ami" v-if="user.friend" @click="removeFriend()">
           <v-icon color="white" small> mdi-check </v-icon>
           ami
         </div>
@@ -89,6 +86,19 @@ export default {
     lefooter: lefooter
   },
   methods: {
+    async removeFriend() {
+      await this.$axios
+        .post(`${process.env.URL}/users/suppFriend`, {
+          idUser: this.$auth.user.id,
+          idFriend: this.user.id
+        })
+        .then(response => {
+          if (response.status == 201) {
+            console.log("removed");
+            this.getUser();
+          }
+        });
+    },
     async ajoutFriend() {
       await this.$axios
         .post(`${process.env.URL}/users/addFriend`, {
@@ -223,22 +233,25 @@ html {
     margin-left: -20%;
     height: 20%;
   }
-  .containercontainerPhoto {
-    display: flex;
-    justify-content: center;
+  .vue-profil {
+    .containercontainerPhoto {
+      display: flex;
+      justify-content: center;
 
-    .profile-image {
-      position: relative;
-      object-fit: cover;
-      width: 150px;
-      height: 150px;
-      border-radius: 100%;
-    }
-    .v-image {
-    }
-    .containerPhoto {
-      width: 150px;
-      height: 150px;
+      .profile-image {
+        position: relative;
+        object-fit: cover;
+        width: 150px;
+        height: 150px;
+        border-radius: 100%;
+        border: white 5px solid;
+      }
+      .v-image {
+      }
+      .containerPhoto {
+        width: 150px;
+        height: 150px;
+      }
     }
   }
 

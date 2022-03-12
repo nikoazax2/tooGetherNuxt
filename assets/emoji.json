@@ -35719,6 +35719,35 @@
       ]
     },
     {
+      "category": "Travel & Places",
+      "section": "place-map",
+      "n": "1207",
+      "code": "4F8",
+      "text": "📸",
+      "recentlyAdded": false,
+      "name": "photo",
+      "vendors": {
+        "Appl": true,
+        "Goog": true,
+        "FB": true,
+        "Wind": true,
+        "Twtr": true,
+        "Joy": true,
+        "Sams": true,
+        "GMail": false,
+        "SB": false,
+        "DCM": false,
+        "KDDI": false,
+        "Tlgr": true
+      },
+      "tags": [
+        "photo"
+      ],
+      "keywords": [
+        "photo"
+      ]
+    },
+    {
       "category": "Activities",
       "section": "game",
       "n": "1017",

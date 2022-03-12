@@ -16,7 +16,7 @@
         style="position: absolute"
         src="@/assets/planetquitournerouge.gif"
       />
-      <v-card v-if="!chargement" class="titrecard" to="/">
+      <v-card v-if="!chargement" class="titrecard" @click="gotoDetail">
         <code
           class="emojiNotif jump"
           v-html="'<p>&\#x1F' + activity.activity_emoji + ';</p>'"
@@ -105,7 +105,7 @@
 <script>
 import degouline from "@/components/degoulinerouge";
 import lefooter from "@/components/footer";
-const API_URL = "http://api.toogther.com/api";
+const API_URL = "http://dev-tgt.local:3001/api";
 
 export default {
   name: "App",
@@ -124,6 +124,12 @@ export default {
     lefooter: lefooter
   },
   methods: {
+    gotoDetail() {
+      this.$router.push({
+        path: "/event-detail/",
+        query: { id: this.activity.id }
+      });
+    },
     async envoiMessage() {
       if (this.messageInput != "") {
         await this.$axios

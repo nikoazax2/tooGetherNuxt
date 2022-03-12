@@ -6,12 +6,6 @@
     "chunkName": "pages/chatActivity"
   },
   {
-    "name": "chatSearch",
-    "path": "/chatSearch",
-    "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\chatSearch.vue",
-    "chunkName": "pages/chatSearch"
-  },
-  {
     "name": "creationevent",
     "path": "/creationevent",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\creationevent.vue",
@@ -34,6 +28,12 @@
     "path": "/events",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\events.vue",
     "chunkName": "pages/events"
+  },
+  {
+    "name": "friends",
+    "path": "/friends",
+    "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\friends.vue",
+    "chunkName": "pages/friends"
   },
   {
     "name": "login",

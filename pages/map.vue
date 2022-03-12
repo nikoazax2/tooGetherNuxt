@@ -153,7 +153,7 @@ import { MglMap, MglMarker } from "vue-mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import lefooter from "@/components/footer";
 
-const API_URL = "http://api.toogther.com/api";
+const API_URL = "http://dev-tgt.local:3001/api";
 export default {
   name: "App",
   async created() {
@@ -170,7 +170,8 @@ export default {
       chargement: false,
       listeEvents: [],
       eventChoix: null,
-      activity: null
+      activity: null,
+      indexImage: 0
     };
   },
   components: {
@@ -212,6 +213,12 @@ export default {
       let res = await this.$axios.get("/activities/map");
       this.listeEvents = res.data;
       this.listeEvents.forEach(event => {
+        event.users.forEach(user => {
+          if (user.profileImage != null) {
+            this.getProfileImage(user);
+          }
+        });
+
         var coord = JSON.parse(event.coordlieux);
         event.coordlieux = [coord.lng, coord.lat];
       });
@@ -225,9 +232,30 @@ export default {
     },
     gotodetail(item) {
       this.$router.push({ path: "/event-detail/", query: { id: item.id } });
+    },
+    async getProfileImage(user) {
+      await this.$axios
+        .get("users/profileImage/" + user.profileImage, {
+          responseType: "arraybuffer"
+        })
+        .then(response => {
+          user.profileImageBlob = Buffer.from(response.data, "binary")
+            .toString("base64")
+            .replaceAll(" ", "");
+          this.indexImage = this.indexImage + 1;
+        });
     }
   },
-  watch: {}
+  watch: {
+    "$data.indexImage": {
+      handler: function(indexImage) {
+        if (this.listeEvents.length == indexImage) {
+          this.chargement = false;
+        }
+      },
+      deep: true
+    }
+  }
 };
 </script>
 

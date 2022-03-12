@@ -5,11 +5,11 @@ import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
 const _5a04c194 = () => interopDefault(import('..\\pages\\chatActivity.vue' /* webpackChunkName: "pages/chatActivity" */))
-const _134f9226 = () => interopDefault(import('..\\pages\\chatSearch.vue' /* webpackChunkName: "pages/chatSearch" */))
 const _2ed48ade = () => interopDefault(import('..\\pages\\creationevent.vue' /* webpackChunkName: "pages/creationevent" */))
 const _60710cda = () => interopDefault(import('..\\pages\\editevent.vue' /* webpackChunkName: "pages/editevent" */))
 const _10cbf11e = () => interopDefault(import('..\\pages\\event-detail.vue' /* webpackChunkName: "pages/event-detail" */))
 const _6f3d5a34 = () => interopDefault(import('..\\pages\\events.vue' /* webpackChunkName: "pages/events" */))
+const _5e5cac98 = () => interopDefault(import('..\\pages\\friends.vue' /* webpackChunkName: "pages/friends" */))
 const _2a62072c = () => interopDefault(import('..\\pages\\login.vue' /* webpackChunkName: "pages/login" */))
 const _69e5fa5f = () => interopDefault(import('..\\pages\\map.vue' /* webpackChunkName: "pages/map" */))
 const _54388de1 = () => interopDefault(import('..\\pages\\mapbackup.vue' /* webpackChunkName: "pages/mapbackup" */))
@@ -35,10 +35,6 @@ export const routerOptions = {
     component: _5a04c194,
     name: "chatActivity"
   }, {
-    path: "/chatSearch",
-    component: _134f9226,
-    name: "chatSearch"
-  }, {
     path: "/creationevent",
     component: _2ed48ade,
     name: "creationevent"
@@ -54,6 +50,10 @@ export const routerOptions = {
     path: "/events",
     component: _6f3d5a34,
     name: "events"
+  }, {
+    path: "/friends",
+    component: _5e5cac98,
+    name: "friends"
   }, {
     path: "/login",
     component: _2a62072c,

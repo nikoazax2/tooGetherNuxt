@@ -27,10 +27,15 @@
         color="#e92626"
       ></v-progress-circular>
     </div>
+    <div class="titreMyEvent" v-if="friends && friends.length > 1">
+      {{ friends.length }} AMIS
+    </div>
+    <div class="titreMyEvent" v-if="friends && friends.length <= 1">
+      {{ friends.length }} AMI
+    </div>
     <div class="containerdiv">
-      <div class="titreMyEvent" v-if="friends">{{ friends.length }} AMIS</div>
       <div v-if="!chargement">
-        <div class="lesamis">
+        <div class="lesamis" v-if="!aucunAmi">
           <div
             @click="goToProfile(friend.id)"
             class="ligneami"
@@ -41,7 +46,22 @@
               class="avatar elevation-6"
               alt=""
               :src="friend.avatar"
+              v-if="friend.avatar"
             ></v-img>
+            <div class="photo-nom">
+              <div
+                v-if="friend.profileImageBlob"
+                class="containercontainerPhoto"
+              >
+                <div class="containerPhoto">
+                  <img
+                    class="profile-image"
+                    :src="'data:image/png;base64,' + friend.profileImageBlob"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
             <div class="nom">
               {{
                 friend.surname.charAt(0).toUpperCase() + friend.surname.slice(1)
@@ -72,7 +92,9 @@ export default {
   data: function() {
     return {
       chargement: true,
-      friends: null
+      friends: null,
+      indexImage: 0,
+      aucunAmi: true
     };
   },
   components: {
@@ -93,22 +115,64 @@ export default {
         );
 
         this.friends = friendsData.data;
+        console.log(this.friends);
+        if (
+          this.friends.length >= 1 &&
+          this.friends[0] !=
+            {
+              id: null,
+              surname: null,
+              avatar: null,
+              profileImage: null
+            }
+        ) {
+          this.aucunAmi = false;
+          this.friends.forEach(friend => {
+            if (friend.profileImage != null) {
+              this.getProfileImage(friend);
+            }
+          });
 
-        this.friends = this.friends.sort((a, b) =>
-          a.surname > b.surname ? 1 : b.surname > a.surname ? -1 : 0
-        );
+          this.friends = this.friends.sort((a, b) =>
+            a.surname > b.surname ? 1 : b.surname > a.surname ? -1 : 0
+          );
+          if (this.friends.filter(user => user.profileImage).length == 0) {
+            this.chargement = false;
+          }
+        } else {
+          this.aucunAmi = true;
+          this.chargement = false;
+        }
       }
+    },
+    async getProfileImage(user) {
+      await this.$axios
+        .get("users/profileImage/" + user.profileImage, {
+          responseType: "arraybuffer"
+        })
+        .then(response => {
+          user.profileImageBlob = Buffer.from(response.data, "binary")
+            .toString("base64")
+            .replaceAll(" ", "");
 
-      this.chargement = false;
+          this.indexImage = this.indexImage + 1;
+        });
     }
   },
   watch: {
+    "$data.indexImage": {
+      handler: function(indexImage) {
+        if (
+          indexImage == this.friends.filter(user => user.profileImage).length
+        ) {
+          this.chargement = false;
+        }
+      },
+      deep: true
+    },
     group() {
       this.drawer = false;
     }
-  },
-  mounted() {
-    this.Read();
   }
 };
 </script>
@@ -143,10 +207,11 @@ export default {
   .containerdiv {
     margin: auto;
     width: 100%;
-    margin-top: 20%;
+
     overflow-y: scroll;
-    height: 75vh;
+    height: 82vh;
     .lesamis {
+      margin-bottom: 200px;
       width: 100%;
       height: 70px;
       .v-responsive__sizer {
@@ -197,6 +262,7 @@ export default {
     text-align: center;
     font-weight: 600 !important;
     color: #e92626 !important;
+    margin-top: 20%;
   }
   .planetquitourneinscription {
     margin-top: -10% !important;
@@ -204,6 +270,27 @@ export default {
     left: 35%;
     width: 33vw;
     height: 33vw;
+  }
+  .containercontainerPhoto {
+    display: flex;
+    justify-content: center;
+    margin-top: 3px;
+    margin-right: 10px;
+    padding-left: 5px;
+    padding-top: 7px;
+    .profile-image {
+      position: relative;
+      object-fit: cover;
+      width: 60px;
+      height: 60px;
+      border-radius: 100%;
+    }
+    .v-image {
+    }
+    .containerPhoto {
+      width: 53px;
+      height: 60px;
+    }
   }
   .barrederecherchecontainer {
     margin-bottom: 2vh;
@@ -269,7 +356,6 @@ export default {
   .containerdiv {
     margin: auto;
     width: 100%;
-    margin-top: 20%;
     .titleinsription {
       text-align: center;
       font-family: "Noto Sans", sans-serif !important;

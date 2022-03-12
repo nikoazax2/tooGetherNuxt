@@ -34,7 +34,18 @@
             >
             </code>
             <div>
-              <span class="text-h6 font-weight-light">{{ activity.name }}</span>
+              <div class="title">
+                <span class="text-h6 font-weight-light">{{
+                  activity.name
+                }}</span>
+                <div
+                  v-if="activity.creatorId == $auth.user.id"
+                  @click.stop
+                  @click="gotoedit(activity.id)"
+                >
+                  <v-icon>mdi-pencil</v-icon>
+                </div>
+              </div>
               <div class="dateheurepagedetail">
                 le {{ formatDate(activity.datejours) }} à {{ activity.heure }}
               </div>
@@ -47,7 +58,10 @@
 
           <v-card-actions>
             <v-list-item class="grow">
-              <v-list-item-avatar color="grey darken-3">
+              <v-list-item-avatar
+                v-if="!activity.creator.profileImageBlob"
+                color="grey darken-3"
+              >
                 <v-img
                   v-if="activity.creator.avatar"
                   class="elevation-6"
@@ -55,6 +69,22 @@
                   :src="activity.creator.avatar"
                 ></v-img>
               </v-list-item-avatar>
+
+              <div
+                v-if="activity.creator.profileImageBlob"
+                class="containercontainerPhoto"
+              >
+                <div class="containerPhoto">
+                  <img
+                    class="profile-image"
+                    :src="
+                      'data:image/png;base64,' +
+                        activity.creator.profileImageBlob
+                    "
+                    alt=""
+                  />
+                </div>
+              </div>
 
               <v-list-item-content>
                 <v-list-item-title>{{
@@ -100,14 +130,35 @@
                 :key="users.id"
               >
                 <div v-if="users.id != activity.creatorId">
-                  <v-list-item-avatar color="grey darken-3">
-                    <v-img
-                      class="elevation-6"
-                      alt=""
-                      :src="users.avatar"
-                    ></v-img>
-                  </v-list-item-avatar>
-                  {{ users.surname }}
+                  <div>
+                    <v-list-item-avatar
+                      v-if="!users.profileImageBlob"
+                      color="grey darken-3"
+                    >
+                      <v-img
+                        class="elevation-6"
+                        alt=""
+                        :src="users.avatar"
+                      ></v-img>
+                    </v-list-item-avatar>
+                    <div class="photo-nom">
+                      <div
+                        v-if="users.profileImageBlob"
+                        class="containercontainerPhoto"
+                      >
+                        <div class="containerPhoto">
+                          <img
+                            class="profile-image"
+                            :src="
+                              'data:image/png;base64,' + users.profileImageBlob
+                            "
+                            alt=""
+                          />
+                        </div>
+                      </div>
+                      {{ users.surname }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -157,7 +208,7 @@ import { MglMap, MglMarker } from "vue-mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import lefooter from "@/components/footer";
 
-const API_URL = "http://api.toogther.com/api";
+const API_URL = "http://dev-tgt.local:3001/api";
 export default {
   name: "App",
   async created() {
@@ -173,6 +224,7 @@ export default {
       geolocPosition: undefined,
       activity: null,
       chargement: true,
+      indexImage: 0,
       inscrit: false
     };
   },
@@ -183,6 +235,9 @@ export default {
     lefooter: lefooter
   },
   methods: {
+    gotoedit(id) {
+      this.$router.push({ path: "/editevent/" + id });
+    },
     goToProfile(id) {
       this.$router.push({ path: "/profile/?id=" + id });
     },
@@ -202,6 +257,8 @@ export default {
 
       if (this.activity.users.length > 0) {
         this.activity.users.forEach((participant, index, object) => {
+          this.getProfileImage(participant);
+
           if (this.activity.creatorId == participant.id) {
             console.log("test");
             this.activity.creator = participant;
@@ -215,11 +272,6 @@ export default {
       }
       var coord = JSON.parse(this.activity.coordlieux);
       this.activity.coordlieux = [coord.lng, coord.lat];
-
-      this.chargement = false;
-
-      //ID 744162930517-nidkl2e8uagtfk1ompdmhupo3eul09ah.apps.googleusercontent.com
-      //Secret KUJaxPRs5HOq2n_mCRX1EQZY
     },
     async inscription() {
       var userId = this.$auth.user.id;
@@ -233,9 +285,32 @@ export default {
     },
     gotorechercheevent() {
       this.$router.push("/recherchevent/");
+    },
+    async getProfileImage(user) {
+      if (user.profileImage != null) {
+        await this.$axios
+          .get("users/profileImage/" + user.profileImage, {
+            responseType: "arraybuffer"
+          })
+          .then(response => {
+            user.profileImageBlob = Buffer.from(response.data, "binary")
+              .toString("base64")
+              .replaceAll(" ", "");
+          });
+      }
+      this.indexImage = this.indexImage + 1;
     }
   },
-  watch: {}
+  watch: {
+    "$data.indexImage": {
+      handler: function(indexImage) {
+        if (indexImage == this.activity.users.length) {
+          this.chargement = false;
+        }
+      },
+      deep: true
+    }
+  }
 };
 </script>
 
@@ -260,6 +335,9 @@ html {
   }
   body {
     overflow: hidden;
+  }
+  .title {
+    display: inline-flex;
   }
   #degoulineInscription > svg {
     margin-top: -62vw;
@@ -314,6 +392,29 @@ html {
       color: white !important;
       font-size: 12px;
     }
+  }
+  .containercontainerPhoto {
+    display: flex;
+    justify-content: center;
+    margin-top: 3px;
+    margin-right: 10px;
+
+    .profile-image {
+      position: relative;
+      object-fit: cover;
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+    }
+    .v-image {
+    }
+    .containerPhoto {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  .v-avatar {
+    margin-right: 8px;
   }
   .containerdiv {
     margin: auto;
@@ -390,6 +491,10 @@ html {
     margin-bottom: 200px !important;
     .participantsliste {
       margin-left: 15px !important;
+      .photo-nom {
+        display: inline-flex;
+        align-items: center;
+      }
     }
     .emojidelevent {
       font-size: 30px;

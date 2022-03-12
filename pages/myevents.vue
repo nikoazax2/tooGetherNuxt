@@ -24,87 +24,12 @@
       >
     </v-card>
     <div v-if="!chargement">
-      <div class="containerdiv" v-if="tab == 'cree'">
-        <div>
-          <div class="titreMyEvent">CREATEUR</div>
-          <div>
-            <div
-              v-for="item in listeEventsCreator"
-              :key="item.id"
-              class="conteneurevent"
-            >
-              <div @click="gotodetail(item)" id="caseact" class="casenomdate">
-                <code
-                  class="emojidelevent jump"
-                  v-html="'<p >&\#x1F' + item.emoji + ';</p>'"
-                >
-                </code>
-
-                <p class="titredelevent">{{ item.name.toUpperCase() }}</p>
-                <p class="titredelevent dateheure">
-                  {{ formatDate(item.date) }}
-                </p>
-                <div @click.stop @click="gotoedit(item.id)">
-                  <v-icon>mdi-pencil</v-icon>
-                </div>
-              </div>
-              <div @click="gotodetail(item)" id="caseact" class="caselieux">
-                <div>
-                  <div class="lacarte">
-                    <MglMap
-                      :zoom="8"
-                      :center="item.coordlieux"
-                      :accessToken="accessToken"
-                      :mapStyle.sync="mapStyle"
-                    >
-                      <MglMarker
-                        :coordinates="[item.coordlieux[0], item.coordlieux[1]]"
-                      >
-                        <div
-                          @click="clickeventmap(event)"
-                          slot="marker"
-                          class=" marker"
-                        >
-                          <code
-                            class="emojiMap"
-                            v-html="'<p>&\#x1F' + item.emoji + ';</p>'"
-                          ></code>
-                        </div>
-                      </MglMarker>
-                    </MglMap>
-                  </div>
-                </div>
-              </div>
-              <div
-                @click="gotodetail(item)"
-                id="caseact"
-                class="caseparticipants"
-              >
-                <p class="titredelevent">PARTICIPANTS</p>
-                <div class="conteneurAvatar">
-                  <div
-                    class="sousconteneuravatar"
-                    v-for="user in item.users"
-                    :key="user.id"
-                  >
-                    <v-img
-                      class="avatar elevation-6"
-                      alt=""
-                      :src="user.avatar"
-                    ></v-img>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="containerdiv" v-if="tab == 'participe'">
-        <div class="titreMyEvent">PARTICIPANT</div>
+      <div class="containerdiv">
         <div v-if="!chargement">
           <div
             v-for="item in listeEventsPaticipant"
             :key="item.id"
+            :class="{ activityPassed: item.passed }"
             class="conteneurevent"
           >
             <div @click="gotodetail(item)" id="caseact" class="casenomdate">
@@ -113,10 +38,18 @@
                 v-html="'<p >&\#x1F' + item.emoji + ';</p>'"
               >
               </code>
+
               <p class="titredelevent">{{ item.name.toUpperCase() }}</p>
               <p class="titredelevent dateheure">
-                {{ formatDate(item.date) }}
+                {{ item.formatDate }}
               </p>
+              <div
+                v-if="item.creatorId == $auth.user.id"
+                @click.stop
+                @click="gotoedit(item.act_id)"
+              >
+                <v-icon>mdi-pencil</v-icon>
+              </div>
             </div>
             <div @click="gotodetail(item)" id="caseact" class="caselieux">
               <div class="lacarte">
@@ -142,6 +75,7 @@
                   </MglMarker>
                 </MglMap>
               </div>
+              <!-- <div class="titreLieux">{{ item.lieux }}</div> -->
             </div>
             <div
               @click="gotodetail(item)"
@@ -156,10 +90,23 @@
                   :key="user.id"
                 >
                   <v-img
+                    v-if="user.avatar"
                     class="avatar elevation-6"
                     alt=""
                     :src="user.avatar"
                   ></v-img>
+                  <div
+                    v-if="user.profileImageBlob"
+                    class="containercontainerPhoto"
+                  >
+                    <div class="containerPhoto">
+                      <img
+                        class="profile-image"
+                        :src="'data:image/png;base64,' + user.profileImageBlob"
+                        alt=""
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -223,11 +170,7 @@
       </div>
       <div
         class="containerdiv"
-        v-if="
-          $auth.user &&
-            listeEventsCreator.length == 0 &&
-            listeEventsPaticipant.length == 0
-        "
+        v-if="$auth.user && listeEventsPaticipant.length == 0"
       >
         <div class="lesbtncreereveent">
           <div class="aucunevent">Tu n'a aucune activité :(</div>
@@ -256,27 +199,7 @@
         </div>
       </div>
     </div>
-    <div class="footermyevents">
-      <v-tabs
-        v-model="tab"
-        background-color="deep-purple accent-4"
-        centered
-        icons-and-text
-      >
-        <v-tabs-slider></v-tabs-slider>
 
-        <v-tab href="#cree">
-          <v-icon>mdi-account-cowboy-hat</v-icon>
-        </v-tab>
-        <v-tab href="#participe">
-          <v-icon>mdi-account-cowboy-hat-outline</v-icon>
-        </v-tab>
-
-        <!--  <v-tab @click="chargeAmis()" href="#amis">
-          <v-icon>mdi-account-supervisor</v-icon>
-        </v-tab> -->
-      </v-tabs>
-    </div>
     <lefooter></lefooter>
   </div>
 </template>
@@ -301,13 +224,13 @@ export default {
 
       rotation: 0,
       geolocPosition: undefined,
-      tab: null,
-
+      tab: 2,
+      imagesChargees: 0,
+      nbImagesAcharger: null,
       chargement: true,
       friends: null,
       drawer: false,
       group: null,
-      listeEventsCreator: null,
       listeEventsPaticipant: null
     };
   },
@@ -320,22 +243,6 @@ export default {
   methods: {
     gotoedit(id) {
       this.$router.push({ path: "/editevent/" + id });
-    },
-    formatDate(ladateheure) {
-      var heure = ladateheure.split(",")[1];
-      var ladate = ladateheure.split(",")[0];
-      var date = new Date(ladate);
-      var month = date.getMonth() + 1;
-      return (
-        "le " +
-        date.getDate() +
-        "/" +
-        month +
-        "/" +
-        date.getFullYear() +
-        " à " +
-        heure
-      );
     },
     gotoCreationEvenet() {
       if (this.$auth.user) {
@@ -354,56 +261,56 @@ export default {
       });
     },
     gotodetail(item) {
-      this.$router.push({ path: "event-detail/", query: { id: item.id } });
+      this.$router.push({ path: "event-detail/", query: { id: item.act_id } });
     },
-    async chargeAmis() {
-      this.chargement = true;
-      if (this.$auth.user) {
-        let friendsData = await this.$axios.get(
-          "users/getFriends/" + this.$auth.user.id
-        );
 
-        this.friends = friendsData.data;
-
-        this.friends = this.friends.sort((a, b) =>
-          a.surname > b.surname ? 1 : b.surname > a.surname ? -1 : 0
-        );
-      }
-
-      this.chargement = false;
-    },
     async Read() {
       this.chargement = true;
       if (this.$auth.user) {
-        let rescreator = await this.$axios.get(
-          "/activities/" + this.$auth.user.id + "/creator"
-        );
-        this.listeEventsCreator = rescreator.data;
-
-        this.listeEventsCreator.forEach(element => {
-          var coord = JSON.parse(element.coordlieux);
-          element.coordlieux = [coord.lng, coord.lat];
-        });
-
         let resparticipant = await this.$axios.get(
           "/activities/" + this.$auth.user.id + "/participant"
         );
         this.listeEventsPaticipant = resparticipant.data;
-
-        this.listeEventsPaticipant.forEach(element => {
-          var coord = JSON.parse(element.coordlieux);
-          element.coordlieux = [coord.lng, coord.lat];
+        this.listeEventsPaticipant.forEach(activity => {
+          this.nbImagesAcharger = this.nbImagesAcharger + activity.users.length;
+          activity.formatDate = this.$func.formatDate(activity.date, activity);
+          activity.users.forEach(user => {
+            this.getProfileImage(user);
+          });
+          var coord = JSON.parse(activity.coordlieux);
+          activity.coordlieux = [coord.lng, coord.lat];
         });
       }
-
-      this.chargement = false;
+    },
+    async getProfileImage(user) {
+      if (user.profileImage != null) {
+        await this.$axios
+          .get("users/profileImage/" + user.profileImage, {
+            responseType: "arraybuffer"
+          })
+          .then(response => {
+            user.profileImageBlob = Buffer.from(response.data, "binary")
+              .toString("base64")
+              .replaceAll(" ", "");
+          });
+      }
+      this.imagesChargees = this.imagesChargees + 1;
     }
   },
   watch: {
     group() {
       this.drawer = false;
+    },
+    "$data.imagesChargees": {
+      handler: function(imagesChargees) {
+        if (this.nbImagesAcharger == imagesChargees) {
+          this.chargement = false;
+        }
+      },
+      deep: true
     }
   },
+
   mounted() {
     this.Read();
   }
@@ -489,6 +396,25 @@ export default {
       margin-top: 0%;
     }
     .v-card__text {
+    }
+  }
+  .containercontainerPhoto {
+    display: flex;
+    justify-content: center;
+    margin-top: 3px;
+
+    .profile-image {
+      position: relative;
+      object-fit: cover;
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+    }
+    .v-image {
+    }
+    .containerPhoto {
+      width: 30px;
+      height: 30px;
     }
   }
   .title {
@@ -577,6 +503,9 @@ export default {
     .titleinsription {
       text-align: center;
       font-family: "Noto Sans", sans-serif !important;
+    }
+    .activityPassed {
+      opacity: 0.6;
     }
   }
   .rowcreerevenet {
@@ -687,7 +616,7 @@ export default {
     }
   }
   .casenomdate {
-    padding-top: 3% !important;
+    padding-top: 5% !important;
   }
   .titredelevent {
     font-weight: 700;
@@ -753,8 +682,9 @@ export default {
     height: 30px;
   }
   .dateheure {
-    margin-top: 10px;
+    margin-top: 0px;
     font-size: 10px;
+    opacity: 0.9;
   }
 }
 </style>

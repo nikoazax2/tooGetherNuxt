@@ -128,7 +128,6 @@
           </div>
           <!-- <div class="titreLieux">{{ item.lieux }}</div> -->
         </div>
-
         <div @click="gotodetail(item)" id="caseact" class="caseparticipants">
           <p class="titredelevent">PARTICIPANTS</p>
           <div class="conteneurAvatar">
@@ -213,7 +212,7 @@ export default {
 
       rotation: 0,
       geolocPosition: undefined,
-
+      nbImagesAcharger: null,
       drawer: false,
       group: null,
       act: ["slt", "lol"],
@@ -222,6 +221,7 @@ export default {
         lieux: "",
         date: ""
       },
+      indexImage: 0,
       lesParticipants: [],
       listeEvents: [],
       error: null,
@@ -362,36 +362,42 @@ export default {
         "/activities" + queryParamName + "/recherche"
       );
       this.listeEvents = res.data;
-      this.listeEvents.forEach(activity => {
+      this.listeEvents.forEach((activity, index, array) => {
+        this.nbImagesAcharger = this.nbImagesAcharger + activity.users.length;
         activity.users.forEach(user => {
-          if (user.profileImage != null) {
-            this.getProfileImage(user);
-          }
+          this.getProfileImage(user);
         });
 
         var coord = JSON.parse(activity.coordlieux);
         activity.coordlieux = [coord.lng, coord.lat];
       });
-      setTimeout(() => {
-        this.chargement = false;
-      }, 2000);
     },
     async getProfileImage(user) {
-      await this.$axios
-        .get("users/profileImage/" + user.profileImage, {
-          responseType: "arraybuffer"
-        })
-        .then(response => {
-          user.profileImageBlob = Buffer.from(response.data, "binary")
-            .toString("base64")
-            .replaceAll(" ", "");
-          console.log(user);
-        });
+      if (user.profileImage != null) {
+        await this.$axios
+          .get("users/profileImage/" + user.profileImage, {
+            responseType: "arraybuffer"
+          })
+          .then(response => {
+            user.profileImageBlob = Buffer.from(response.data, "binary")
+              .toString("base64")
+              .replaceAll(" ", "");
+          });
+      }
+      this.indexImage = this.indexImage + 1;
     }
   },
   watch: {
     group() {
       this.drawer = false;
+    },
+    "$data.indexImage": {
+      handler: function(indexImage) {
+        if (this.nbImagesAcharger == indexImage) {
+          this.chargement = false;
+        }
+      },
+      deep: true
     }
   },
   mounted() {
