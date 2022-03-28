@@ -153,7 +153,7 @@ import { MglMap, MglMarker } from "vue-mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import lefooter from "@/components/footer";
 
-const API_URL = "http://dev-tgt.local:3001/api";
+const API_URL = "http://api.toogther.com/api";
 export default {
   name: "App",
   async created() {

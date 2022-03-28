@@ -149,7 +149,7 @@
 
 <script>
 import degouline from "@/components/degoulinerouge";
-const API_URL = "http://dev-tgt.local:3001/api";
+const API_URL = "http://api.toogther.com/api";
 import hobbies from "../assets/hobbies.json";
 
 export default {
