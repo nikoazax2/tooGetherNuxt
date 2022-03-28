@@ -168,6 +168,7 @@
           </v-btn>
         </div>
       </div>
+
       <div
         class="containerdiv"
         v-if="$auth.user && listeEventsPaticipant.length == 0"
@@ -271,15 +272,23 @@ export default {
           "/activities/" + this.$auth.user.id + "/participant"
         );
         this.listeEventsPaticipant = resparticipant.data;
-        this.listeEventsPaticipant.forEach(activity => {
-          this.nbImagesAcharger = this.nbImagesAcharger + activity.users.length;
-          activity.formatDate = this.$func.formatDate(activity.date, activity);
-          activity.users.forEach(user => {
-            this.getProfileImage(user);
+        if (this.listeEventsPaticipant.length > 0) {
+          this.listeEventsPaticipant.forEach(activity => {
+            this.nbImagesAcharger =
+              this.nbImagesAcharger + activity.users.length;
+            activity.formatDate = this.$func.formatDate(
+              activity.date,
+              activity
+            );
+            activity.users.forEach(user => {
+              this.getProfileImage(user);
+            });
+            var coord = JSON.parse(activity.coordlieux);
+            activity.coordlieux = [coord.lng, coord.lat];
           });
-          var coord = JSON.parse(activity.coordlieux);
-          activity.coordlieux = [coord.lng, coord.lat];
-        });
+        } else {
+          this.chargement = false;
+        }
       }
     },
     async getProfileImage(user) {

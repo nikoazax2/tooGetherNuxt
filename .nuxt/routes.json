@@ -18,6 +18,12 @@
     "chunkName": "pages/editevent"
   },
   {
+    "name": "editProfile",
+    "path": "/editProfile",
+    "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\editProfile.vue",
+    "chunkName": "pages/editProfile"
+  },
+  {
     "name": "event-detail",
     "path": "/event-detail",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\event-detail.vue",
@@ -97,6 +103,11 @@
     "name": "profile",
     "path": "/profile/:id",
     "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\profile.vue"
+  },
+  {
+    "name": "editProfile",
+    "path": "/editProfile/:id",
+    "component": "C:\\\\Users\\\\alast\\\\OneDrive\\\\PROJET\\\\TooGether\\\\tooGetherNuxt\\\\pages\\\\editProfile.vue"
   },
   {
     "name": "chatActivity",

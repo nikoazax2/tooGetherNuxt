@@ -17,9 +17,9 @@
       />
     </div>
 
-    <div class="body-register">
+    <div class="body-register" v-if="!chargement">
       <div class="containerdiv containerdivinscr">
-        <p class="titleinsription">INSCRIPTION</p>
+        <p class="titleinsription">PROFIL</p>
       </div>
       <form class="formulairereg" action="#" @submit.prevent="submit">
         <div class="form-group row rowregister">
@@ -51,28 +51,6 @@
               v-model="form.email"
             />
           </div>
-        </div>
-
-        <div class="form-group row rowregister">
-          <div class="col-md-6">
-            <input
-              placeholder="Mot de passe"
-              id="password"
-              type="password"
-              class="form-control"
-              name="password"
-              required
-              v-model="form.password"
-              @input="
-                form.password.length < 8 || form.password.length > 16
-                  ? (messageNbPass = true)
-                  : (messageNbPass = false)
-              "
-            />
-          </div>
-        </div>
-        <div v-if="messageNbPass" class="message-mdp">
-          Plus de 8 et moins de 16 caractères !
         </div>
       </form>
       <div class="choix-photo-ou-avatar">
@@ -157,12 +135,13 @@
         Email invalide
       </div>
       <div class="btnreg" @click="submitPhoto">
-        <button class="btn btn-primary">S'inscrire</button>
+        <button class="btn btn-primary">Sauvegarder</button>
       </div>
-      <div class="btnreg creercompte" @click="gotologin">
-        <button class="btn btn-primary ">
-          J'ai déjà un compte
-        </button>
+      <div
+        @click="$router.push(`/profile?id=${$auth.user.id}`)"
+        class="annuler"
+      >
+        Annuler
       </div>
     </div>
   </v-app>
@@ -177,7 +156,8 @@ export default {
   name: "App",
   created: function() {
     this.hobbies = hobbies;
-    this.changeavatar();
+
+    this.getUser();
   },
   data: function() {
     return {
@@ -197,6 +177,7 @@ export default {
         profilePhoto: []
       },
       hobbiesChoix: [],
+      chargement: false,
       srcavatar:
         "https://avataaars.io/?accessoriesType=Prescription02&avatarStyle=Circle&clotheColor=Heather&clotheType=GraphicShirt&eyeType=Cry&eyebrowType=UnibrowNatural&facialHairColor=Brown&facialHairType=MoustacheMagnum&hairColor=Blonde&mouthType=Twinkle&skinColor=Pale&topType=NoHair",
 
@@ -395,9 +376,56 @@ export default {
       } else {
         this.tempProfilePhoto = [];
       }
+      this.chargement = false;
     },
     gotologin() {
       this.$router.push("/login");
+    },
+    async getUser() {
+      this.chargement = true;
+      let userData = await this.$axios.get(
+        "users/profile/" + this.$route.query.id + "/" + this.$auth.user.id
+      );
+
+      this.form = {
+        surname: userData.data.profilUser.surname,
+        email: userData.data.profilUser.email,
+        password: userData.data.profilUser.password,
+        avatar: userData.data.profilUser.avatar
+          ? userData.data.profilUser.avatar
+          : "",
+        bio: userData.data.profilUser.bio,
+        profilePhoto: []
+      };
+      let tab = JSON.parse("[" + userData.data.profilUser.interests + "]");
+      if (tab.length > 0) {
+        tab.forEach(hobbie => {
+          console.log(hobbie);
+          this.hobbiesChoix.push(
+            hobbies.data.filter(obj => {
+              return obj.id == hobbie.toString();
+            })[0]
+          );
+        });
+      }
+      if (this.form.avatar) {
+        this.srcavatar = this.form.avatar;
+        this.chargement = false;
+      } else {
+        this.chooseAvatarOrProfile = "photo";
+        this.srcavatar = null;
+        this.getProfileImage(userData.data.profilUser.profileImage);
+      }
+    },
+    async getProfileImage(profileImage) {
+      await this.$axios
+        .get("users/profileImage/" + profileImage, {
+          responseType: "arraybuffer"
+        })
+        .then(response => {
+          this.tempProfilePhoto = response.data;
+          this.Preview_image();
+        });
     },
     ValidateEmail() {
       var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -470,13 +498,7 @@ export default {
     },
     testPasToutRempli() {
       let form = this.form;
-      if (
-        form.surname == "" ||
-        form.email == "" ||
-        form.password.length < 8 ||
-        form.password.length > 16 ||
-        form.bio.length == ""
-      ) {
+      if (form.surname == "" || form.email == "" || form.bio.length == "") {
         this.pasToutRemplis = true;
       } else {
         this.pasToutRemplis = false;
@@ -490,20 +512,15 @@ export default {
         : (this.imageProfilRenvoyee = null);
       if (this.ValidateEmail() && !this.pasToutRemplis) {
         await this.$axios
-          .post(`${process.env.URL}/auth/register`, {
-            interests: interests,
+          .patch(`${process.env.URL}/users/` + this.$auth.user.id, {
+            interests: interests.length > 0 ? JSON.stringify(interests) : "",
             surname: this.form.surname,
             email: this.form.email,
-            password: this.form.password,
             avatar: this.form.avatar,
             profileImage: this.imageProfilRenvoyee,
             bio: this.form.bio
           })
-          .then(response => {
-            if (response.status === 201) {
-              this.login();
-            }
-          });
+          .then(response => {});
       }
     },
     async login() {
@@ -692,6 +709,14 @@ export default {
       font-weight: 700;
       font-family: "Noto Sans", sans-serif;
     }
+  }
+  .annuler {
+    width: 100%;
+    font-size: 14px;
+    color: grey;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
   }
   .btnreg {
     text-align: center;

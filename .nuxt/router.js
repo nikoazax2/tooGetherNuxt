@@ -7,6 +7,7 @@ import scrollBehavior from './router.scrollBehavior.js'
 const _5a04c194 = () => interopDefault(import('..\\pages\\chatActivity.vue' /* webpackChunkName: "pages/chatActivity" */))
 const _2ed48ade = () => interopDefault(import('..\\pages\\creationevent.vue' /* webpackChunkName: "pages/creationevent" */))
 const _60710cda = () => interopDefault(import('..\\pages\\editevent.vue' /* webpackChunkName: "pages/editevent" */))
+const _bb3b767c = () => interopDefault(import('..\\pages\\editProfile.vue' /* webpackChunkName: "pages/editProfile" */))
 const _10cbf11e = () => interopDefault(import('..\\pages\\event-detail.vue' /* webpackChunkName: "pages/event-detail" */))
 const _6f3d5a34 = () => interopDefault(import('..\\pages\\events.vue' /* webpackChunkName: "pages/events" */))
 const _5e5cac98 = () => interopDefault(import('..\\pages\\friends.vue' /* webpackChunkName: "pages/friends" */))
@@ -42,6 +43,10 @@ export const routerOptions = {
     path: "/editevent",
     component: _60710cda,
     name: "editevent"
+  }, {
+    path: "/editProfile",
+    component: _bb3b767c,
+    name: "editProfile"
   }, {
     path: "/event-detail",
     component: _10cbf11e,
@@ -98,6 +103,10 @@ export const routerOptions = {
     path: "/profile/:id",
     component: _1529c2ac,
     name: "profile"
+  }, {
+    path: "/editProfile/:id",
+    component: _bb3b767c,
+    name: "editProfile"
   }, {
     path: "/chatActivity/:id",
     component: _5a04c194,

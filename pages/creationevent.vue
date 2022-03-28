@@ -428,9 +428,7 @@ export default {
           await this.$axios
             .post(`${process.env.URL}/activities`, {
               creatorId: this.$auth.user.id,
-              name:
-                this.form.name.charAt(0).toUpperCase() +
-                this.form.name.slice(1),
+              name: this.form.name.toUpperCase(),
               description: this.form.tags,
               lieux: this.form.lieux,
               date: this.form.date + "," + this.form.hour,

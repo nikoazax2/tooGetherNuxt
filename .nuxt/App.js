@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { decode, parsePath, withoutBase, withoutTrailingSlash, normalizeURL } from 'ufo'
-import { func } from '../globalfunctions.js'
+
 import { getMatchedComponentsInstances, getChildrenComponentInstancesUsingFetch, promisify, globalHandleError, urlJoin, sanitizeComponent } from './utils'
 import NuxtError from '..\\layouts\\error.vue'
 import NuxtLoading from './components/nuxt-loading.vue'
@@ -13,10 +13,10 @@ import '..\\node_modules\\vuetify\\dist\\vuetify.css'
 import _6f6c098b from '..\\layouts\\default.vue'
 import _7762aba2 from '..\\layouts\\guest.vue'
 
-const layouts = { "_default": sanitizeComponent(_6f6c098b), "_guest": sanitizeComponent(_7762aba2) }
+const layouts = { "_default": sanitizeComponent(_6f6c098b),"_guest": sanitizeComponent(_7762aba2) }
 
 export default {
-  render(h, props) {
+  render (h, props) {
     const loadingEl = h('NuxtLoading', { ref: 'loading' })
 
     const layoutEl = h(this.layout || 'nuxt')
@@ -33,7 +33,7 @@ export default {
         mode: 'out-in'
       },
       on: {
-        beforeEnter(el) {
+        beforeEnter (el) {
           // Ensure to trigger scroll event after calling scrollBehavior
           window.$nuxt.$nextTick(() => {
             window.$nuxt.$emit('triggerScroll')
@@ -60,13 +60,12 @@ export default {
     layoutName: '',
 
     nbFetching: 0
-  }),
+    }),
 
-  beforeCreate() {
+  beforeCreate () {
     Vue.util.defineReactive(this, 'nuxt', this.$options.nuxt)
-    Vue.prototype.$func = func
   },
-  created() {
+  created () {
     // Add this.$nuxt in child instances
     this.$root.$options.$nuxt = this
 
@@ -85,7 +84,7 @@ export default {
     this.context = this.$options.context
   },
 
-  async mounted() {
+  async mounted () {
     this.$loading = this.$refs.loading
   },
 
@@ -94,21 +93,21 @@ export default {
   },
 
   computed: {
-    isOffline() {
+    isOffline () {
       return !this.isOnline
     },
 
-    isFetching() {
+    isFetching () {
       return this.nbFetching > 0
     },
 
-    isPreview() {
+    isPreview () {
       return Boolean(this.$options.previewData)
     },
   },
 
   methods: {
-    refreshOnlineStatus() {
+    refreshOnlineStatus () {
       if (process.client) {
         if (typeof window.navigator.onLine === 'undefined') {
           // If the browser doesn't support connection status reports
@@ -121,7 +120,7 @@ export default {
       }
     },
 
-    async refresh() {
+    async refresh () {
       const pages = getMatchedComponentsInstances(this.$route)
 
       if (!pages.length) {
@@ -167,7 +166,7 @@ export default {
       }
       this.$loading.finish()
     },
-    errorChanged() {
+    errorChanged () {
       if (this.nuxt.err) {
         if (this.$loading) {
           if (this.$loading.fail) {
@@ -188,8 +187,8 @@ export default {
       }
     },
 
-    setLayout(layout) {
-      if (layout && typeof layout !== 'string') {
+    setLayout (layout) {
+      if(layout && typeof layout !== 'string') {
         throw new Error('[nuxt] Avoid using non-string value as layout property.')
       }
 
@@ -200,7 +199,7 @@ export default {
       this.layout = layouts['_' + layout]
       return this.layout
     },
-    loadLayout(layout) {
+    loadLayout (layout) {
       if (!layout || !layouts['_' + layout]) {
         layout = 'default'
       }

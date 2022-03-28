@@ -9,6 +9,13 @@
     <!-- ------------------------------------------HEADER-------------------------------------------- -->
 
     <degouline v-if="true" id="degouline"></degouline>
+    <div
+      @click="$router.push(`/editProfile?id=${$auth.user.id}`)"
+      class="icon-edit-profile"
+      v-if="$auth.user.id == $route.query.id"
+    >
+      <v-icon>mdi-pencil</v-icon>
+    </div>
     <img
       class="planetquitourne"
       style="position: absolute"
@@ -33,6 +40,7 @@
           />
         </div>
       </div>
+
       <div class="info-container">
         <div class="infos">{{ user.surname }}</div>
       </div>
@@ -50,6 +58,7 @@
           <v-icon color="white" small> mdi-message-outline </v-icon> message
         </div> -->
       </div>
+      <div class="bio">{{ user.bio }}</div>
     </div>
     <div class="chargement" v-if="chargement">
       <v-progress-circular
@@ -159,6 +168,16 @@ html {
   overflow: hidden;
 }
 .vueIndex {
+  .icon-edit-profile {
+    float: right;
+    i {
+      color: white;
+      padding: 40px;
+      position: absolute;
+      z-index: 100;
+      right: 0;
+    }
+  }
   #app {
     position: relative;
     height: 100vh;
@@ -226,6 +245,17 @@ html {
         background-color: rgba(255, 255, 255, 0.2);
         cursor: pointer;
       }
+    }
+    .bio {
+      position: absolute;
+      z-index: 1;
+      width: 100vw;
+      text-align: center;
+      font-size: 14px;
+      padding: 20px;
+      color: white;
+      font-weight: 700;
+      margin-top: 80px;
     }
   }
   .planetquitourne {
